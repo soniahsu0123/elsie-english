@@ -1,0 +1,1040 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>🥚 Lemon 英文星球</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, 'Helvetica Neue', sans-serif;
+      background: linear-gradient(135deg, #FFE066 0%, #FF9F43 50%, #FF6B9D 100%);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .screen {
+      display: none;
+      min-height: 100vh;
+      padding: 20px 16px 40px;
+      flex-direction: column;
+      align-items: center;
+    }
+    .screen.active { display: flex; }
+
+    :root {
+      --egg-yellow: #FFD700;
+      --egg-orange: #FF9F43;
+      --egg-pink: #FF6B9D;
+      --egg-blue: #54A0FF;
+      --egg-green: #5CDB95;
+      --egg-purple: #A29BFE;
+      --bg-card: rgba(255,255,255,0.93);
+      --text-dark: #2D3436;
+      --text-mid: #636E72;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border-radius: 24px;
+      padding: 20px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.10);
+      margin-bottom: 14px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 50px;
+      padding: 16px 32px;
+      font-size: 17px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      width: 100%;
+      max-width: 340px;
+      letter-spacing: 0.3px;
+    }
+    .btn:active { transform: scale(0.96); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #FF9F43, #FF6B9D);
+      color: white;
+      box-shadow: 0 6px 20px rgba(255,107,157,0.4);
+    }
+    .btn-secondary {
+      background: linear-gradient(135deg, #54A0FF, #A29BFE);
+      color: white;
+      box-shadow: 0 6px 20px rgba(84,160,255,0.4);
+    }
+    .btn-green {
+      background: linear-gradient(135deg, #5CDB95, #05C46B);
+      color: white;
+      box-shadow: 0 6px 20px rgba(92,219,149,0.4);
+    }
+    .btn-yellow {
+      background: linear-gradient(135deg, #FFD700, #FF9F43);
+      color: white;
+      box-shadow: 0 6px 20px rgba(255,215,0,0.4);
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: rgba(255,255,255,0.88);
+      border-radius: 20px;
+      padding: 12px 10px;
+      width: 100%;
+      max-width: 480px;
+      margin-bottom: 14px;
+      backdrop-filter: blur(10px);
+    }
+    .stat-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .stat-value { font-size: 18px; font-weight: 800; color: var(--text-dark); }
+    .stat-label { font-size: 11px; color: var(--text-mid); font-weight: 600; }
+
+    /* ── LOGIN ── */
+    #login-screen { justify-content: center; gap: 20px; }
+    .login-title { font-size: 30px; font-weight: 900; color: white; text-shadow: 0 3px 12px rgba(0,0,0,0.2); text-align: center; }
+    .login-subtitle { font-size: 15px; color: rgba(255,255,255,0.9); text-align: center; }
+
+    .user-select { display: flex; gap: 16px; width: 100%; max-width: 420px; }
+    .user-card {
+      flex: 1;
+      background: rgba(255,255,255,0.92);
+      border-radius: 24px;
+      padding: 28px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      border: 3px solid transparent;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+    }
+    .user-card:active { transform: scale(0.96); }
+    .user-avatar { font-size: 56px; line-height: 1; }
+    .user-name { font-size: 22px; font-weight: 800; color: var(--text-dark); }
+    .user-meta { font-size: 12px; color: var(--text-mid); font-weight: 600; text-align: center; }
+
+    /* ── MAIN ── */
+    #main-screen { gap: 14px; padding-top: 20px; }
+    .greeting { font-size: 24px; font-weight: 900; color: white; text-shadow: 0 3px 12px rgba(0,0,0,0.2); text-align: center; }
+
+    .machine-area { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; max-width: 480px; }
+
+    .machine {
+      width: 180px;
+      height: 200px;
+      cursor: pointer;
+      position: relative;
+    }
+    .machine-body {
+      width: 180px;
+      height: 160px;
+      background: linear-gradient(145deg, #A29BFE, #6C5CE7);
+      border-radius: 28px 28px 16px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(108,92,231,0.45);
+    }
+    .machine-window {
+      width: 110px;
+      height: 110px;
+      background: radial-gradient(circle at 38% 34%, rgba(255,255,255,0.95), rgba(255,255,255,0.25));
+      border-radius: 50%;
+      border: 5px solid rgba(255,255,255,0.6);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 54px;
+    }
+    .machine-base {
+      width: 200px;
+      height: 36px;
+      background: linear-gradient(135deg, #6C5CE7, #A29BFE);
+      border-radius: 0 0 18px 18px;
+      margin: 0 auto;
+    }
+    .machine-slot {
+      width: 56px;
+      height: 16px;
+      background: rgba(0,0,0,0.25);
+      border-radius: 8px;
+      margin: 0 auto;
+      margin-top: 8px;
+    }
+
+    @keyframes machine-shake {
+      0%,100% { transform: rotate(0); }
+      20% { transform: rotate(-5deg); }
+      40% { transform: rotate(5deg); }
+      60% { transform: rotate(-3deg); }
+      80% { transform: rotate(3deg); }
+    }
+    .machine.shaking { animation: machine-shake 0.6s ease-in-out; }
+
+    .today-banner {
+      width: 100%;
+      max-width: 480px;
+      background: linear-gradient(135deg, #5CDB95, #05C46B);
+      border-radius: 20px;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: 0 6px 20px rgba(92,219,149,0.4);
+    }
+    .today-banner-emoji { font-size: 30px; }
+    .today-banner-label { font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.8); }
+    .today-banner-name { font-size: 17px; font-weight: 800; color: white; }
+
+    /* ── EGG OVERLAY ── */
+    .egg-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .egg-overlay.visible { display: flex; }
+
+    @keyframes egg-fall {
+      from { transform: translateY(-220px) rotate(15deg); opacity: 0; }
+      to   { transform: translateY(0) rotate(0); opacity: 1; }
+    }
+    .falling-egg { font-size: 90px; animation: egg-fall 0.55s cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
+
+    @keyframes pop-in {
+      from { transform: scale(0.4); opacity: 0; }
+      to   { transform: scale(1); opacity: 1; }
+    }
+    .reveal-card {
+      background: white;
+      border-radius: 28px;
+      padding: 36px 40px;
+      text-align: center;
+      animation: pop-in 0.35s 0.55s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    .reveal-emoji { font-size: 52px; margin-bottom: 8px; }
+    .reveal-name  { font-size: 26px; font-weight: 800; color: var(--text-dark); margin-bottom: 20px; }
+
+    /* ── STAGE HEADER ── */
+    .stage-header { display: flex; align-items: center; gap: 12px; width: 100%; max-width: 480px; margin-bottom: 10px; }
+    .stage-icon { width: 48px; height: 48px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; }
+    .s-read  { background: linear-gradient(135deg, #FFD700, #FF9F43); }
+    .s-shad  { background: linear-gradient(135deg, #54A0FF, #A29BFE); }
+    .s-chat  { background: linear-gradient(135deg, #5CDB95, #05C46B); }
+    .s-chal  { background: linear-gradient(135deg, #FF6B9D, #FF9F43); }
+    .stage-title    { font-size: 20px; font-weight: 800; color: white; }
+    .stage-subtitle { font-size: 13px; color: rgba(255,255,255,0.8); }
+
+    /* ── PROGRESS DOTS ── */
+    .prog-dots { display: flex; gap: 8px; width: 100%; max-width: 480px; margin-bottom: 12px; }
+    .prog-dot  { flex: 1; height: 8px; border-radius: 4px; background: rgba(255,255,255,0.3); transition: background 0.3s; }
+    .prog-dot.done   { background: #5CDB95; }
+    .prog-dot.active { background: white; }
+
+    /* ── READING ── */
+    .passage-text { font-size: 17px; line-height: 1.85; color: var(--text-dark); }
+    .vocab-grid   { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+    .vocab-card   { background: linear-gradient(135deg,rgba(255,215,0,0.15),rgba(255,159,67,0.15)); border-radius: 14px; padding: 12px; border: 2px solid rgba(255,159,67,0.3); }
+    .vocab-word   { font-size: 15px; font-weight: 700; color: var(--egg-orange); }
+    .vocab-trans  { font-size: 13px; color: var(--text-mid); margin-top: 2px; }
+
+    /* ── SHADOWING ── */
+    .speed-row  { display: flex; gap: 12px; margin-bottom: 16px; }
+    .speed-btn  {
+      flex: 1; padding: 12px; border-radius: 16px;
+      border: 2px solid rgba(84,160,255,0.35);
+      background: rgba(84,160,255,0.1);
+      font-size: 15px; font-weight: 700; color: var(--egg-blue);
+      cursor: pointer; transition: all 0.2s;
+    }
+    .speed-btn.active { background: var(--egg-blue); color: white; border-color: var(--egg-blue); }
+
+    .play-btn {
+      width: 76px; height: 76px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #54A0FF, #A29BFE);
+      border: none; font-size: 30px; cursor: pointer;
+      box-shadow: 0 8px 24px rgba(84,160,255,0.4);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      transition: transform 0.15s;
+    }
+    .play-btn:active { transform: scale(0.94); }
+
+    /* ── CHAT ── */
+    #chat-screen { gap: 0; }
+    .chat-msgs {
+      flex: 1;
+      width: 100%; max-width: 480px;
+      overflow-y: auto;
+      display: flex; flex-direction: column;
+      gap: 10px;
+      max-height: 48vh;
+      padding: 4px 0 8px;
+      margin-bottom: 10px;
+    }
+    .msg { max-width: 82%; padding: 12px 16px; border-radius: 18px; font-size: 16px; line-height: 1.5; }
+    .msg.ai   { background: white; color: var(--text-dark); align-self: flex-start; border-bottom-left-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    .msg.user { background: linear-gradient(135deg, #54A0FF, #A29BFE); color: white; align-self: flex-end; border-bottom-right-radius: 4px; }
+    .msg.loading { background: white; align-self: flex-start; }
+    .ai-label { font-size: 11px; font-weight: 700; color: var(--egg-orange); margin-bottom: 4px; }
+
+    .chat-input-row { display: flex; gap: 10px; width: 100%; max-width: 480px; }
+    .chat-input {
+      flex: 1; padding: 14px 18px;
+      border-radius: 50px;
+      border: 2px solid rgba(84,160,255,0.3);
+      font-size: 16px;
+      background: rgba(255,255,255,0.92);
+      outline: none; color: var(--text-dark);
+    }
+    .chat-input:focus { border-color: var(--egg-blue); }
+    .send-btn {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: linear-gradient(135deg, #54A0FF, #A29BFE);
+      border: none; font-size: 20px; cursor: pointer;
+      box-shadow: 0 4px 12px rgba(84,160,255,0.4);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; transition: transform 0.15s;
+    }
+    .send-btn:active { transform: scale(0.94); }
+    .end-chat-link {
+      margin-top: 10px;
+      padding: 10px 24px;
+      border-radius: 50px;
+      border: 2px solid rgba(255,255,255,0.6);
+      background: transparent;
+      color: white; font-size: 14px; font-weight: 700;
+      cursor: pointer; transition: background 0.2s;
+    }
+    .end-chat-link:hover { background: rgba(255,255,255,0.15); }
+
+    /* ── CHALLENGE ── */
+    .timer-ring {
+      width: 130px; height: 130px; border-radius: 50%;
+      background: linear-gradient(135deg, #FF6B9D, #FF9F43);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      box-shadow: 0 8px 32px rgba(255,107,157,0.45);
+      margin: 0 auto 18px;
+      transition: background 0.5s;
+    }
+    .timer-num   { font-size: 52px; font-weight: 900; color: white; line-height: 1; }
+    .timer-lbl   { font-size: 12px; color: rgba(255,255,255,0.8); font-weight: 600; }
+    .chal-input  {
+      width: 100%; max-width: 480px;
+      min-height: 150px; padding: 18px;
+      border-radius: 20px;
+      border: 2px solid rgba(255,255,255,0.5);
+      background: rgba(255,255,255,0.92);
+      font-size: 17px; line-height: 1.6;
+      resize: none; outline: none; color: var(--text-dark);
+      margin-bottom: 14px;
+    }
+
+    /* ── COMPLETE ── */
+    #complete-screen { justify-content: center; gap: 18px; text-align: center; }
+    .complete-title { font-size: 32px; font-weight: 900; color: white; text-shadow: 0 3px 12px rgba(0,0,0,0.2); }
+    .coins-box {
+      background: linear-gradient(135deg, #FFD700, #FF9F43);
+      border-radius: 24px; padding: 22px 44px;
+      box-shadow: 0 8px 32px rgba(255,215,0,0.4);
+    }
+    .coins-num   { font-size: 60px; font-weight: 900; color: white; line-height: 1; }
+    .coins-lbl   { font-size: 18px; color: rgba(255,255,255,0.9); font-weight: 700; }
+    .redeem-box  { background: rgba(255,255,255,0.9); border-radius: 16px; padding: 14px 22px; max-width: 360px; font-size: 15px; color: var(--text-dark); line-height: 1.6; }
+    .feedback-box { background: rgba(255,255,255,0.92); border-radius: 20px; padding: 18px 22px; max-width: 480px; width: 100%; text-align: left; }
+    .fb-title { font-size: 13px; font-weight: 700; color: var(--egg-orange); margin-bottom: 6px; }
+    .fb-text  { font-size: 16px; color: var(--text-dark); line-height: 1.6; }
+
+    /* ── LEVEL UP ── */
+    .lvlup-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.82);
+      display: none; align-items: center; justify-content: center;
+      z-index: 2000;
+    }
+    .lvlup-overlay.visible { display: flex; }
+    .lvlup-card {
+      background: linear-gradient(135deg, #FFD700, #FF9F43);
+      border-radius: 30px; padding: 44px;
+      text-align: center;
+      animation: pop-in 0.5s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .lvlup-emoji  { font-size: 80px; margin-bottom: 14px; }
+    .lvlup-title  { font-size: 30px; font-weight: 900; color: white; }
+    .lvlup-name   { font-size: 22px; color: rgba(255,255,255,0.9); margin-top: 6px; }
+
+    /* ── LOADING DOTS ── */
+    .dots { display: inline-flex; gap: 5px; }
+    .dots span { width: 8px; height: 8px; border-radius: 50%; background: #b2bec3; animation: bounce 1.2s infinite; }
+    .dots span:nth-child(2) { animation-delay: 0.2s; }
+    .dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-8px)} }
+
+    /* ── HINT BOX ── */
+    .hint-box {
+      background: rgba(84,160,255,0.12);
+      border: 2px solid rgba(84,160,255,0.3);
+      border-radius: 16px; padding: 14px 18px;
+      width: 100%; max-width: 480px;
+      font-size: 14px; color: var(--text-dark); line-height: 1.6;
+      margin-bottom: 14px;
+    }
+    .hint-box strong { color: var(--egg-blue); }
+  </style>
+</head>
+<body>
+
+<!-- ══════════ LOGIN ══════════ -->
+<div id="login-screen" class="screen active">
+  <div class="login-title">🥚 Lemon 英文星球</div>
+  <div class="login-subtitle">選擇你的角色，開始今天的冒險！</div>
+  <div class="user-select">
+    <div class="user-card" onclick="selectUser('elsie')">
+      <div class="user-avatar">🐣</div>
+      <div class="user-name">Elsie</div>
+      <div class="user-meta" id="elsie-meta">讀取中...</div>
+    </div>
+    <div class="user-card" onclick="selectUser('sunny')">
+      <div class="user-avatar">🐥</div>
+      <div class="user-name">Sunny</div>
+      <div class="user-meta" id="sunny-meta">讀取中...</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ MAIN ══════════ -->
+<div id="main-screen" class="screen">
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-value" id="s-coins">🥚 0</div>
+      <div class="stat-label">蛋幣</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" id="s-level">Lv.1</div>
+      <div class="stat-label">等級</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-value" id="s-streak">🔥 0</div>
+      <div class="stat-label">連續天</div>
+    </div>
+    <div class="stat-item" onclick="switchUser()" style="cursor:pointer">
+      <div class="stat-value" id="s-avatar">-</div>
+      <div class="stat-label">換人</div>
+    </div>
+  </div>
+
+  <div class="greeting" id="main-greet">今天要學英文嗎？</div>
+
+  <!-- No topic yet -->
+  <div id="area-notopic" class="machine-area">
+    <div class="card" style="text-align:center;">
+      <div style="font-size:17px;font-weight:800;color:var(--text-dark);margin-bottom:6px;">今天的主題</div>
+      <div style="font-size:14px;color:var(--text-mid);">轉動扭蛋機，抽出今天要聊的話題！</div>
+    </div>
+    <div class="machine" onclick="spinMachine()" id="machine">
+      <div class="machine-body">
+        <div class="machine-window" id="machine-win">🎯</div>
+      </div>
+      <div class="machine-base"><div class="machine-slot"></div></div>
+    </div>
+    <button class="btn btn-primary" onclick="spinMachine()">🎰 轉動扭蛋機！</button>
+  </div>
+
+  <!-- Topic selected -->
+  <div id="area-topic" style="display:none;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:480px;">
+    <div class="today-banner">
+      <div class="today-banner-emoji" id="banner-em">🎮</div>
+      <div>
+        <div class="today-banner-label">今天的主題</div>
+        <div class="today-banner-name" id="banner-name">蛋仔派對</div>
+      </div>
+    </div>
+    <div class="prog-dots">
+      <div class="prog-dot" id="mdot-1"></div>
+      <div class="prog-dot" id="mdot-2"></div>
+      <div class="prog-dot" id="mdot-3"></div>
+      <div class="prog-dot" id="mdot-4"></div>
+    </div>
+    <button class="btn btn-primary" id="start-btn" onclick="startLearning()">🚀 開始今日任務！</button>
+    <button class="btn btn-secondary" onclick="spinMachine()" style="opacity:0.7;font-size:15px;padding:12px;">🔄 重新抽主題</button>
+  </div>
+</div>
+
+<!-- ══════════ EGG OVERLAY ══════════ -->
+<div class="egg-overlay" id="egg-overlay">
+  <div class="falling-egg" id="falling-egg">🥚</div>
+  <div class="reveal-card" id="reveal-card" style="display:none;">
+    <div class="reveal-emoji" id="rev-em">🎮</div>
+    <div class="reveal-name"  id="rev-name">蛋仔派對</div>
+    <button class="btn btn-primary" onclick="confirmTopic()" style="font-size:16px;padding:14px 28px;">好耶！就這個！</button>
+  </div>
+</div>
+
+<!-- ══════════ READING ══════════ -->
+<div id="reading-screen" class="screen">
+  <div class="stage-header">
+    <div class="stage-icon s-read">📖</div>
+    <div>
+      <div class="stage-title">階段 1：今日短文</div>
+      <div class="stage-subtitle">讀一讀，認識今天的關鍵單字</div>
+    </div>
+  </div>
+  <div class="prog-dots">
+    <div class="prog-dot active"></div>
+    <div class="prog-dot"></div>
+    <div class="prog-dot"></div>
+    <div class="prog-dot"></div>
+  </div>
+  <div class="card" id="reading-card">
+    <div style="text-align:center;padding:20px;">
+      <div class="dots"><span></span><span></span><span></span></div>
+      <div style="margin-top:12px;color:var(--text-mid);">Lemon 正在準備今天的短文...</div>
+    </div>
+  </div>
+  <button class="btn btn-yellow" id="done-read-btn" onclick="goToShadowing()" style="display:none;">讀完了！去跟讀 →</button>
+</div>
+
+<!-- ══════════ SHADOWING ══════════ -->
+<div id="shadowing-screen" class="screen">
+  <div class="stage-header">
+    <div class="stage-icon s-shad">🎵</div>
+    <div>
+      <div class="stage-title">階段 2：跟讀練習</div>
+      <div class="stage-subtitle">跟著 Lemon 的聲音模仿語調！</div>
+    </div>
+  </div>
+  <div class="prog-dots">
+    <div class="prog-dot done"></div>
+    <div class="prog-dot active"></div>
+    <div class="prog-dot"></div>
+    <div class="prog-dot"></div>
+  </div>
+  <div class="card">
+    <div class="speed-row">
+      <button class="speed-btn" id="sp075" onclick="setSpeed(0.75)">🐢 0.75x</button>
+      <button class="speed-btn active" id="sp1" onclick="setSpeed(1)">🐇 1x</button>
+    </div>
+    <button class="play-btn" onclick="playPassage()" id="play-btn">▶️</button>
+    <div class="passage-text" id="shad-passage"></div>
+  </div>
+  <div class="hint-box">
+    <strong>怎麼跟讀？</strong><br>
+    按播放聽一遍，然後跟著聲音重複說。不用每個字都完美，模仿語調和節奏最重要！
+  </div>
+  <button class="btn btn-secondary" onclick="goToChat()">跟完了！去跟 Lemon 聊天 →</button>
+</div>
+
+<!-- ══════════ CHAT ══════════ -->
+<div id="chat-screen" class="screen">
+  <div class="stage-header" style="margin-bottom:8px;">
+    <div class="stage-icon s-chat">💬</div>
+    <div>
+      <div class="stage-title">階段 3：跟 Lemon 聊天</div>
+      <div class="stage-subtitle" id="chat-lbl">用英文聊今天的主題！</div>
+    </div>
+  </div>
+  <div class="prog-dots">
+    <div class="prog-dot done"></div>
+    <div class="prog-dot done"></div>
+    <div class="prog-dot active"></div>
+    <div class="prog-dot"></div>
+  </div>
+  <div class="chat-msgs" id="chat-msgs"></div>
+  <div class="chat-input-row">
+    <input type="text" class="chat-input" id="chat-in" placeholder="Type in English... 🇬🇧" onkeydown="if(event.key==='Enter')sendMsg()">
+    <button class="send-btn" onclick="sendMsg()">➤</button>
+  </div>
+  <button class="end-chat-link" id="end-chat" onclick="goToChallenge()" style="display:none;">聊完了！去接受挑戰 →</button>
+</div>
+
+<!-- ══════════ CHALLENGE ══════════ -->
+<div id="challenge-screen" class="screen">
+  <div class="stage-header">
+    <div class="stage-icon s-chal">⚡</div>
+    <div>
+      <div class="stage-title">階段 4：1 分鐘挑戰</div>
+      <div class="stage-subtitle">60 秒不停說，說到沒時間為止！</div>
+    </div>
+  </div>
+  <div class="prog-dots">
+    <div class="prog-dot done"></div>
+    <div class="prog-dot done"></div>
+    <div class="prog-dot done"></div>
+    <div class="prog-dot active"></div>
+  </div>
+  <div class="timer-ring" id="timer-ring">
+    <div class="timer-num" id="timer-num">60</div>
+    <div class="timer-lbl">秒</div>
+  </div>
+  <div class="hint-box" style="border-color:rgba(255,107,157,0.35);background:rgba(255,107,157,0.1);">
+    <strong style="color:var(--egg-pink);">🎯 任務</strong><br>
+    <span id="chal-prompt">用英文聊聊今天的主題！不求完美，說個不停最重要！</span>
+  </div>
+  <textarea class="chal-input" id="chal-text" placeholder="Start typing... don't stop! 💪"></textarea>
+  <button class="btn btn-primary" id="chal-start-btn" onclick="startChallenge()">⏱ 開始計時！</button>
+  <button class="btn btn-green"   id="chal-done-btn"  onclick="submitChallenge()" style="display:none;">✅ 完成提交！</button>
+</div>
+
+<!-- ══════════ COMPLETE ══════════ -->
+<div id="complete-screen" class="screen">
+  <div class="complete-title">🎉 今日任務完成！</div>
+  <div class="coins-box">
+    <div class="coins-num" id="earned-num">+40</div>
+    <div class="coins-lbl">🥚 蛋幣入帳！</div>
+  </div>
+  <div class="feedback-box">
+    <div class="fb-title">✨ Lemon 的評語</div>
+    <div class="fb-text" id="fb-text"><div class="dots"><span></span><span></span><span></span></div></div>
+  </div>
+  <div class="redeem-box">
+    🥚 目前總蛋幣：<strong id="total-coins">0</strong><br>
+    截圖給媽媽看，兌換真實蛋仔派對蛋幣！
+  </div>
+  <button class="btn btn-primary" onclick="goToMain()">回到主畫面 🏠</button>
+</div>
+
+<!-- ══════════ LEVEL UP ══════════ -->
+<div class="lvlup-overlay" id="lvlup" onclick="this.classList.remove('visible')">
+  <div class="lvlup-card">
+    <div class="lvlup-emoji">🌟</div>
+    <div class="lvlup-title">升級了！</div>
+    <div class="lvlup-name" id="lvlup-name">初學蛋仔</div>
+    <div style="color:rgba(255,255,255,0.8);font-size:14px;margin-top:8px;">點擊關閉</div>
+  </div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────
+// CONFIG  ← 只需改這裡
+// ─────────────────────────────────────────────
+const WORKER_URL = 'https://elsie-english-api.soniahsu0123.workers.dev';
+const MODEL      = 'claude-haiku-4-5-20251001';
+
+// ─────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────
+const TOPICS = [
+  { name:'蛋仔派對',       emoji:'🎮', q:'Which map or character in 蛋仔派對 do you like the most? Tell me!' },
+  { name:'今天發生的趣事', emoji:'⭐', q:'Tell me one interesting or funny thing that happened to you today!' },
+  { name:'心情',           emoji:'💭', q:'How are you feeling today? Happy, tired, excited? Tell me more!' },
+  { name:'抖音 / 影片',   emoji:'📱', q:'Did you see anything funny or cool on TikTok or YouTube lately?' },
+  { name:'朋友話題',       emoji:'👯', q:'What did you chat about with your friends recently? Any fun news?' },
+  { name:'今天吃了什麼',   emoji:'🍜', q:'What did you eat today? Was it yummy? Describe it!' },
+  { name:'夢想旅行',       emoji:'🗺️', q:'If you could travel anywhere tomorrow, where would you go and why?' },
+];
+
+const LEVELS = [
+  { lv:1, name:'蛋蛋新生',   need:0    },
+  { lv:2, name:'初學蛋仔',   need:100  },
+  { lv:3, name:'英文小蛋',   need:300  },
+  { lv:4, name:'對話蛋王',   need:600  },
+  { lv:5, name:'傳說蛋神',   need:1000 },
+];
+
+// ─────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────
+let user        = null;   // 'elsie' | 'sunny'
+let topic       = null;   // current topic object
+let passage     = '';     // generated reading text
+let chatHist    = [];     // [{role,content}]
+let chatCount   = 0;
+let ttsRate     = 1;
+let timerSecs   = 60;
+let timerRef    = null;
+
+// ─────────────────────────────────────────────
+// STORAGE
+// ─────────────────────────────────────────────
+function getData(u) {
+  const raw = localStorage.getItem(`lemon_${u}`);
+  return raw ? JSON.parse(raw) : { coins:0, streak:0, lastDate:null, todayDone:false, savedTopic:null };
+}
+function setData(u, d) { localStorage.setItem(`lemon_${u}`, JSON.stringify(d)); }
+function today() { return new Date().toISOString().split('T')[0]; }
+function getLevel(coins) {
+  let l = LEVELS[0];
+  for (const x of LEVELS) { if (coins >= x.need) l = x; }
+  return l;
+}
+
+// ─────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────
+window.onload = () => {
+  for (const u of ['elsie','sunny']) {
+    const d = getData(u);
+    const lv = getLevel(d.coins);
+    document.getElementById(`${u}-meta`).textContent = `${lv.name} · 🥚${d.coins}`;
+  }
+};
+
+// ─────────────────────────────────────────────
+// SELECT USER
+// ─────────────────────────────────────────────
+function selectUser(u) {
+  user = u;
+  const d = getData(u);
+  const t = today();
+
+  // streak update
+  if (d.lastDate !== t) {
+    const prev = new Date(); prev.setDate(prev.getDate()-1);
+    const pStr = prev.toISOString().split('T')[0];
+    d.streak = (d.lastDate === pStr) ? (d.streak||0)+1 : 1;
+    d.todayDone = false;
+    if (d.savedTopic) topic = d.savedTopic; // restore topic from saved
+  } else {
+    if (d.savedTopic) topic = d.savedTopic;
+  }
+  d.lastDate = t;
+  setData(u, d);
+
+  show('main');
+  refreshMain();
+}
+
+function switchUser() { user=null; topic=null; chatHist=[]; show('login'); window.onload(); }
+
+// ─────────────────────────────────────────────
+// MAIN SCREEN
+// ─────────────────────────────────────────────
+function refreshMain() {
+  const d  = getData(user);
+  const lv = getLevel(d.coins);
+  document.getElementById('s-coins').textContent  = `🥚 ${d.coins}`;
+  document.getElementById('s-level').textContent  = `Lv.${lv.lv}`;
+  document.getElementById('s-streak').textContent = `🔥 ${d.streak||0}`;
+  document.getElementById('s-avatar').textContent = user==='elsie' ? '🐣' : '🐥';
+  document.getElementById('main-greet').textContent =
+    `嗨 ${user==='elsie'?'Elsie':'Sunny'}！${d.todayDone?'今天的任務完成了！🎉':'今天要學英文嗎？'}`;
+
+  if (topic) {
+    document.getElementById('area-notopic').style.display = 'none';
+    document.getElementById('area-topic').style.display   = 'flex';
+    document.getElementById('banner-em').textContent   = topic.emoji;
+    document.getElementById('banner-name').textContent = topic.name;
+    const btn = document.getElementById('start-btn');
+    if (d.todayDone) { btn.textContent='✅ 今天已完成！'; btn.disabled=true; }
+    else             { btn.textContent='🚀 開始今日任務！'; btn.disabled=false; }
+  } else {
+    document.getElementById('area-notopic').style.display = 'flex';
+    document.getElementById('area-topic').style.display   = 'none';
+  }
+}
+
+// ─────────────────────────────────────────────
+// GASHAPON MACHINE
+// ─────────────────────────────────────────────
+function spinMachine() {
+  const m = document.getElementById('machine');
+  m.classList.remove('shaking');
+  void m.offsetWidth;
+  m.classList.add('shaking');
+
+  const pool = ['🌀','✨','🎪','🎭','🎯','❓'];
+  let i = 0;
+  const spin = setInterval(() => {
+    document.getElementById('machine-win').textContent = pool[i++ % pool.length];
+  }, 90);
+
+  setTimeout(() => {
+    clearInterval(spin);
+    const t = TOPICS[Math.floor(Math.random()*TOPICS.length)];
+    document.getElementById('machine-win').textContent = t.emoji;
+    showEgg(t);
+  }, 900);
+}
+
+function showEgg(t) {
+  topic = t;
+  const overlay = document.getElementById('egg-overlay');
+  overlay.classList.add('visible');
+
+  const fe = document.getElementById('falling-egg');
+  const rc = document.getElementById('reveal-card');
+  fe.style.display = 'block';
+  fe.style.animation = 'none';
+  void fe.offsetWidth;
+  fe.style.animation = 'egg-fall 0.55s cubic-bezier(0.25,0.46,0.45,0.94) forwards';
+  rc.style.display = 'none';
+  document.getElementById('rev-em').textContent   = t.emoji;
+  document.getElementById('rev-name').textContent = t.name;
+
+  setTimeout(() => { fe.style.display='none'; rc.style.display='block'; }, 650);
+}
+
+function confirmTopic() {
+  document.getElementById('egg-overlay').classList.remove('visible');
+  const d = getData(user);
+  d.savedTopic = topic;
+  setData(user, d);
+  refreshMain();
+}
+
+// ─────────────────────────────────────────────
+// STAGE 1 — READING
+// ─────────────────────────────────────────────
+function startLearning() { show('reading'); loadReading(); }
+
+async function loadReading() {
+  const card = document.getElementById('reading-card');
+  document.getElementById('done-read-btn').style.display = 'none';
+  card.innerHTML = `<div style="text-align:center;padding:20px;">
+    <div class="dots"><span></span><span></span><span></span></div>
+    <div style="margin-top:12px;color:var(--text-mid);">Lemon 正在準備今天的短文...</div></div>`;
+
+  try {
+    const res = await api([{ role:'user', content:
+      `Write a short English reading passage for a 12-year-old Taiwanese student (A2/KET level).
+Topic: "${topic.name}"
+Length: 120-150 words. Use simple, natural vocabulary. Make it fun and relatable.
+Also give exactly 4 key vocabulary words from the passage with Chinese translations.
+Return ONLY valid JSON:
+{"passage":"...","vocabulary":[{"word":"...","zh":"..."},{"word":"...","zh":"..."},{"word":"...","zh":"..."},{"word":"...","zh":"..."}]}`
+    }], 'You are a friendly English teacher. Return only valid JSON, nothing else.');
+
+    const txt  = res.content[0].text;
+    const m    = txt.match(/\{[\s\S]*\}/);
+    const data = JSON.parse(m[0]);
+    passage = data.passage;
+    document.getElementById('shad-passage').textContent = passage;
+
+    let vhtml = '<div class="vocab-grid">';
+    for (const v of data.vocabulary)
+      vhtml += `<div class="vocab-card"><div class="vocab-word">${v.word}</div><div class="vocab-trans">${v.zh}</div></div>`;
+    vhtml += '</div>';
+
+    card.innerHTML = `
+      <div style="font-size:13px;font-weight:700;color:var(--egg-orange);margin-bottom:12px;">📖 今日短文 · ${topic.emoji} ${topic.name}</div>
+      <div class="passage-text">${data.passage}</div>
+      <div style="font-size:13px;font-weight:700;color:var(--text-mid);margin:14px 0 8px;">🔑 關鍵單字</div>
+      ${vhtml}`;
+    document.getElementById('done-read-btn').style.display = 'block';
+
+  } catch(e) {
+    card.innerHTML = `<div style="padding:16px;color:#e74c3c;">載入失敗，請重試。<br><small>${e.message}</small></div>`;
+  }
+}
+
+// ─────────────────────────────────────────────
+// STAGE 2 — SHADOWING
+// ─────────────────────────────────────────────
+function goToShadowing() { show('shadowing'); }
+
+function setSpeed(s) {
+  ttsRate = s;
+  document.getElementById('sp075').classList.toggle('active', s===0.75);
+  document.getElementById('sp1').classList.toggle('active', s===1);
+}
+
+function playPassage() {
+  if (!passage) return;
+  speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(passage);
+  u.lang = 'en-US'; u.rate = ttsRate;
+  const btn = document.getElementById('play-btn');
+  btn.textContent = '⏸'; u.onend = () => { btn.textContent = '▶️'; };
+  speechSynthesis.speak(u);
+}
+
+// ─────────────────────────────────────────────
+// STAGE 3 — CHAT
+// ─────────────────────────────────────────────
+function goToChat() {
+  show('chat');
+  chatHist = []; chatCount = 0;
+  document.getElementById('chat-msgs').innerHTML = '';
+  document.getElementById('end-chat').style.display = 'none';
+  document.getElementById('chat-lbl').textContent = `主題：${topic.emoji} ${topic.name}`;
+  initChat();
+}
+
+const SYS = (name) =>
+  `You are Lemon, a fun and friendly English buddy for ${name}.
+${name} is a 12-year-old Taiwanese kid who loves 蛋仔派對 (mobile game), K-pop dancing, and TikTok. English level: A2/KET.
+Rules:
+- Talk like a fun friend, NOT a teacher
+- Always reply in English; add ONE short Chinese note in (parentheses) only if truly needed
+- Keep responses SHORT: 2-3 sentences max
+- Respond to content first, then GENTLY model correct English if needed:
+  e.g. "Oh that's so cool! (tip: we say 'I played' not 'I play yesterday' ✨)"
+- NEVER say "wrong", "incorrect", or "mistake"
+- Be warm, enthusiastic, encouraging`;
+
+async function initChat() {
+  const name = user==='elsie'?'Elsie':'Sunny';
+  addLoadMsg();
+  try {
+    const res = await api([{ role:'user', content: topic.q }], SYS(name)+`\nToday's topic: ${topic.name}\nStart with a warm greeting and ask: "${topic.q}"`);
+    rmLoadMsg();
+    const txt = res.content[0].text;
+    chatHist = [{ role:'user',content:topic.q },{ role:'assistant',content:txt }];
+    addMsg('ai', txt); speak(txt);
+  } catch(e) {
+    rmLoadMsg(); addMsg('ai','Hi!! I\'m Lemon! Let\'s chat in English today! 😊');
+  }
+}
+
+async function sendMsg() {
+  const inp = document.getElementById('chat-in');
+  const txt = inp.value.trim(); if (!txt) return;
+  inp.value = '';
+  addMsg('user', txt);
+  chatHist.push({ role:'user', content:txt });
+  chatCount++;
+  if (chatCount >= 3) document.getElementById('end-chat').style.display = 'block';
+  addLoadMsg();
+  const name = user==='elsie'?'Elsie':'Sunny';
+  try {
+    const res = await api(chatHist, SYS(name)+`\nToday's topic: ${topic.name}`);
+    const reply = res.content[0].text;
+    chatHist.push({ role:'assistant', content:reply });
+    rmLoadMsg(); addMsg('ai', reply); speak(reply);
+  } catch(e) { rmLoadMsg(); addMsg('ai','That\'s awesome! Tell me more! 😄'); }
+}
+
+function addMsg(type, text) {
+  const box = document.getElementById('chat-msgs');
+  const d   = document.createElement('div');
+  d.className = `msg ${type}`;
+  d.innerHTML = type==='ai'
+    ? `<div class="ai-label">🍋 Lemon</div>${text}`
+    : text;
+  box.appendChild(d);
+  box.scrollTop = box.scrollHeight;
+}
+function addLoadMsg() {
+  const box = document.getElementById('chat-msgs');
+  const d   = document.createElement('div');
+  d.className='msg ai'; d.id='load-msg';
+  d.innerHTML='<div class="ai-label">🍋 Lemon</div><div class="dots"><span></span><span></span><span></span></div>';
+  box.appendChild(d); box.scrollTop=box.scrollHeight;
+}
+function rmLoadMsg() { const e=document.getElementById('load-msg'); if(e) e.remove(); }
+
+function speak(text) {
+  speechSynthesis.cancel();
+  const clean = text.replace(/\(.*?\)/g,'').replace(/[^\w\s.,!?'"]/g,'').trim();
+  if (!clean) return;
+  const u = new SpeechSynthesisUtterance(clean);
+  u.lang='en-US'; u.rate=0.92;
+  speechSynthesis.speak(u);
+}
+
+// ─────────────────────────────────────────────
+// STAGE 4 — CHALLENGE
+// ─────────────────────────────────────────────
+function goToChallenge() {
+  show('challenge');
+  timerSecs = 60;
+  clearInterval(timerRef);
+  document.getElementById('timer-num').textContent = '60';
+  document.getElementById('timer-ring').style.background = 'linear-gradient(135deg,#FF6B9D,#FF9F43)';
+  document.getElementById('chal-text').value = '';
+  document.getElementById('chal-start-btn').style.display = 'block';
+  document.getElementById('chal-done-btn').style.display  = 'none';
+  document.getElementById('chal-prompt').textContent =
+    `用英文聊聊「${topic.name}」！不用完美，說個不停最重要！`;
+}
+
+function startChallenge() {
+  document.getElementById('chal-start-btn').style.display = 'none';
+  document.getElementById('chal-text').focus();
+  timerRef = setInterval(() => {
+    timerSecs--;
+    document.getElementById('timer-num').textContent = timerSecs;
+    const ring = document.getElementById('timer-ring');
+    if      (timerSecs <= 10) ring.style.background='linear-gradient(135deg,#e74c3c,#c0392b)';
+    else if (timerSecs <= 30) ring.style.background='linear-gradient(135deg,#FF9F43,#e67e22)';
+    if (timerSecs >= 5) document.getElementById('chal-done-btn').style.display = 'block';
+    if (timerSecs <= 0) { clearInterval(timerRef); submitChallenge(); }
+  }, 1000);
+}
+
+async function submitChallenge() {
+  clearInterval(timerRef);
+  const text = document.getElementById('chal-text').value;
+  const d    = getData(user);
+
+  let earned = 5 + 5 + 10; // stages 1-3
+  if (text.trim().length > 10) earned += 20; // challenge bonus
+  if ((d.streak||0) >= 7)  { earned += 50; }
+  else if ((d.streak||0) >= 3) { earned += 15; }
+
+  const prevLv = getLevel(d.coins).lv;
+  d.coins   += earned;
+  d.todayDone = true;
+  setData(user, d);
+  const newLv = getLevel(d.coins).lv;
+
+  show('complete');
+  document.getElementById('earned-num').textContent  = `+${earned}`;
+  document.getElementById('total-coins').textContent = d.coins;
+
+  if (newLv > prevLv) {
+    setTimeout(() => {
+      document.getElementById('lvlup-name').textContent = getLevel(d.coins).name;
+      document.getElementById('lvlup').classList.add('visible');
+    }, 900);
+  }
+
+  // AI feedback
+  const fbEl = document.getElementById('fb-text');
+  if (text.trim().length > 5) {
+    try {
+      const res = await api([{ role:'user', content:
+        `Give warm encouragement (2 sentences max) for this 1-minute English writing about "${topic.name}".
+Point out ONE specific good thing. Be enthusiastic and friendly!\nText: "${text.slice(0,300)}"` }],
+        `You are Lemon, a warm encouraging English buddy for a 12-year-old Taiwanese student.`);
+      fbEl.textContent = res.content[0].text;
+    } catch { fbEl.textContent = "Amazing effort today!! Every single word you write is making you stronger! 🌟"; }
+  } else {
+    fbEl.textContent = "Good job showing up today! Starting is already a win! 💪 Tomorrow try to write a bit more!";
+  }
+}
+
+function goToMain() { show('main'); refreshMain(); }
+
+// ─────────────────────────────────────────────
+// API
+// ─────────────────────────────────────────────
+async function api(messages, system) {
+  const body = { model:MODEL, max_tokens:500, system, messages };
+  const res  = await fetch(WORKER_URL, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(body)
+  });
+  if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
+  const data = await res.json();
+  if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
+  return data;
+}
+
+// ─────────────────────────────────────────────
+// SCREEN
+// ─────────────────────────────────────────────
+function show(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(`${name}-screen`).classList.add('active');
+}
+</script>
+</body>
+</html>
