@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo C – Genshin Dark</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:#060C1F;color:#E8E0D0;overflow-x:hidden;}
+
+.top-banner{
+  position:fixed;top:0;left:0;right:0;z-index:999;
+  background:linear-gradient(90deg,#D4A94B,#F5D090,#D4A94B);
+  color:#0D0D0D;font-weight:900;font-size:14px;
+  padding:9px 16px;text-align:center;
+  font-family:'Fredoka One',cursive;letter-spacing:.5px;
+}
+
+/* ── STARS ── */
+.stars{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.star{position:absolute;border-radius:50%;animation:twinkle linear infinite;}
+@keyframes twinkle{0%,100%{opacity:.15;transform:scale(.7)}50%{opacity:.8;transform:scale(1.1)}}
+
+/* ── SECTION ── */
+.demo-section{
+  padding:64px 20px 48px;
+  min-height:100vh;display:flex;flex-direction:column;align-items:center;gap:18px;
+  position:relative;
+  background:linear-gradient(160deg,#060C1F 0%,#0D0626 50%,#060C1F 100%);
+}
+.demo-section>*{position:relative;z-index:1;}
+.sec-label{font-family:'Fredoka One',cursive;font-size:12px;color:rgba(212,169,75,0.55);letter-spacing:3px;text-transform:uppercase;align-self:flex-start;}
+
+/* ── LOGO ── */
+.logo{
+  font-family:'Fredoka One',cursive;font-size:52px;line-height:1.05;text-align:center;
+  background:linear-gradient(135deg,#D4A94B,#F5D090,#D4A94B);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 0 20px rgba(212,169,75,0.4));
+}
+.logo-sub{font-size:15px;font-weight:800;color:rgba(232,224,208,0.6);text-align:center;letter-spacing:.5px;}
+
+/* ── GLASS CARD ── */
+.card{
+  background:rgba(255,255,255,0.055);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border:1px solid rgba(212,169,75,0.3);border-radius:24px;padding:20px;
+  width:100%;max-width:480px;
+  box-shadow:0 0 32px rgba(212,169,75,0.08),0 8px 32px rgba(0,0,0,0.35);
+  position:relative;overflow:hidden;
+}
+.card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(212,169,75,0.6),transparent);
+}
+
+/* ── DIVIDER ── */
+.divider{width:100%;max-width:480px;height:1px;background:linear-gradient(90deg,transparent,rgba(212,169,75,0.35),transparent);border:none;margin:8px 0;}
+
+/* ── BUTTONS ── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;border-radius:50px;
+  padding:17px 36px;font-size:17px;font-weight:900;font-family:'Nunito',sans-serif;
+  cursor:pointer;width:100%;max-width:320px;gap:8px;
+  transition:transform .1s,box-shadow .1s;
+}
+.btn:active,.btn:hover{transform:translateY(-2px);}
+.btn-gold{
+  background:linear-gradient(135deg,#B8860B,#D4A94B,#F5D090,#D4A94B);
+  color:#0D0D0D;border:none;
+  box-shadow:0 0 20px rgba(212,169,75,0.45),0 6px 20px rgba(0,0,0,0.4);
+}
+.btn-ghost{
+  background:rgba(212,169,75,0.08);color:#D4A94B;
+  border:1px solid rgba(212,169,75,0.35);
+  box-shadow:0 0 12px rgba(212,169,75,0.1);
+}
+.btn-dark{
+  background:rgba(255,255,255,0.07);color:#E8E0D0;
+  border:1px solid rgba(255,255,255,0.12);
+  box-shadow:none;font-size:15px;
+}
+
+/* ── USER CARDS ── */
+.user-row{display:flex;gap:16px;width:100%;max-width:440px;}
+.user-card{
+  flex:1;position:relative;
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(212,169,75,0.28);border-radius:28px;
+  padding:16px 10px 22px;display:flex;flex-direction:column;align-items:center;gap:6px;
+  cursor:pointer;transition:transform .15s,box-shadow .15s;
+  overflow:hidden;
+}
+.user-card:hover{transform:translateY(-6px);box-shadow:0 0 32px rgba(212,169,75,0.25),0 12px 32px rgba(0,0,0,0.4);}
+.user-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(212,169,75,0.55),transparent);
+}
+.user-card.ec::after{
+  content:'';position:absolute;inset:0;border-radius:28px;
+  background:radial-gradient(ellipse at 50% 0%,rgba(167,139,250,0.12),transparent 70%);
+  pointer-events:none;
+}
+.user-card.sc::after{
+  content:'';position:absolute;inset:0;border-radius:28px;
+  background:radial-gradient(ellipse at 50% 0%,rgba(253,164,175,0.12),transparent 70%);
+  pointer-events:none;
+}
+
+.cw{width:100px;height:118px;position:relative;z-index:1;}
+.cw svg{width:100%;height:100%;filter:drop-shadow(0 0 16px rgba(212,169,75,0.3)) drop-shadow(0 8px 14px rgba(0,0,0,0.4));}
+@keyframes cb{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.cw{animation:cb 2.7s ease-in-out infinite;}
+.user-card:nth-child(2) .cw{animation-delay:.5s;}
+.user-name{font-family:'Fredoka One',cursive;font-size:23px;position:relative;z-index:1;}
+.user-meta{font-size:12px;color:rgba(212,169,75,0.8);font-weight:800;text-align:center;position:relative;z-index:1;}
+
+/* ── STATS BAR ── */
+.stats-bar{
+  display:flex;justify-content:space-around;
+  background:rgba(255,255,255,0.05);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:1px solid rgba(212,169,75,0.2);border-radius:20px;padding:12px 16px;
+  width:100%;max-width:480px;
+  box-shadow:0 0 20px rgba(212,169,75,0.06);
+}
+.stat-val{font-size:17px;font-weight:900;color:#D4A94B;}
+.stat-lbl{font-size:11px;color:rgba(232,224,208,0.5);font-weight:800;}
+
+/* ── TOPIC ── */
+.topic{
+  width:100%;max-width:480px;
+  background:rgba(212,169,75,0.06);
+  backdrop-filter:blur(12px);border:1px solid rgba(212,169,75,0.25);border-radius:20px;
+  padding:14px 18px;display:flex;align-items:center;gap:14px;
+  box-shadow:0 0 20px rgba(212,169,75,0.08);
+}
+.topic-em{font-size:30px;}
+.topic-lbl{font-size:11px;font-weight:900;color:rgba(212,169,75,0.7);text-transform:uppercase;letter-spacing:1px;}
+.topic-nm{font-family:'Fredoka One',cursive;font-size:20px;color:#E8E0D0;}
+
+/* ── MAP ── */
+.map{width:100%;max-width:480px;position:relative;
+  background:rgba(255,255,255,0.04);backdrop-filter:blur(12px);
+  border:1px solid rgba(212,169,75,0.18);border-radius:28px;padding:18px 16px;
+  box-shadow:0 0 24px rgba(212,169,75,0.06);}
+.map-line{position:absolute;left:50%;top:52px;bottom:52px;width:2px;transform:translateX(-50%);background:repeating-linear-gradient(to bottom,rgba(212,169,75,0.5) 0,rgba(212,169,75,0.5) 8px,transparent 8px,transparent 18px);}
+.node-row{display:flex;align-items:center;gap:14px;padding:8px 0;position:relative;z-index:1;}
+.node-row:nth-child(even){flex-direction:row-reverse;}
+.node-row:nth-child(even) .node-info{text-align:right;}
+.node{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;border:1px solid rgba(212,169,75,0.4);position:relative;}
+.n1{background:radial-gradient(circle at 40% 35%,rgba(253,230,138,0.3),rgba(245,158,11,0.15));}
+.n2{background:radial-gradient(circle at 40% 35%,rgba(110,231,183,0.3),rgba(16,185,129,0.15));}
+.n3{background:radial-gradient(circle at 40% 35%,rgba(147,197,253,0.3),rgba(59,130,246,0.15));}
+.n4{background:radial-gradient(circle at 40% 35%,rgba(252,165,165,0.3),rgba(239,68,68,0.15));}
+.node.active{box-shadow:0 0 20px rgba(212,169,75,0.45);}
+.node.locked{opacity:.3;}
+.node-info{flex:1;}
+.ni-title{font-family:'Fredoka One',cursive;font-size:16px;color:#E8E0D0;}
+.ni-sub{font-size:12px;color:rgba(232,224,208,0.5);font-weight:800;}
+
+/* ── STAGE HEADER ── */
+.stage-hd{display:flex;align-items:center;gap:14px;width:100%;max-width:480px;}
+.stage-icon{width:52px;height:52px;border-radius:18px;display:flex;align-items:center;justify-content:center;font-size:23px;flex-shrink:0;border:1px solid rgba(212,169,75,0.35);background:rgba(212,169,75,0.1);box-shadow:0 0 16px rgba(212,169,75,0.15);}
+.stage-title{font-family:'Fredoka One',cursive;font-size:21px;color:#E8E0D0;}
+.stage-sub{font-size:12px;color:rgba(232,224,208,0.55);font-weight:800;margin-top:2px;}
+
+/* ── PROGRESS ── */
+.prog{display:flex;gap:8px;width:100%;max-width:480px;}
+.p-dot{flex:1;height:8px;border-radius:4px;background:rgba(255,255,255,0.1);}
+.p-dot.done{background:linear-gradient(90deg,#B8860B,#D4A94B);}
+.p-dot.active{background:rgba(212,169,75,0.5);box-shadow:0 0 8px rgba(212,169,75,0.4);}
+
+/* ── PASSAGE ── */
+.passage{font-size:16px;line-height:1.9;color:#C8C0B0;font-weight:700;}
+.vocab-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.vocab{background:rgba(212,169,75,0.08);border:1px solid rgba(212,169,75,0.22);border-radius:16px;padding:12px;}
+.vw{font-size:15px;font-weight:900;color:#D4A94B;}
+.vz{font-size:12px;color:rgba(232,224,208,0.6);font-weight:700;margin-top:2px;}
+
+/* ── CHAT ── */
+.chat-box{display:flex;flex-direction:column;gap:10px;width:100%;max-width:480px;}
+.chat-msg{max-width:80%;padding:13px 17px;border-radius:22px;font-size:15px;font-weight:700;}
+.chat-ai{background:rgba(255,255,255,0.07);color:#E8E0D0;align-self:flex-start;border-bottom-left-radius:5px;border:1px solid rgba(212,169,75,0.2);}
+.chat-user{background:linear-gradient(135deg,rgba(212,169,75,0.25),rgba(245,208,144,0.15));color:#E8E0D0;align-self:flex-end;border-bottom-right-radius:5px;border:1px solid rgba(212,169,75,0.3);}
+.ai-label{font-size:11px;font-weight:900;color:#D4A94B;margin-bottom:4px;}
+
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%;max-width:480px;}
+.btn-sm{padding:12px 20px;font-size:15px;max-width:none;width:auto;}
+</style>
+</head>
+<body>
+
+<!-- Stars -->
+<div class="stars" id="stars"></div>
+<script>
+const s=document.getElementById('stars');
+for(let i=0;i<60;i++){
+  const d=document.createElement('div');d.className='star';
+  const sz=1+Math.random()*2.5;
+  d.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;background:rgba(212,169,75,${.4+Math.random()*.4});animation-duration:${2+Math.random()*4}s;animation-delay:${Math.random()*4}s;`;
+  s.appendChild(d);
+}
+// white stars too
+for(let i=0;i<40;i++){
+  const d=document.createElement('div');d.className='star';
+  const sz=.8+Math.random()*1.5;
+  d.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}%;left:${Math.random()*100}%;background:rgba(255,255,255,${.3+Math.random()*.3});animation-duration:${3+Math.random()*5}s;animation-delay:${Math.random()*5}s;`;
+  s.appendChild(d);
+}
+</script>
+
+<div class="top-banner">✨ Design C — 暗色高質感 ｜ 星空 · 玻璃 · 金邊</div>
+
+<!-- SCREEN 1: LOGIN -->
+<div class="demo-section">
+  <div class="sec-label">▸ 登入頁</div>
+  <div class="logo">🍋 Lemon<br>英文星球</div>
+  <div class="logo-sub">選擇你的角色，開始冒險</div>
+  <div class="user-row">
+    <div class="user-card ec">
+      <div class="cw"><svg viewBox="0 0 120 155" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="ec3" cx="40%" cy="35%"><stop offset="0%" stop-color="#EDE9FE"/><stop offset="55%" stop-color="#A78BFA"/><stop offset="100%" stop-color="#7C3AED"/></radialGradient></defs><polygon points="60,3 64,15 76,15 67,23 70,35 60,28 50,35 53,23 44,15 56,15" fill="#FCD34D" stroke="#F59E0B" stroke-width="1.5"/><circle cx="60" cy="12" r="4" fill="#F43F5E"/><ellipse cx="60" cy="144" rx="36" ry="7" fill="rgba(0,0,0,0.25)"/><ellipse cx="60" cy="94" rx="46" ry="54" fill="url(#ec3)"/><ellipse cx="44" cy="68" rx="22" ry="15" fill="rgba(255,255,255,0.36)"/><ellipse cx="42" cy="85" rx="18" ry="19" fill="white"/><ellipse cx="78" cy="85" rx="18" ry="19" fill="white"/><circle cx="43" cy="87" r="11" fill="#4C1D95"/><circle cx="79" cy="87" r="11" fill="#4C1D95"/><circle cx="47" cy="82" r="4.5" fill="white"/><circle cx="83" cy="82" r="4.5" fill="white"/><circle cx="39" cy="91" r="2" fill="white"/><circle cx="75" cy="91" r="2" fill="white"/><path d="M27 76 Q35 71 42 75" stroke="#4C1D95" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M62 75 Q70 71 78 74" stroke="#4C1D95" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M50 110 Q60 122 70 110" stroke="#7C3AED" stroke-width="3" fill="rgba(255,200,220,0.35)" stroke-linecap="round"/><ellipse cx="25" cy="102" rx="11" ry="8" fill="rgba(212,169,75,0.42)"/><ellipse cx="95" cy="102" rx="11" ry="8" fill="rgba(212,169,75,0.42)"/><ellipse cx="13" cy="105" rx="14" ry="9" fill="#C4B5FD" transform="rotate(-30 13 105)"/><ellipse cx="107" cy="105" rx="14" ry="9" fill="#C4B5FD" transform="rotate(30 107 105)"/><ellipse cx="44" cy="145" rx="19" ry="10" fill="white"/><ellipse cx="76" cy="145" rx="19" ry="10" fill="white"/></svg></div>
+      <div class="user-name" style="color:#C4B5FD;">Elsie</div>
+      <div class="user-meta">英文小蛋 · 🪙 340</div>
+    </div>
+    <div class="user-card sc">
+      <div class="cw"><svg viewBox="0 0 120 155" xmlns="http://www.w3.org/2000/svg"><defs><radialGradient id="sc3" cx="40%" cy="35%"><stop offset="0%" stop-color="#FDE8E4"/><stop offset="55%" stop-color="#FECACA"/><stop offset="100%" stop-color="#FDA4AF"/></radialGradient></defs><ellipse cx="35" cy="18" rx="18" ry="11" fill="#FECACA" transform="rotate(-20 35 18)"/><ellipse cx="35" cy="18" rx="13" ry="7.5" fill="#FDE8E8" transform="rotate(-20 35 18)"/><ellipse cx="85" cy="18" rx="18" ry="11" fill="#FECACA" transform="rotate(20 85 18)"/><ellipse cx="85" cy="18" rx="13" ry="7.5" fill="#FDE8E8" transform="rotate(20 85 18)"/><circle cx="60" cy="18" r="10" fill="#FB7185"/><circle cx="60" cy="18" r="6" fill="#FDE8E8"/><ellipse cx="60" cy="144" rx="36" ry="7" fill="rgba(0,0,0,0.25)"/><ellipse cx="60" cy="94" rx="46" ry="54" fill="url(#sc3)"/><ellipse cx="44" cy="68" rx="22" ry="15" fill="rgba(255,255,255,0.42)"/><ellipse cx="42" cy="85" rx="18" ry="19" fill="white"/><ellipse cx="78" cy="85" rx="18" ry="19" fill="white"/><circle cx="43" cy="87" r="11" fill="#9D174D"/><circle cx="79" cy="87" r="11" fill="#9D174D"/><circle cx="47" cy="82" r="4.5" fill="white"/><circle cx="83" cy="82" r="4.5" fill="white"/><circle cx="39" cy="91" r="2" fill="white"/><circle cx="75" cy="91" r="2" fill="white"/><path d="M27 76 Q35 71 42 75" stroke="#9D174D" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M62 75 Q70 71 78 74" stroke="#9D174D" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M50 110 Q60 123 70 110" stroke="#F43F5E" stroke-width="3" fill="rgba(255,200,220,0.35)" stroke-linecap="round"/><ellipse cx="25" cy="102" rx="11" ry="8" fill="rgba(212,169,75,0.38)"/><ellipse cx="95" cy="102" rx="11" ry="8" fill="rgba(212,169,75,0.38)"/><ellipse cx="13" cy="105" rx="14" ry="9" fill="#FECACA" transform="rotate(-30 13 105)"/><ellipse cx="107" cy="105" rx="14" ry="9" fill="#FECACA" transform="rotate(30 107 105)"/><ellipse cx="44" cy="145" rx="19" ry="10" fill="white"/><ellipse cx="76" cy="145" rx="19" ry="10" fill="white"/></svg></div>
+      <div class="user-name" style="color:#FDA4AF;">Sunny</div>
+      <div class="user-meta">初學蛋仔 · 🪙 120</div>
+    </div>
+  </div>
+  <button class="btn btn-gold" style="margin-top:4px;">⚔️ 開始冒險</button>
+</div>
+
+<!-- SCREEN 2: MAIN -->
+<div class="demo-section">
+  <div class="sec-label">▸ 主畫面</div>
+  <div class="stats-bar">
+    <div style="text-align:center"><div class="stat-val">🪙 340</div><div class="stat-lbl">蛋幣</div></div>
+    <div style="text-align:center"><div class="stat-val">Lv.3</div><div class="stat-lbl">等級</div></div>
+    <div style="text-align:center"><div class="stat-val">🔥 5</div><div class="stat-lbl">連續天</div></div>
+    <div style="text-align:center"><div class="stat-val">💜</div><div class="stat-lbl">換人</div></div>
+  </div>
+  <div style="font-family:'Fredoka One',cursive;font-size:24px;color:#D4A94B;text-align:center;text-shadow:0 0 20px rgba(212,169,75,0.4);">嗨 Elsie！今天要學英文嗎？</div>
+  <div class="topic">
+    <div class="topic-em">👯</div>
+    <div><div class="topic-lbl">今天的主題</div><div class="topic-nm">朋友話題</div></div>
+  </div>
+  <div class="map">
+    <div class="map-line"></div>
+    <div class="node-row">
+      <div class="node n1 active">📖</div>
+      <div class="node-info"><div class="ni-title">閱讀短文</div><div class="ni-sub">讀一讀今天的故事</div></div>
+    </div>
+    <div class="node-row">
+      <div class="node n2">🎵</div>
+      <div class="node-info"><div class="ni-title">跟讀練習</div><div class="ni-sub">模仿語調和節奏</div></div>
+    </div>
+    <div class="node-row">
+      <div class="node n3 locked">💬</div>
+      <div class="node-info" style="opacity:.3"><div class="ni-title">跟 Lemon 聊天</div><div class="ni-sub">10 分鐘英文對話</div></div>
+    </div>
+    <div class="node-row">
+      <div class="node n4 locked">⚡</div>
+      <div class="node-info" style="opacity:.3"><div class="ni-title">1 分鐘挑戰</div><div class="ni-sub">60 秒不停說！</div></div>
+    </div>
+  </div>
+  <button class="btn btn-gold">🚀 開始今日任務！</button>
+</div>
+
+<!-- SCREEN 3: READING -->
+<div class="demo-section">
+  <div class="sec-label">▸ 閱讀頁</div>
+  <div class="stage-hd">
+    <div class="stage-icon">📖</div>
+    <div><div class="stage-title">階段 1：今日短文</div><div class="stage-sub">讀一讀，認識今天的關鍵單字</div></div>
+  </div>
+  <div class="prog">
+    <div class="p-dot active"></div><div class="p-dot"></div><div class="p-dot"></div><div class="p-dot"></div>
+  </div>
+  <div class="card">
+    <div style="font-size:13px;font-weight:900;color:rgba(212,169,75,0.7);margin-bottom:10px;letter-spacing:.5px;">📖 今日短文 · 👯 朋友話題</div>
+    <div class="passage">Lucy is my best friend. We are both twelve years old and go to the same school. Every day, we sit together at lunch and talk about our favorite games and songs. Lucy loves playing badminton, so we practice together twice a week at the park near our home. She is very kind and always helps me when I feel sad. On weekends, we sometimes go to the shopping mall to look at clothes and snacks. I love spending time with Lucy because she always makes me laugh. Good friends like Lucy make every day more fun and happy.</div>
+    <div style="font-size:12px;font-weight:900;color:rgba(212,169,75,0.55);margin:14px 0 8px;letter-spacing:1px;">🔑 關鍵單字</div>
+    <div class="vocab-grid">
+      <div class="vocab"><div class="vw">practice</div><div class="vz">練習</div></div>
+      <div class="vocab"><div class="vw">together</div><div class="vz">一起</div></div>
+      <div class="vocab"><div class="vw">weekend</div><div class="vz">週末</div></div>
+      <div class="vocab"><div class="vw">favorite</div><div class="vz">最喜歡的</div></div>
+    </div>
+  </div>
+  <button class="btn btn-gold">讀完了！去跟讀 →</button>
+</div>
+
+<!-- SCREEN 4: CHAT + BUTTONS -->
+<div class="demo-section">
+  <div class="sec-label">▸ 對話頁 + 按鈕展示</div>
+  <div class="stage-hd">
+    <div class="stage-icon">💬</div>
+    <div><div class="stage-title">階段 3：跟 Lemon 聊天</div><div class="stage-sub">主題：👯 朋友話題</div></div>
+  </div>
+  <div class="prog">
+    <div class="p-dot done"></div><div class="p-dot done"></div><div class="p-dot active"></div><div class="p-dot"></div>
+  </div>
+  <div class="chat-box">
+    <div class="chat-msg chat-ai"><div class="ai-label">🍋 Lemon</div>Hey Elsie!! What's your best friend's name? Tell me something fun about her! 🎉</div>
+    <div class="chat-msg chat-user">My best friend is Lucy! She likes badminton very much!</div>
+    <div class="chat-msg chat-ai"><div class="ai-label">🍋 Lemon</div>Ooh that's so cool!! (tip: we can say "She really loves badminton!" ✨) Do you play together?</div>
+  </div>
+  <hr class="divider">
+  <div class="sec-label" style="font-size:11px;">BUTTON STYLES</div>
+  <div class="btn-row">
+    <button class="btn btn-gold btn-sm">🚀 開始任務</button>
+    <button class="btn btn-ghost btn-sm">✓ 完成</button>
+    <button class="btn btn-dark btn-sm">返回</button>
+  </div>
+</div>
+</body>
+</html>
