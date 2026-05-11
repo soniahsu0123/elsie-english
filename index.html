@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>🥚 Lemon 英文星球</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -17,548 +17,522 @@
       position: relative;
     }
 
-    /* ── BACKGROUND: 放射光線 (蛋仔派對風) ── */
+    /* ── 背景放射光線 ── */
     body::before {
       content: '';
       position: fixed; inset: 0;
       background: conic-gradient(
         from -20deg at 50% 55%,
-        rgba(255,255,255,0)    0deg,
-        rgba(255,255,255,0.18) 4deg,
-        rgba(255,255,255,0)    8deg,
-        rgba(255,255,255,0)    22deg,
-        rgba(255,255,255,0.18) 26deg,
-        rgba(255,255,255,0)    30deg,
-        rgba(255,255,255,0)    44deg,
-        rgba(255,255,255,0.18) 48deg,
-        rgba(255,255,255,0)    52deg,
-        rgba(255,255,255,0)    66deg,
-        rgba(255,255,255,0.18) 70deg,
-        rgba(255,255,255,0)    74deg,
-        rgba(255,255,255,0)    88deg,
-        rgba(255,255,255,0.18) 92deg,
-        rgba(255,255,255,0)    96deg,
-        rgba(255,255,255,0)    110deg,
-        rgba(255,255,255,0.18) 114deg,
-        rgba(255,255,255,0)    118deg,
-        rgba(255,255,255,0)    132deg,
-        rgba(255,255,255,0.18) 136deg,
-        rgba(255,255,255,0)    140deg,
-        rgba(255,255,255,0)    154deg,
-        rgba(255,255,255,0.18) 158deg,
-        rgba(255,255,255,0)    162deg,
-        rgba(255,255,255,0)    176deg,
-        rgba(255,255,255,0.18) 180deg,
-        rgba(255,255,255,0)    184deg,
-        rgba(255,255,255,0)    198deg,
-        rgba(255,255,255,0.18) 202deg,
-        rgba(255,255,255,0)    206deg,
-        rgba(255,255,255,0)    220deg,
-        rgba(255,255,255,0.18) 224deg,
-        rgba(255,255,255,0)    228deg,
-        rgba(255,255,255,0)    242deg,
-        rgba(255,255,255,0.18) 246deg,
-        rgba(255,255,255,0)    250deg,
-        rgba(255,255,255,0)    264deg,
-        rgba(255,255,255,0.18) 268deg,
-        rgba(255,255,255,0)    272deg,
-        rgba(255,255,255,0)    286deg,
-        rgba(255,255,255,0.18) 290deg,
-        rgba(255,255,255,0)    294deg,
-        rgba(255,255,255,0)    308deg,
-        rgba(255,255,255,0.18) 312deg,
-        rgba(255,255,255,0)    316deg,
-        rgba(255,255,255,0)    330deg,
-        rgba(255,255,255,0.18) 334deg,
-        rgba(255,255,255,0)    338deg,
-        rgba(255,255,255,0)    352deg,
-        rgba(255,255,255,0.18) 356deg,
-        rgba(255,255,255,0)    360deg
+        rgba(255,255,255,0) 0deg, rgba(255,255,255,0.22) 4deg, rgba(255,255,255,0) 8deg,
+        rgba(255,255,255,0) 22deg, rgba(255,255,255,0.22) 26deg, rgba(255,255,255,0) 30deg,
+        rgba(255,255,255,0) 44deg, rgba(255,255,255,0.22) 48deg, rgba(255,255,255,0) 52deg,
+        rgba(255,255,255,0) 66deg, rgba(255,255,255,0.22) 70deg, rgba(255,255,255,0) 74deg,
+        rgba(255,255,255,0) 88deg, rgba(255,255,255,0.22) 92deg, rgba(255,255,255,0) 96deg,
+        rgba(255,255,255,0) 110deg, rgba(255,255,255,0.22) 114deg, rgba(255,255,255,0) 118deg,
+        rgba(255,255,255,0) 132deg, rgba(255,255,255,0.22) 136deg, rgba(255,255,255,0) 140deg,
+        rgba(255,255,255,0) 154deg, rgba(255,255,255,0.22) 158deg, rgba(255,255,255,0) 162deg,
+        rgba(255,255,255,0) 176deg, rgba(255,255,255,0.22) 180deg, rgba(255,255,255,0) 184deg,
+        rgba(255,255,255,0) 198deg, rgba(255,255,255,0.22) 202deg, rgba(255,255,255,0) 206deg,
+        rgba(255,255,255,0) 220deg, rgba(255,255,255,0.22) 224deg, rgba(255,255,255,0) 228deg,
+        rgba(255,255,255,0) 242deg, rgba(255,255,255,0.22) 246deg, rgba(255,255,255,0) 250deg,
+        rgba(255,255,255,0) 264deg, rgba(255,255,255,0.22) 268deg, rgba(255,255,255,0) 272deg,
+        rgba(255,255,255,0) 286deg, rgba(255,255,255,0.22) 290deg, rgba(255,255,255,0) 294deg,
+        rgba(255,255,255,0) 308deg, rgba(255,255,255,0.22) 312deg, rgba(255,255,255,0) 316deg,
+        rgba(255,255,255,0) 330deg, rgba(255,255,255,0.22) 334deg, rgba(255,255,255,0) 338deg,
+        rgba(255,255,255,0) 352deg, rgba(255,255,255,0.22) 356deg, rgba(255,255,255,0) 360deg
       );
-      pointer-events: none;
-      z-index: 0;
+      pointer-events: none; z-index: 0;
     }
 
     .screen {
-      display: none;
-      min-height: 100vh;
+      display: none; min-height: 100vh;
       padding: 20px 16px 40px;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      z-index: 1;
+      flex-direction: column; align-items: center;
+      position: relative; z-index: 1;
     }
     .screen.active { display: flex; }
 
     :root {
-      --yellow:      #FFE200;
-      --yellow-dark: #CC9900;
-      --orange:      #FF8C00;
-      --pink:        #FF3D8A;
-      --pink-dark:   #CC0066;
-      --purple:      #7B45E8;
-      --purple-dark: #5B25C8;
-      --blue:        #3B82F6;
-      --blue-dark:   #2563EB;
-      --green:       #22C55E;
-      --green-dark:  #16A34A;
-      --dark:        #1A0A00;
-      --mid:         #7B5800;
+      --yellow: #FFE200; --y-dark: #CC9000;
+      --orange: #FF8C00; --o-dark: #CC6600;
+      --pink: #FF3D8A;   --p-dark: #CC0066;
+      --purple: #7B45E8; --pu-dark: #5B25C8;
+      --blue: #3B82F6;   --b-dark: #2563EB;
+      --green: #22C55E;  --g-dark: #16A34A;
+      --dark: #1A0A00; --mid: #7B5800;
+    }
+
+    /* ── 4角星 CSS 裝飾 ── */
+    .star4 {
+      position: fixed; pointer-events: none; z-index: 0;
+      background: white; opacity: 0;
+      clip-path: polygon(50% 0%,56% 44%,100% 50%,56% 56%,50% 100%,44% 56%,0% 50%,44% 44%);
+      animation: star-appear 3s ease-in-out infinite;
+    }
+    @keyframes star-appear {
+      0%,100%  { opacity:0; transform:scale(0.7) rotate(0deg); }
+      40%,60%  { opacity:0.7; transform:scale(1) rotate(20deg); }
+    }
+    .star5 {
+      position: fixed; pointer-events: none; z-index: 0;
+      color: white; font-size: 22px; opacity: 0;
+      animation: star5-float 4s ease-in-out infinite;
+    }
+    @keyframes star5-float {
+      0%,100% { opacity:0.2; transform:translateY(0) scale(0.9); }
+      50%      { opacity:0.65; transform:translateY(-10px) scale(1.1); }
     }
 
     /* ── CARD ── */
     .card {
-      background: #FFFFFF;
-      border-radius: 28px;
-      border: 4px solid #FFB800;
-      padding: 20px;
-      width: 100%;
-      max-width: 480px;
+      background: #fff;
+      border-radius: 28px; border: 4px solid #FFB800;
+      padding: 20px; width: 100%; max-width: 480px;
       box-shadow: 0 6px 0 #CC8800, 0 8px 24px rgba(0,0,0,0.12);
       margin-bottom: 14px;
     }
 
     /* ── BUTTONS ── */
     .btn {
-      display: inline-block;
-      border: none;
-      border-radius: 50px;
-      padding: 17px 32px;
-      font-size: 18px;
-      font-weight: 900;
-      font-family: 'Nunito', -apple-system, sans-serif;
-      cursor: pointer;
-      transition: transform 0.1s, box-shadow 0.1s;
-      width: 100%;
-      max-width: 340px;
-      letter-spacing: 0.3px;
+      display: inline-block; border: none; border-radius: 50px;
+      padding: 17px 32px; font-size: 18px; font-weight: 900;
+      font-family: 'Nunito', sans-serif;
+      cursor: pointer; transition: transform 0.1s, box-shadow 0.1s;
+      width: 100%; max-width: 340px; letter-spacing: 0.3px;
     }
     .btn:active { transform: translateY(4px); }
-
-    .btn-primary {
-      background: #FF3D8A;
-      box-shadow: 0 6px 0 #CC0066, 0 8px 20px rgba(255,61,138,0.4);
-      color: white;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-    .btn-primary:active { box-shadow: 0 2px 0 #CC0066, 0 4px 12px rgba(255,61,138,0.3); }
-
-    .btn-secondary {
-      background: #7B45E8;
-      box-shadow: 0 6px 0 #5B25C8, 0 8px 20px rgba(123,69,232,0.35);
-      color: white;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-    .btn-secondary:active { box-shadow: 0 2px 0 #5B25C8; }
-
-    .btn-green {
-      background: #22C55E;
-      box-shadow: 0 6px 0 #16A34A, 0 8px 20px rgba(34,197,94,0.35);
-      color: white;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.15);
-    }
-    .btn-green:active { box-shadow: 0 2px 0 #16A34A; }
-
-    .btn-yellow {
-      background: #FFD000;
-      box-shadow: 0 6px 0 #CC9000, 0 8px 20px rgba(255,208,0,0.35);
-      color: #1A0A00;
-    }
-    .btn-yellow:active { box-shadow: 0 2px 0 #CC9000; }
+    .btn-primary  { background:#FF3D8A; box-shadow:0 6px 0 #CC0066,0 8px 20px rgba(255,61,138,0.4); color:white; text-shadow:0 2px 4px rgba(0,0,0,0.2); }
+    .btn-primary:active  { box-shadow:0 2px 0 #CC0066; }
+    .btn-secondary{ background:#7B45E8; box-shadow:0 6px 0 #5B25C8,0 8px 20px rgba(123,69,232,0.35); color:white; }
+    .btn-secondary:active{ box-shadow:0 2px 0 #5B25C8; }
+    .btn-green    { background:#22C55E; box-shadow:0 6px 0 #16A34A,0 8px 20px rgba(34,197,94,0.35); color:white; }
+    .btn-green:active    { box-shadow:0 2px 0 #16A34A; }
+    .btn-yellow   { background:#FFD000; box-shadow:0 6px 0 #CC9000,0 8px 20px rgba(255,208,0,0.35); color:#1A0A00; }
+    .btn-yellow:active   { box-shadow:0 2px 0 #CC9000; }
 
     /* ── STATS BAR ── */
     .stats-bar {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      background: rgba(0,0,0,0.18);
-      border: 3px solid rgba(255,255,255,0.55);
-      border-radius: 22px;
-      padding: 12px 10px;
-      width: 100%;
-      max-width: 480px;
-      margin-bottom: 14px;
-      backdrop-filter: blur(8px);
+      display:flex; justify-content:space-around; align-items:center;
+      background:rgba(0,0,0,0.18); border:3px solid rgba(255,255,255,0.55);
+      border-radius:22px; padding:12px 10px;
+      width:100%; max-width:480px; margin-bottom:14px;
+      backdrop-filter:blur(8px);
     }
-    .stat-item { display: flex; flex-direction: column; align-items: center; gap: 2px; }
-    .stat-value { font-size: 18px; font-weight: 900; color: white; text-shadow: 0 2px 6px rgba(0,0,0,0.4); }
-    .stat-label { font-size: 11px; color: rgba(255,255,255,0.9); font-weight: 800; }
+    .stat-item { display:flex; flex-direction:column; align-items:center; gap:2px; }
+    .stat-value { font-size:18px; font-weight:900; color:white; text-shadow:0 2px 6px rgba(0,0,0,0.4); }
+    .stat-label { font-size:11px; color:rgba(255,255,255,0.9); font-weight:800; }
 
-    /* ── LOGIN ── */
-    #login-screen { justify-content: center; gap: 22px; }
+    /* ══════ LOGIN ══════ */
+    #login-screen { justify-content:center; gap:18px; padding-top:30px; }
 
     .login-logo {
-      font-size: 38px; font-weight: 900;
+      font-family: 'Fredoka One', cursive;
+      font-size: 42px; line-height: 1.1;
       color: white;
       -webkit-text-stroke: 3px #B87000;
       paint-order: stroke fill;
-      text-shadow: 0 5px 0 rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.15);
-      text-align: center;
-      letter-spacing: 1px;
-      line-height: 1.2;
+      text-shadow: 0 5px 0 rgba(0,0,0,0.1), 0 8px 20px rgba(0,0,0,0.12);
+      text-align: center; letter-spacing: 1px;
     }
-    .login-subtitle {
-      font-size: 17px; font-weight: 800;
-      color: rgba(255,255,255,0.95);
-      text-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      text-align: center;
+    .login-sub {
+      font-size:16px; font-weight:800;
+      color:rgba(255,255,255,0.95);
+      text-shadow:0 2px 8px rgba(0,0,0,0.18);
+      text-align:center;
     }
 
-    .user-select { display: flex; gap: 18px; width: 100%; max-width: 420px; }
+    /* ── 角色選擇卡 ── */
+    .user-select { display:flex; gap:16px; width:100%; max-width:440px; }
     .user-card {
-      flex: 1;
-      background: white;
-      border-radius: 28px;
-      border: 5px solid #FFB800;
-      padding: 28px 14px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      cursor: pointer;
+      flex:1; background:white;
+      border-radius:32px; border:5px solid #FFB800;
+      padding:16px 10px 20px;
+      display:flex; flex-direction:column; align-items:center; gap:6px;
+      cursor:pointer;
+      box-shadow: 0 8px 0 #CC8800, 0 12px 28px rgba(0,0,0,0.15);
       transition: transform 0.1s, box-shadow 0.1s;
-      box-shadow: 0 8px 0 #CC8800, 0 10px 28px rgba(0,0,0,0.15);
+      position: relative; overflow: visible;
     }
-    .user-card:active { transform: translateY(5px); box-shadow: 0 3px 0 #CC8800, 0 5px 16px rgba(0,0,0,0.12); }
-    .user-avatar { font-size: 68px; line-height: 1; }
-    .user-name { font-size: 24px; font-weight: 900; color: #1A0A00; }
-    .user-meta { font-size: 12px; color: #7B5800; font-weight: 800; text-align: center; }
+    .user-card:active { transform:translateY(6px); box-shadow:0 2px 0 #CC8800,0 4px 16px rgba(0,0,0,0.12); }
+
+    /* character SVG wrapper */
+    .char-wrap { width:110px; height:130px; margin-top:-8px; }
+    .char-wrap svg { width:100%; height:100%; filter:drop-shadow(0 8px 14px rgba(0,0,0,0.22)); }
+
+    /* bounce idle animation */
+    @keyframes char-bounce {
+      0%,100% { transform:translateY(0); }
+      50%      { transform:translateY(-8px); }
+    }
+    .char-wrap { animation: char-bounce 2.5s ease-in-out infinite; }
+    .user-card:nth-child(2) .char-wrap { animation-delay:0.4s; }
+
+    .user-name { font-family:'Fredoka One',cursive; font-size:26px; color:#1A0A00; letter-spacing:0.5px; }
+    .user-meta { font-size:12px; color:#7B5800; font-weight:800; text-align:center; }
 
     /* ── MAIN ── */
-    #main-screen { gap: 14px; padding-top: 20px; }
+    #main-screen { gap:14px; padding-top:20px; }
     .greeting {
-      font-size: 26px; font-weight: 900;
-      color: white;
-      -webkit-text-stroke: 1.5px rgba(0,0,0,0.15);
-      paint-order: stroke fill;
-      text-shadow: 0 3px 0 rgba(0,0,0,0.12), 0 6px 16px rgba(0,0,0,0.12);
-      text-align: center;
+      font-family:'Fredoka One',cursive;
+      font-size:28px; color:white;
+      -webkit-text-stroke:1.5px rgba(0,0,0,0.15);
+      paint-order:stroke fill;
+      text-shadow:0 3px 0 rgba(0,0,0,0.1),0 6px 16px rgba(0,0,0,0.1);
+      text-align:center;
     }
 
-    .machine-area { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; max-width: 480px; }
-
-    .machine { width: 180px; height: 210px; cursor: pointer; position: relative; }
+    .machine-area { display:flex; flex-direction:column; align-items:center; gap:12px; width:100%; max-width:480px; }
+    .machine { width:180px; height:210px; cursor:pointer; position:relative; }
     .machine-body {
-      width: 180px; height: 165px;
-      background: linear-gradient(145deg, #FF6BB5, #FF3D8A);
-      border-radius: 30px 30px 18px 18px;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 8px 0 #CC0066, 0 12px 28px rgba(255,61,138,0.4);
-      border: 4px solid rgba(255,255,255,0.35);
+      width:180px; height:165px;
+      background:linear-gradient(145deg,#FF6BB5,#FF3D8A);
+      border-radius:30px 30px 18px 18px;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 8px 0 #CC0066,0 12px 28px rgba(255,61,138,0.4);
+      border:4px solid rgba(255,255,255,0.35);
     }
     .machine-window {
-      width: 115px; height: 115px;
-      background: radial-gradient(circle at 35% 30%, rgba(255,255,255,0.98), rgba(255,220,255,0.3));
-      border-radius: 50%;
-      border: 6px solid rgba(255,255,255,0.85);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 54px;
-      box-shadow: inset 0 4px 14px rgba(0,0,0,0.08);
+      width:115px; height:115px;
+      background:radial-gradient(circle at 35% 30%, rgba(255,255,255,0.98), rgba(255,220,255,0.3));
+      border-radius:50%; border:6px solid rgba(255,255,255,0.85);
+      display:flex; align-items:center; justify-content:center;
+      font-size:54px; box-shadow:inset 0 4px 14px rgba(0,0,0,0.08);
     }
     .machine-base {
-      width: 204px; height: 44px;
-      background: linear-gradient(135deg, #CC0066, #FF3D8A);
-      border-radius: 0 0 22px 22px;
-      margin: 0 auto;
-      box-shadow: 0 7px 0 #990044, 0 10px 20px rgba(0,0,0,0.15);
-      border: 4px solid rgba(255,255,255,0.2); border-top: none;
-      display: flex; align-items: center; justify-content: center;
+      width:204px; height:44px;
+      background:linear-gradient(135deg,#CC0066,#FF3D8A);
+      border-radius:0 0 22px 22px; margin:0 auto;
+      box-shadow:0 7px 0 #990044,0 10px 20px rgba(0,0,0,0.15);
+      border:4px solid rgba(255,255,255,0.2); border-top:none;
+      display:flex; align-items:center; justify-content:center;
     }
-    .machine-slot {
-      width: 58px; height: 14px;
-      background: rgba(0,0,0,0.28);
-      border-radius: 7px;
-    }
-
+    .machine-slot { width:58px; height:14px; background:rgba(0,0,0,0.28); border-radius:7px; }
     @keyframes machine-shake {
-      0%,100% { transform: rotate(0) scale(1); }
-      20% { transform: rotate(-6deg) scale(1.03); }
-      40% { transform: rotate(6deg) scale(1.03); }
-      60% { transform: rotate(-4deg) scale(1.02); }
-      80% { transform: rotate(4deg) scale(1.01); }
+      0%,100%{transform:rotate(0) scale(1)} 20%{transform:rotate(-6deg) scale(1.03)}
+      40%{transform:rotate(6deg) scale(1.03)} 60%{transform:rotate(-4deg) scale(1.02)}
+      80%{transform:rotate(4deg) scale(1.01)}
     }
-    .machine.shaking { animation: machine-shake 0.65s ease-in-out; }
+    .machine.shaking { animation:machine-shake 0.65s ease-in-out; }
 
     .today-banner {
-      width: 100%; max-width: 480px;
-      background: linear-gradient(135deg, #22C55E, #16A34A);
-      border-radius: 22px;
-      border: 4px solid #16A34A;
-      padding: 14px 20px;
-      display: flex; align-items: center; gap: 14px;
-      box-shadow: 0 6px 0 #0D7D30, 0 8px 20px rgba(22,197,94,0.3);
+      width:100%; max-width:480px;
+      background:linear-gradient(135deg,#22C55E,#16A34A);
+      border-radius:22px; border:4px solid #16A34A;
+      padding:14px 20px;
+      display:flex; align-items:center; gap:14px;
+      box-shadow:0 6px 0 #0D7D30,0 8px 20px rgba(22,197,94,0.3);
     }
-    .today-banner-emoji { font-size: 34px; }
-    .today-banner-label { font-size: 11px; font-weight: 800; color: rgba(255,255,255,0.85); }
-    .today-banner-name  { font-size: 19px; font-weight: 900; color: white; text-shadow: 0 2px 6px rgba(0,0,0,0.15); }
+    .today-banner-emoji { font-size:34px; }
+    .today-banner-label { font-size:11px; font-weight:800; color:rgba(255,255,255,0.85); }
+    .today-banner-name  { font-family:'Fredoka One',cursive; font-size:20px; color:white; text-shadow:0 2px 6px rgba(0,0,0,0.15); }
 
     /* ── EGG OVERLAY ── */
     .egg-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.85);
-      display: none; align-items: center; justify-content: center;
-      z-index: 1000; flex-direction: column; gap: 20px;
+      position:fixed; inset:0; background:rgba(0,0,0,0.88);
+      display:none; align-items:center; justify-content:center;
+      z-index:1000; flex-direction:column; gap:20px;
     }
-    .egg-overlay.visible { display: flex; }
-
+    .egg-overlay.visible { display:flex; }
     @keyframes egg-fall {
-      from { transform: translateY(-240px) rotate(20deg); opacity: 0; }
-      55%  { transform: translateY(28px) rotate(-6deg); opacity: 1; }
-      80%  { transform: translateY(-8px) rotate(2deg); }
-      to   { transform: translateY(0) rotate(0); opacity: 1; }
+      from{transform:translateY(-240px) rotate(20deg);opacity:0}
+      55%{transform:translateY(28px) rotate(-6deg);opacity:1}
+      80%{transform:translateY(-8px) rotate(2deg)}
+      to{transform:translateY(0) rotate(0);opacity:1}
     }
-    .falling-egg { font-size: 108px; animation: egg-fall 0.72s cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
-
+    .falling-egg { font-size:108px; animation:egg-fall 0.72s cubic-bezier(0.25,0.46,0.45,0.94) forwards; }
     @keyframes pop-in {
-      from { transform: scale(0.25); opacity: 0; }
-      70%  { transform: scale(1.1); }
-      to   { transform: scale(1); opacity: 1; }
+      from{transform:scale(0.25);opacity:0} 70%{transform:scale(1.1)} to{transform:scale(1);opacity:1}
     }
     .reveal-card {
-      background: white;
-      border-radius: 36px;
-      border: 6px solid #FFB800;
-      padding: 38px 44px;
-      text-align: center;
-      animation: pop-in 0.45s 0.68s cubic-bezier(0.34,1.56,0.64,1) both;
-      box-shadow: 0 10px 0 #CC8800, 0 14px 48px rgba(0,0,0,0.35);
+      background:white; border-radius:36px; border:6px solid #FFB800;
+      padding:38px 44px; text-align:center;
+      animation:pop-in 0.45s 0.68s cubic-bezier(0.34,1.56,0.64,1) both;
+      box-shadow:0 10px 0 #CC8800,0 14px 48px rgba(0,0,0,0.35);
     }
-    .reveal-emoji { font-size: 66px; margin-bottom: 10px; }
-    .reveal-name  { font-size: 30px; font-weight: 900; color: #1A0A00; margin-bottom: 24px; }
+    .reveal-emoji { font-size:66px; margin-bottom:10px; }
+    .reveal-name  { font-family:'Fredoka One',cursive; font-size:30px; color:#1A0A00; margin-bottom:24px; }
 
     /* ── STAGE HEADER ── */
-    .stage-header { display: flex; align-items: center; gap: 14px; width: 100%; max-width: 480px; margin-bottom: 10px; }
+    .stage-header { display:flex; align-items:center; gap:14px; width:100%; max-width:480px; margin-bottom:10px; }
     .stage-icon {
-      width: 56px; height: 56px; border-radius: 18px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 27px; flex-shrink: 0;
-      border: 3px solid rgba(255,255,255,0.4);
+      width:56px; height:56px; border-radius:18px;
+      display:flex; align-items:center; justify-content:center;
+      font-size:27px; flex-shrink:0; border:3px solid rgba(255,255,255,0.4);
     }
-    .s-read  { background: linear-gradient(135deg,#FFD000,#FF8C00); box-shadow: 0 5px 0 #CC6600; }
-    .s-shad  { background: linear-gradient(135deg,#3B82F6,#7B45E8); box-shadow: 0 5px 0 #2563EB; }
-    .s-chat  { background: linear-gradient(135deg,#22C55E,#16A34A); box-shadow: 0 5px 0 #0D7D30; }
-    .s-chal  { background: linear-gradient(135deg,#FF3D8A,#FF8C00); box-shadow: 0 5px 0 #CC0066; }
-    .stage-title    { font-size: 21px; font-weight: 900; color: white; text-shadow: 0 2px 8px rgba(0,0,0,0.22); }
-    .stage-subtitle { font-size: 13px; color: rgba(255,255,255,0.92); font-weight: 800; }
+    .s-read  {background:linear-gradient(135deg,#FFD000,#FF8C00);box-shadow:0 5px 0 #CC6600}
+    .s-shad  {background:linear-gradient(135deg,#3B82F6,#7B45E8);box-shadow:0 5px 0 #2563EB}
+    .s-chat  {background:linear-gradient(135deg,#22C55E,#16A34A);box-shadow:0 5px 0 #0D7D30}
+    .s-chal  {background:linear-gradient(135deg,#FF3D8A,#FF8C00);box-shadow:0 5px 0 #CC0066}
+    .stage-title    { font-family:'Fredoka One',cursive; font-size:22px; color:white; text-shadow:0 2px 8px rgba(0,0,0,0.22); }
+    .stage-subtitle { font-size:13px; color:rgba(255,255,255,0.92); font-weight:800; }
 
     /* ── PROGRESS DOTS ── */
-    .prog-dots { display: flex; gap: 10px; width: 100%; max-width: 480px; margin-bottom: 12px; }
-    .prog-dot  { flex: 1; height: 10px; border-radius: 6px; background: rgba(255,255,255,0.3); transition: background 0.3s; }
-    .prog-dot.done   { background: #22C55E; box-shadow: 0 2px 0 #16A34A; }
-    .prog-dot.active { background: white; box-shadow: 0 2px 0 rgba(0,0,0,0.1); }
+    .prog-dots { display:flex; gap:10px; width:100%; max-width:480px; margin-bottom:12px; }
+    .prog-dot  { flex:1; height:10px; border-radius:6px; background:rgba(255,255,255,0.3); transition:background 0.3s; }
+    .prog-dot.done   { background:#22C55E; box-shadow:0 2px 0 #16A34A; }
+    .prog-dot.active { background:white; box-shadow:0 2px 0 rgba(0,0,0,0.1); }
 
     /* ── READING ── */
-    .passage-text { font-size: 17px; line-height: 1.9; color: #1A0A00; font-weight: 700; }
-    .vocab-grid   { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
-    .vocab-card   { background: #FFF9E0; border-radius: 18px; padding: 13px; border: 3px solid #FFD000; box-shadow: 0 3px 0 #CC9900; }
-    .vocab-word   { font-size: 16px; font-weight: 900; color: #FF7700; }
-    .vocab-trans  { font-size: 13px; color: #7B5800; margin-top: 3px; font-weight: 700; }
+    .passage-text { font-size:17px; line-height:1.9; color:#1A0A00; font-weight:700; }
+    .vocab-grid   { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:4px; }
+    .vocab-card   { background:#FFF9E0; border-radius:18px; padding:13px; border:3px solid #FFD000; box-shadow:0 3px 0 #CC9900; }
+    .vocab-word   { font-size:16px; font-weight:900; color:#FF7700; }
+    .vocab-trans  { font-size:13px; color:#7B5800; margin-top:3px; font-weight:700; }
 
     /* ── SHADOWING ── */
-    .speed-row  { display: flex; gap: 12px; margin-bottom: 16px; }
+    .speed-row  { display:flex; gap:12px; margin-bottom:16px; }
     .speed-btn  {
-      flex: 1; padding: 13px; border-radius: 16px;
-      border: 3px solid #7B45E8;
-      background: rgba(123,69,232,0.08);
-      font-size: 16px; font-weight: 800; color: #7B45E8;
-      font-family: 'Nunito', -apple-system, sans-serif;
-      cursor: pointer; transition: all 0.15s;
+      flex:1; padding:13px; border-radius:16px;
+      border:3px solid #7B45E8; background:rgba(123,69,232,0.08);
+      font-size:16px; font-weight:800; color:#7B45E8;
+      font-family:'Nunito',sans-serif;
+      cursor:pointer; transition:all 0.15s;
     }
-    .speed-btn.active { background: #7B45E8; color: white; box-shadow: 0 4px 0 #5B25C8; }
-
+    .speed-btn.active { background:#7B45E8; color:white; box-shadow:0 4px 0 #5B25C8; }
     .play-btn {
-      width: 88px; height: 88px; border-radius: 50%;
-      background: linear-gradient(135deg, #3B82F6, #7B45E8);
-      border: none; font-size: 34px; cursor: pointer;
-      box-shadow: 0 7px 0 #2563EB, 0 10px 28px rgba(59,130,246,0.4);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 20px;
-      transition: transform 0.1s, box-shadow 0.1s;
+      width:88px; height:88px; border-radius:50%;
+      background:linear-gradient(135deg,#3B82F6,#7B45E8);
+      border:none; font-size:34px; cursor:pointer;
+      box-shadow:0 7px 0 #2563EB,0 10px 28px rgba(59,130,246,0.4);
+      display:flex; align-items:center; justify-content:center;
+      margin:0 auto 20px; transition:transform 0.1s,box-shadow 0.1s;
     }
-    .play-btn:active { transform: translateY(5px); box-shadow: 0 2px 0 #2563EB; }
+    .play-btn:active { transform:translateY(5px); box-shadow:0 2px 0 #2563EB; }
 
     /* ── CHAT ── */
-    #chat-screen { gap: 0; }
+    #chat-screen { gap:0; }
     .chat-msgs {
-      flex: 1;
-      width: 100%; max-width: 480px;
-      overflow-y: auto;
-      display: flex; flex-direction: column;
-      gap: 10px;
-      max-height: 46vh;
-      padding: 4px 0 8px;
-      margin-bottom: 10px;
+      flex:1; width:100%; max-width:480px; overflow-y:auto;
+      display:flex; flex-direction:column; gap:10px;
+      max-height:46vh; padding:4px 0 8px; margin-bottom:10px;
     }
-    .msg { max-width: 84%; padding: 13px 17px; border-radius: 20px; font-size: 16px; line-height: 1.55; font-weight: 700; }
-    .msg.ai   { background: white; color: #1A0A00; align-self: flex-start; border-bottom-left-radius: 5px; border: 3px solid #FFD000; box-shadow: 0 4px 0 #CC8800; }
-    .msg.user { background: #7B45E8; color: white; align-self: flex-end; border-bottom-right-radius: 5px; box-shadow: 0 4px 0 #5B25C8; }
-    .msg.loading { background: white; align-self: flex-start; border: 3px solid #FFD000; }
-    .ai-label { font-size: 12px; font-weight: 900; color: #FF8C00; margin-bottom: 5px; }
-
-    .chat-input-row { display: flex; gap: 10px; width: 100%; max-width: 480px; }
+    .msg { max-width:84%; padding:13px 17px; border-radius:20px; font-size:16px; line-height:1.55; font-weight:700; }
+    .msg.ai   { background:white; color:#1A0A00; align-self:flex-start; border-bottom-left-radius:5px; border:3px solid #FFD000; box-shadow:0 4px 0 #CC8800; }
+    .msg.user { background:#7B45E8; color:white; align-self:flex-end; border-bottom-right-radius:5px; box-shadow:0 4px 0 #5B25C8; }
+    .msg.loading { background:white; align-self:flex-start; border:3px solid #FFD000; }
+    .ai-label { font-size:12px; font-weight:900; color:#FF8C00; margin-bottom:5px; }
+    .chat-input-row { display:flex; gap:10px; width:100%; max-width:480px; }
     .chat-input {
-      flex: 1; padding: 15px 20px;
-      border-radius: 50px;
-      border: 3px solid #FFB800;
-      font-size: 16px; font-weight: 700;
-      font-family: 'Nunito', -apple-system, sans-serif;
-      background: white;
-      outline: none; color: #1A0A00;
-      box-shadow: 0 4px 0 #CC8800;
+      flex:1; padding:15px 20px; border-radius:50px;
+      border:3px solid #FFB800; font-size:16px; font-weight:700;
+      font-family:'Nunito',sans-serif; background:white;
+      outline:none; color:#1A0A00; box-shadow:0 4px 0 #CC8800;
     }
-    .chat-input:focus { border-color: #7B45E8; box-shadow: 0 4px 0 #5B25C8; }
+    .chat-input:focus { border-color:#7B45E8; box-shadow:0 4px 0 #5B25C8; }
     .send-btn {
-      width: 58px; height: 58px; border-radius: 50%;
-      background: #7B45E8;
-      border: none; font-size: 22px; cursor: pointer;
-      box-shadow: 0 5px 0 #5B25C8, 0 7px 18px rgba(123,69,232,0.4);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; transition: transform 0.1s, box-shadow 0.1s;
+      width:58px; height:58px; border-radius:50%;
+      background:#7B45E8; border:none; font-size:22px; cursor:pointer;
+      box-shadow:0 5px 0 #5B25C8,0 7px 18px rgba(123,69,232,0.4);
+      display:flex; align-items:center; justify-content:center;
+      flex-shrink:0; transition:transform 0.1s,box-shadow 0.1s;
     }
-    .send-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #5B25C8; }
+    .send-btn:active { transform:translateY(4px); box-shadow:0 1px 0 #5B25C8; }
     .end-chat-link {
-      margin-top: 10px;
-      padding: 13px 30px;
-      border-radius: 50px;
-      border: 3px solid rgba(255,255,255,0.75);
-      background: rgba(255,255,255,0.2);
-      color: white; font-size: 15px; font-weight: 900;
-      font-family: 'Nunito', -apple-system, sans-serif;
-      cursor: pointer; transition: background 0.2s;
+      margin-top:10px; padding:13px 30px; border-radius:50px;
+      border:3px solid rgba(255,255,255,0.75);
+      background:rgba(255,255,255,0.2); color:white;
+      font-size:15px; font-weight:900;
+      font-family:'Nunito',sans-serif; cursor:pointer; transition:background 0.2s;
     }
-    .end-chat-link:hover { background: rgba(255,255,255,0.3); }
+    .end-chat-link:hover { background:rgba(255,255,255,0.3); }
 
     /* ── CHALLENGE ── */
     .timer-ring {
-      width: 145px; height: 145px; border-radius: 50%;
-      background: linear-gradient(135deg, #FF3D8A, #FF8C00);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      box-shadow: 0 9px 0 #CC0066, 0 12px 36px rgba(255,61,138,0.45);
-      border: 5px solid rgba(255,255,255,0.35);
-      margin: 0 auto 18px;
-      transition: background 0.5s;
+      width:145px; height:145px; border-radius:50%;
+      background:linear-gradient(135deg,#FF3D8A,#FF8C00);
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      box-shadow:0 9px 0 #CC0066,0 12px 36px rgba(255,61,138,0.45);
+      border:5px solid rgba(255,255,255,0.35);
+      margin:0 auto 18px; transition:background 0.5s;
     }
-    .timer-num { font-size: 58px; font-weight: 900; color: white; line-height: 1; text-shadow: 0 3px 10px rgba(0,0,0,0.2); }
-    .timer-lbl { font-size: 13px; color: rgba(255,255,255,0.9); font-weight: 800; }
+    .timer-num { font-family:'Fredoka One',cursive; font-size:60px; color:white; line-height:1; text-shadow:0 3px 10px rgba(0,0,0,0.2); }
+    .timer-lbl { font-size:13px; color:rgba(255,255,255,0.9); font-weight:800; }
     .chal-input  {
-      width: 100%; max-width: 480px;
-      min-height: 150px; padding: 18px;
-      border-radius: 24px;
-      border: 4px solid #FFB800;
-      background: white;
-      font-size: 17px; line-height: 1.65; font-weight: 700;
-      font-family: 'Nunito', -apple-system, sans-serif;
-      resize: none; outline: none; color: #1A0A00;
-      margin-bottom: 14px;
-      box-shadow: 0 6px 0 #CC8800;
+      width:100%; max-width:480px; min-height:150px; padding:18px;
+      border-radius:24px; border:4px solid #FFB800;
+      background:white; font-size:17px; line-height:1.65; font-weight:700;
+      font-family:'Nunito',sans-serif; resize:none; outline:none; color:#1A0A00;
+      margin-bottom:14px; box-shadow:0 6px 0 #CC8800;
     }
-    .chal-input:focus { border-color: #7B45E8; box-shadow: 0 6px 0 #5B25C8; }
+    .chal-input:focus { border-color:#7B45E8; box-shadow:0 6px 0 #5B25C8; }
 
     /* ── COMPLETE ── */
-    #complete-screen { justify-content: center; gap: 18px; text-align: center; }
+    #complete-screen { justify-content:center; gap:18px; text-align:center; }
     .complete-title {
-      font-size: 38px; font-weight: 900;
-      color: white;
-      -webkit-text-stroke: 2px rgba(0,0,0,0.15);
-      paint-order: stroke fill;
-      text-shadow: 0 5px 0 rgba(0,0,0,0.12), 0 8px 20px rgba(0,0,0,0.1);
+      font-family:'Fredoka One',cursive;
+      font-size:40px; color:white;
+      -webkit-text-stroke:2px rgba(0,0,0,0.15);
+      paint-order:stroke fill;
+      text-shadow:0 5px 0 rgba(0,0,0,0.1),0 8px 20px rgba(0,0,0,0.1);
     }
     .coins-box {
-      background: linear-gradient(135deg, #FFD000, #FF8C00);
-      border-radius: 30px; padding: 24px 52px;
-      border: 5px solid #CC6600;
-      box-shadow: 0 9px 0 #CC6600, 0 12px 36px rgba(255,140,0,0.35);
+      background:linear-gradient(135deg,#FFD000,#FF8C00);
+      border-radius:30px; padding:24px 52px;
+      border:5px solid #CC6600;
+      box-shadow:0 9px 0 #CC6600,0 12px 36px rgba(255,140,0,0.35);
     }
-    .coins-num { font-size: 72px; font-weight: 900; color: white; line-height: 1; text-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-    .coins-lbl { font-size: 20px; color: rgba(255,255,255,0.95); font-weight: 900; }
-    .redeem-box  { background: white; border-radius: 22px; border: 4px solid #FFB800; padding: 16px 24px; max-width: 360px; font-size: 15px; color: #1A0A00; line-height: 1.7; font-weight: 700; box-shadow: 0 5px 0 #CC8800; }
-    .feedback-box { background: white; border-radius: 24px; border: 4px solid #FFB800; padding: 20px 24px; max-width: 480px; width: 100%; text-align: left; box-shadow: 0 5px 0 #CC8800; }
-    .fb-title { font-size: 14px; font-weight: 900; color: #FF8C00; margin-bottom: 8px; }
-    .fb-text  { font-size: 16px; color: #1A0A00; line-height: 1.65; font-weight: 700; }
+    .coins-num { font-family:'Fredoka One',cursive; font-size:72px; color:white; line-height:1; text-shadow:0 4px 10px rgba(0,0,0,0.2); }
+    .coins-lbl { font-size:20px; color:rgba(255,255,255,0.95); font-weight:900; }
+    .redeem-box  { background:white; border-radius:22px; border:4px solid #FFB800; padding:16px 24px; max-width:360px; font-size:15px; color:#1A0A00; line-height:1.7; font-weight:700; box-shadow:0 5px 0 #CC8800; }
+    .feedback-box { background:white; border-radius:24px; border:4px solid #FFB800; padding:20px 24px; max-width:480px; width:100%; text-align:left; box-shadow:0 5px 0 #CC8800; }
+    .fb-title { font-size:14px; font-weight:900; color:#FF8C00; margin-bottom:8px; }
+    .fb-text  { font-size:16px; color:#1A0A00; line-height:1.65; font-weight:700; }
 
     /* ── LEVEL UP ── */
     .lvlup-overlay {
-      position: fixed; inset: 0;
-      background: rgba(0,0,0,0.88);
-      display: none; align-items: center; justify-content: center;
-      z-index: 2000;
+      position:fixed; inset:0; background:rgba(0,0,0,0.88);
+      display:none; align-items:center; justify-content:center; z-index:2000;
     }
-    .lvlup-overlay.visible { display: flex; }
+    .lvlup-overlay.visible { display:flex; }
     .lvlup-card {
-      background: linear-gradient(135deg, #FFD000, #FF8C00);
-      border-radius: 38px; padding: 50px;
-      border: 6px solid #FFE600;
-      text-align: center;
-      animation: pop-in 0.5s cubic-bezier(0.34,1.56,0.64,1);
-      box-shadow: 0 10px 0 #CC6600, 0 16px 52px rgba(255,208,0,0.4);
+      background:linear-gradient(135deg,#FFD000,#FF8C00);
+      border-radius:38px; padding:50px;
+      border:6px solid #FFE600; text-align:center;
+      animation:pop-in 0.5s cubic-bezier(0.34,1.56,0.64,1);
+      box-shadow:0 10px 0 #CC6600,0 16px 52px rgba(255,208,0,0.4);
     }
-    .lvlup-emoji  { font-size: 90px; margin-bottom: 14px; }
-    .lvlup-title  { font-size: 34px; font-weight: 900; color: white; text-shadow: 0 3px 10px rgba(0,0,0,0.2); }
-    .lvlup-name   { font-size: 24px; color: rgba(255,255,255,0.95); margin-top: 8px; font-weight: 800; }
+    .lvlup-emoji  { font-size:90px; margin-bottom:14px; }
+    .lvlup-title  { font-family:'Fredoka One',cursive; font-size:34px; color:white; text-shadow:0 3px 10px rgba(0,0,0,0.2); }
+    .lvlup-name   { font-size:24px; color:rgba(255,255,255,0.95); margin-top:8px; font-weight:800; }
 
     /* ── LOADING DOTS ── */
-    .dots { display: inline-flex; gap: 6px; }
-    .dots span { width: 10px; height: 10px; border-radius: 50%; background: #FFB800; animation: bounce 1.2s infinite; }
-    .dots span:nth-child(2) { animation-delay: 0.2s; }
-    .dots span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes bounce { 0%,60%,100%{transform:translateY(0)} 30%{transform:translateY(-10px)} }
+    .dots { display:inline-flex; gap:6px; }
+    .dots span { width:10px; height:10px; border-radius:50%; background:#FFB800; animation:bounce 1.2s infinite; }
+    .dots span:nth-child(2){animation-delay:0.2s}
+    .dots span:nth-child(3){animation-delay:0.4s}
+    @keyframes bounce{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-10px)}}
 
     /* ── HINT BOX ── */
     .hint-box {
-      background: rgba(255,255,255,0.92);
-      border: 3px solid rgba(255,255,255,0.8);
-      border-radius: 20px; padding: 14px 18px;
-      width: 100%; max-width: 480px;
-      font-size: 14px; color: #1A0A00; line-height: 1.65; font-weight: 700;
-      margin-bottom: 14px;
-      box-shadow: 0 4px 0 rgba(0,0,0,0.08);
+      background:rgba(255,255,255,0.92); border:3px solid rgba(255,255,255,0.8);
+      border-radius:20px; padding:14px 18px;
+      width:100%; max-width:480px; font-size:14px; color:#1A0A00;
+      line-height:1.65; font-weight:700; margin-bottom:14px;
+      box-shadow:0 4px 0 rgba(0,0,0,0.08);
     }
-    .hint-box strong { color: #7B45E8; }
-
-    /* ── FLOATING STARS ── */
-    .star-deco {
-      position: fixed;
-      pointer-events: none;
-      z-index: 0;
-      animation: float-star 3.5s ease-in-out infinite;
-      user-select: none;
-    }
-    @keyframes float-star {
-      0%,100% { transform: translateY(0) rotate(0deg) scale(1); }
-      50% { transform: translateY(-14px) rotate(18deg) scale(1.08); }
-    }
+    .hint-box strong { color:#7B45E8; }
   </style>
 </head>
 <body>
 
-<!-- 裝飾星星 -->
-<span class="star-deco" style="font-size:30px;top:6%;left:4%;opacity:0.5;animation-delay:0s;">⭐</span>
-<span class="star-deco" style="font-size:20px;top:12%;right:7%;opacity:0.45;animation-delay:0.9s;">✨</span>
-<span class="star-deco" style="font-size:26px;top:50%;left:2%;opacity:0.4;animation-delay:1.8s;">🌟</span>
-<span class="star-deco" style="font-size:22px;bottom:28%;right:4%;opacity:0.45;animation-delay:2.4s;">⭐</span>
-<span class="star-deco" style="font-size:18px;bottom:10%;left:6%;opacity:0.4;animation-delay:0.5s;">✨</span>
-<span class="star-deco" style="font-size:24px;top:32%;right:3%;opacity:0.35;animation-delay:3s;">🌟</span>
+<!-- 4角星裝飾 -->
+<div class="star4" style="width:22px;height:22px;top:7%;left:5%;animation-delay:0s;"></div>
+<div class="star4" style="width:14px;height:14px;top:14%;right:9%;animation-delay:1.2s;"></div>
+<div class="star4" style="width:18px;height:18px;top:42%;left:3%;animation-delay:2.1s;"></div>
+<div class="star4" style="width:26px;height:26px;bottom:30%;right:5%;animation-delay:0.7s;"></div>
+<div class="star4" style="width:12px;height:12px;bottom:12%;left:8%;animation-delay:1.8s;"></div>
+<div class="star4" style="width:20px;height:20px;top:65%;right:6%;animation-delay:3s;"></div>
+<span class="star5" style="top:5%;right:16%;animation-delay:0.4s;">✦</span>
+<span class="star5" style="bottom:22%;left:5%;animation-delay:1.5s;font-size:18px;">✦</span>
+<span class="star5" style="top:28%;left:7%;animation-delay:2.8s;font-size:16px;">★</span>
+<span class="star5" style="bottom:40%;right:3%;animation-delay:0.2s;font-size:14px;">★</span>
 
-<!-- ══════════ LOGIN ══════════ -->
+<!-- ══════ LOGIN ══════ -->
 <div id="login-screen" class="screen active">
   <div class="login-logo">🥚 Lemon<br>英文星球</div>
-  <div class="login-subtitle">選擇你的角色，開始今天的冒險！</div>
+  <div class="login-sub">選擇你的角色，開始冒險！</div>
+
   <div class="user-select">
+
+    <!-- Elsie：黃色蛋仔 -->
     <div class="user-card" onclick="selectUser('elsie')">
-      <div class="user-avatar">🐣</div>
+      <div class="char-wrap">
+        <svg viewBox="0 0 120 155" xmlns="http://www.w3.org/2000/svg">
+          <!-- 天線 -->
+          <line x1="60" y1="16" x2="60" y2="30" stroke="#CC8800" stroke-width="3.5" stroke-linecap="round"/>
+          <circle cx="60" cy="11" r="8" fill="#FFD700" stroke="#CC8800" stroke-width="2"/>
+          <ellipse cx="57" cy="9" rx="3" ry="2" fill="rgba(255,255,255,0.6)"/>
+          <!-- 身體陰影 -->
+          <ellipse cx="60" cy="143" rx="36" ry="7" fill="rgba(0,0,0,0.12)"/>
+          <!-- 身體 -->
+          <ellipse cx="60" cy="92" rx="45" ry="55" fill="#FFE04D"/>
+          <!-- 身體光澤 -->
+          <ellipse cx="44" cy="66" rx="20" ry="14" fill="rgba(255,255,255,0.42)"/>
+          <!-- 眼白 -->
+          <circle cx="42" cy="82" r="17" fill="white"/>
+          <circle cx="78" cy="82" r="17" fill="white"/>
+          <!-- 瞳孔 -->
+          <circle cx="44" cy="84" r="9.5" fill="#1a1025"/>
+          <circle cx="80" cy="84" r="9.5" fill="#1a1025"/>
+          <!-- 眼神光 大 -->
+          <circle cx="48" cy="79" r="4" fill="white"/>
+          <circle cx="84" cy="79" r="4" fill="white"/>
+          <!-- 眼神光 小 -->
+          <circle cx="40" cy="88" r="1.8" fill="white"/>
+          <circle cx="76" cy="88" r="1.8" fill="white"/>
+          <!-- 鼻子 -->
+          <ellipse cx="60" cy="99" rx="6" ry="4" fill="#CC8800"/>
+          <!-- 嘴巴 -->
+          <path d="M 49 109 Q 60 121 71 109" stroke="#AA6600" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- 臉頰紅暈 -->
+          <ellipse cx="26" cy="99" rx="10" ry="7" fill="rgba(255,120,80,0.3)"/>
+          <ellipse cx="94" cy="99" rx="10" ry="7" fill="rgba(255,120,80,0.3)"/>
+          <!-- 手臂 -->
+          <ellipse cx="16" cy="100" rx="13" ry="8" fill="#FFD740" transform="rotate(-28 16 100)"/>
+          <ellipse cx="104" cy="100" rx="13" ry="8" fill="#FFD740" transform="rotate(28 104 100)"/>
+          <!-- 腳 -->
+          <ellipse cx="44" cy="144" rx="18" ry="10" fill="white"/>
+          <ellipse cx="76" cy="144" rx="18" ry="10" fill="white"/>
+        </svg>
+      </div>
       <div class="user-name">Elsie</div>
       <div class="user-meta" id="elsie-meta">讀取中...</div>
     </div>
+
+    <!-- Sunny：紫色蛋仔 -->
     <div class="user-card" onclick="selectUser('sunny')">
-      <div class="user-avatar">🐥</div>
+      <div class="char-wrap">
+        <svg viewBox="0 0 120 155" xmlns="http://www.w3.org/2000/svg">
+          <!-- 蝴蝶結 左翼 -->
+          <ellipse cx="38" cy="20" rx="16" ry="10" fill="#FF88EE" transform="rotate(-25 38 20)"/>
+          <ellipse cx="38" cy="20" rx="12" ry="7" fill="#FFAAFF" transform="rotate(-25 38 20)"/>
+          <!-- 蝴蝶結 右翼 -->
+          <ellipse cx="82" cy="20" rx="16" ry="10" fill="#FF88EE" transform="rotate(25 82 20)"/>
+          <ellipse cx="82" cy="20" rx="12" ry="7" fill="#FFAAFF" transform="rotate(25 82 20)"/>
+          <!-- 蝴蝶結中心 -->
+          <circle cx="60" cy="20" r="9" fill="#FF88EE"/>
+          <circle cx="60" cy="20" r="5.5" fill="#FFCCFF"/>
+          <!-- 身體陰影 -->
+          <ellipse cx="60" cy="143" rx="36" ry="7" fill="rgba(0,0,0,0.12)"/>
+          <!-- 身體 -->
+          <ellipse cx="60" cy="92" rx="45" ry="55" fill="#A855F7"/>
+          <!-- 身體光澤 -->
+          <ellipse cx="44" cy="66" rx="20" ry="14" fill="rgba(255,255,255,0.38)"/>
+          <!-- 眼白 -->
+          <circle cx="42" cy="82" r="17" fill="white"/>
+          <circle cx="78" cy="82" r="17" fill="white"/>
+          <!-- 瞳孔 -->
+          <circle cx="44" cy="84" r="9.5" fill="#1a1025"/>
+          <circle cx="80" cy="84" r="9.5" fill="#1a1025"/>
+          <!-- 眼神光 大 -->
+          <circle cx="48" cy="79" r="4" fill="white"/>
+          <circle cx="84" cy="79" r="4" fill="white"/>
+          <!-- 眼神光 小 -->
+          <circle cx="40" cy="88" r="1.8" fill="white"/>
+          <circle cx="76" cy="88" r="1.8" fill="white"/>
+          <!-- 鼻子 -->
+          <ellipse cx="60" cy="99" rx="6" ry="4" fill="#7C3AED"/>
+          <!-- 嘴巴 -->
+          <path d="M 49 109 Q 60 121 71 109" stroke="#6D28D9" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <!-- 臉頰紅暈 -->
+          <ellipse cx="26" cy="99" rx="10" ry="7" fill="rgba(255,100,180,0.32)"/>
+          <ellipse cx="94" cy="99" rx="10" ry="7" fill="rgba(255,100,180,0.32)"/>
+          <!-- 手臂 -->
+          <ellipse cx="16" cy="100" rx="13" ry="8" fill="#9333EA" transform="rotate(-28 16 100)"/>
+          <ellipse cx="104" cy="100" rx="13" ry="8" fill="#9333EA" transform="rotate(28 104 100)"/>
+          <!-- 腳 -->
+          <ellipse cx="44" cy="144" rx="18" ry="10" fill="white"/>
+          <ellipse cx="76" cy="144" rx="18" ry="10" fill="white"/>
+        </svg>
+      </div>
       <div class="user-name">Sunny</div>
       <div class="user-meta" id="sunny-meta">讀取中...</div>
     </div>
+
   </div>
 </div>
 
-<!-- ══════════ MAIN ══════════ -->
+<!-- ══════ MAIN ══════ -->
 <div id="main-screen" class="screen">
   <div class="stats-bar">
     <div class="stat-item">
@@ -581,10 +555,9 @@
 
   <div class="greeting" id="main-greet">今天要學英文嗎？</div>
 
-  <!-- No topic yet -->
   <div id="area-notopic" class="machine-area">
     <div class="card" style="text-align:center;">
-      <div style="font-size:18px;font-weight:900;color:#1A0A00;margin-bottom:6px;">🎰 今天的主題</div>
+      <div style="font-family:'Fredoka One',cursive;font-size:20px;color:#1A0A00;margin-bottom:6px;">🎰 今天的主題</div>
       <div style="font-size:14px;color:#7B5800;font-weight:700;">轉動扭蛋機，抽出今天要聊的話題！</div>
     </div>
     <div class="machine" onclick="spinMachine()" id="machine">
@@ -596,7 +569,6 @@
     <button class="btn btn-primary" onclick="spinMachine()">🎰 轉動扭蛋機！</button>
   </div>
 
-  <!-- Topic selected -->
   <div id="area-topic" style="display:none;flex-direction:column;align-items:center;gap:14px;width:100%;max-width:480px;">
     <div class="today-banner">
       <div class="today-banner-emoji" id="banner-em">🎮</div>
@@ -616,7 +588,7 @@
   </div>
 </div>
 
-<!-- ══════════ EGG OVERLAY ══════════ -->
+<!-- ══════ EGG OVERLAY ══════ -->
 <div class="egg-overlay" id="egg-overlay">
   <div class="falling-egg" id="falling-egg">🥚</div>
   <div class="reveal-card" id="reveal-card" style="display:none;">
@@ -626,7 +598,7 @@
   </div>
 </div>
 
-<!-- ══════════ READING ══════════ -->
+<!-- ══════ READING ══════ -->
 <div id="reading-screen" class="screen">
   <div class="stage-header">
     <div class="stage-icon s-read">📖</div>
@@ -650,7 +622,7 @@
   <button class="btn btn-yellow" id="done-read-btn" onclick="goToShadowing()" style="display:none;">讀完了！去跟讀 →</button>
 </div>
 
-<!-- ══════════ SHADOWING ══════════ -->
+<!-- ══════ SHADOWING ══════ -->
 <div id="shadowing-screen" class="screen">
   <div class="stage-header">
     <div class="stage-icon s-shad">🎵</div>
@@ -680,7 +652,7 @@
   <button class="btn btn-secondary" onclick="goToChat()">跟完了！去跟 Lemon 聊天 →</button>
 </div>
 
-<!-- ══════════ CHAT ══════════ -->
+<!-- ══════ CHAT ══════ -->
 <div id="chat-screen" class="screen">
   <div class="stage-header" style="margin-bottom:8px;">
     <div class="stage-icon s-chat">💬</div>
@@ -703,7 +675,7 @@
   <button class="end-chat-link" id="end-chat" onclick="goToChallenge()" style="display:none;">聊完了！去接受挑戰 →</button>
 </div>
 
-<!-- ══════════ CHALLENGE ══════════ -->
+<!-- ══════ CHALLENGE ══════ -->
 <div id="challenge-screen" class="screen">
   <div class="stage-header">
     <div class="stage-icon s-chal">⚡</div>
@@ -731,7 +703,7 @@
   <button class="btn btn-green"   id="chal-done-btn"  onclick="submitChallenge()" style="display:none;">✅ 完成提交！</button>
 </div>
 
-<!-- ══════════ COMPLETE ══════════ -->
+<!-- ══════ COMPLETE ══════ -->
 <div id="complete-screen" class="screen">
   <div class="complete-title">🎉 今日任務完成！</div>
   <div class="coins-box">
@@ -749,7 +721,7 @@
   <button class="btn btn-primary" onclick="goToMain()">回到主畫面 🏠</button>
 </div>
 
-<!-- ══════════ LEVEL UP ══════════ -->
+<!-- ══════ LEVEL UP ══════ -->
 <div class="lvlup-overlay" id="lvlup" onclick="this.classList.remove('visible')">
   <div class="lvlup-card">
     <div class="lvlup-emoji">🌟</div>
@@ -760,15 +732,9 @@
 </div>
 
 <script>
-// ─────────────────────────────────────────────
-// CONFIG  ← 只需改這裡
-// ─────────────────────────────────────────────
 const WORKER_URL = 'https://elsie-english-api.soniahsu0123.workers.dev';
 const MODEL      = 'claude-haiku-4-5-20251001';
 
-// ─────────────────────────────────────────────
-// DATA
-// ─────────────────────────────────────────────
 const TOPICS = [
   { name:'蛋仔派對',       emoji:'🎮', q:'Which map or character in 蛋仔派對 do you like the most? Tell me!' },
   { name:'今天發生的趣事', emoji:'⭐', q:'Tell me one interesting or funny thing that happened to you today!' },
@@ -787,226 +753,151 @@ const LEVELS = [
   { lv:5, name:'傳說蛋神',   need:1000 },
 ];
 
-// ─────────────────────────────────────────────
-// STATE
-// ─────────────────────────────────────────────
-let user        = null;   // 'elsie' | 'sunny'
-let topic       = null;   // current topic object
-let passage     = '';     // generated reading text
-let chatHist    = [];     // [{role,content}]
-let chatCount   = 0;
-let ttsRate     = 1;
-let timerSecs   = 60;
-let timerRef    = null;
+let user=null, topic=null, passage='', chatHist=[], chatCount=0, ttsRate=1, timerSecs=60, timerRef=null;
 
-// ─────────────────────────────────────────────
-// STORAGE
-// ─────────────────────────────────────────────
 function getData(u) {
   const raw = localStorage.getItem(`lemon_${u}`);
   return raw ? JSON.parse(raw) : { coins:0, streak:0, lastDate:null, todayDone:false, savedTopic:null };
 }
-function setData(u, d) { localStorage.setItem(`lemon_${u}`, JSON.stringify(d)); }
+function setData(u,d) { localStorage.setItem(`lemon_${u}`,JSON.stringify(d)); }
 function today() { return new Date().toISOString().split('T')[0]; }
 function getLevel(coins) {
-  let l = LEVELS[0];
-  for (const x of LEVELS) { if (coins >= x.need) l = x; }
-  return l;
+  let l=LEVELS[0]; for(const x of LEVELS){if(coins>=x.need)l=x;} return l;
 }
 
-// ─────────────────────────────────────────────
-// INIT
-// ─────────────────────────────────────────────
 window.onload = () => {
-  for (const u of ['elsie','sunny']) {
-    const d = getData(u);
-    const lv = getLevel(d.coins);
-    document.getElementById(`${u}-meta`).textContent = `${lv.name} · 🥚${d.coins}`;
+  for(const u of ['elsie','sunny']){
+    const d=getData(u); const lv=getLevel(d.coins);
+    document.getElementById(`${u}-meta`).textContent=`${lv.name} · 🥚${d.coins}`;
   }
 };
 
-// ─────────────────────────────────────────────
-// SELECT USER
-// ─────────────────────────────────────────────
 function selectUser(u) {
-  user = u;
-  const d = getData(u);
-  const t = today();
-
-  // streak update
-  if (d.lastDate !== t) {
-    const prev = new Date(); prev.setDate(prev.getDate()-1);
-    const pStr = prev.toISOString().split('T')[0];
-    d.streak = (d.lastDate === pStr) ? (d.streak||0)+1 : 1;
-    d.todayDone = false;
-    if (d.savedTopic) topic = d.savedTopic; // restore topic from saved
-  } else {
-    if (d.savedTopic) topic = d.savedTopic;
-  }
-  d.lastDate = t;
-  setData(u, d);
-
-  show('main');
-  refreshMain();
+  user=u; const d=getData(u); const t=today();
+  if(d.lastDate!==t){
+    const prev=new Date(); prev.setDate(prev.getDate()-1);
+    const pStr=prev.toISOString().split('T')[0];
+    d.streak=(d.lastDate===pStr)?(d.streak||0)+1:1;
+    d.todayDone=false;
+    if(d.savedTopic) topic=d.savedTopic;
+  } else { if(d.savedTopic) topic=d.savedTopic; }
+  d.lastDate=t; setData(u,d);
+  show('main'); refreshMain();
 }
 
-function switchUser() { user=null; topic=null; chatHist=[]; show('login'); window.onload(); }
+function switchUser(){user=null;topic=null;chatHist=[];show('login');window.onload();}
 
-// ─────────────────────────────────────────────
-// MAIN SCREEN
-// ─────────────────────────────────────────────
-function refreshMain() {
-  const d  = getData(user);
-  const lv = getLevel(d.coins);
-  document.getElementById('s-coins').textContent  = `🥚 ${d.coins}`;
-  document.getElementById('s-level').textContent  = `Lv.${lv.lv}`;
-  document.getElementById('s-streak').textContent = `🔥 ${d.streak||0}`;
-  document.getElementById('s-avatar').textContent = user==='elsie' ? '🐣' : '🐥';
-  document.getElementById('main-greet').textContent =
+function refreshMain(){
+  const d=getData(user); const lv=getLevel(d.coins);
+  document.getElementById('s-coins').textContent=`🥚 ${d.coins}`;
+  document.getElementById('s-level').textContent=`Lv.${lv.lv}`;
+  document.getElementById('s-streak').textContent=`🔥 ${d.streak||0}`;
+  document.getElementById('s-avatar').textContent=user==='elsie'?'🐣':'🐥';
+  document.getElementById('main-greet').textContent=
     `嗨 ${user==='elsie'?'Elsie':'Sunny'}！${d.todayDone?'今天的任務完成了！🎉':'今天要學英文嗎？'}`;
-
-  if (topic) {
-    document.getElementById('area-notopic').style.display = 'none';
-    document.getElementById('area-topic').style.display   = 'flex';
-    document.getElementById('banner-em').textContent   = topic.emoji;
-    document.getElementById('banner-name').textContent = topic.name;
-    const btn = document.getElementById('start-btn');
-    if (d.todayDone) { btn.textContent='✅ 今天已完成！'; btn.disabled=true; }
-    else             { btn.textContent='🚀 開始今日任務！'; btn.disabled=false; }
+  if(topic){
+    document.getElementById('area-notopic').style.display='none';
+    document.getElementById('area-topic').style.display='flex';
+    document.getElementById('banner-em').textContent=topic.emoji;
+    document.getElementById('banner-name').textContent=topic.name;
+    const btn=document.getElementById('start-btn');
+    if(d.todayDone){btn.textContent='✅ 今天已完成！';btn.disabled=true;}
+    else{btn.textContent='🚀 開始今日任務！';btn.disabled=false;}
   } else {
-    document.getElementById('area-notopic').style.display = 'flex';
-    document.getElementById('area-topic').style.display   = 'none';
+    document.getElementById('area-notopic').style.display='flex';
+    document.getElementById('area-topic').style.display='none';
   }
 }
 
-// ─────────────────────────────────────────────
-// GASHAPON MACHINE
-// ─────────────────────────────────────────────
-function spinMachine() {
-  const m = document.getElementById('machine');
-  m.classList.remove('shaking');
-  void m.offsetWidth;
-  m.classList.add('shaking');
-
-  const pool = ['🌀','✨','🎪','🎭','🎯','❓'];
-  let i = 0;
-  const spin = setInterval(() => {
-    document.getElementById('machine-win').textContent = pool[i++ % pool.length];
-  }, 90);
-
-  setTimeout(() => {
+function spinMachine(){
+  const m=document.getElementById('machine');
+  m.classList.remove('shaking'); void m.offsetWidth; m.classList.add('shaking');
+  const pool=['🌀','✨','🎪','🎭','🎯','❓']; let i=0;
+  const spin=setInterval(()=>{document.getElementById('machine-win').textContent=pool[i++%pool.length];},90);
+  setTimeout(()=>{
     clearInterval(spin);
-    const t = TOPICS[Math.floor(Math.random()*TOPICS.length)];
-    document.getElementById('machine-win').textContent = t.emoji;
+    const t=TOPICS[Math.floor(Math.random()*TOPICS.length)];
+    document.getElementById('machine-win').textContent=t.emoji;
     showEgg(t);
-  }, 900);
+  },900);
 }
 
-function showEgg(t) {
-  topic = t;
-  const overlay = document.getElementById('egg-overlay');
+function showEgg(t){
+  topic=t; const overlay=document.getElementById('egg-overlay');
   overlay.classList.add('visible');
-
-  const fe = document.getElementById('falling-egg');
-  const rc = document.getElementById('reveal-card');
-  fe.style.display = 'block';
-  fe.style.animation = 'none';
-  void fe.offsetWidth;
-  fe.style.animation = 'egg-fall 0.72s cubic-bezier(0.25,0.46,0.45,0.94) forwards';
-  rc.style.display = 'none';
-  document.getElementById('rev-em').textContent   = t.emoji;
-  document.getElementById('rev-name').textContent = t.name;
-
-  setTimeout(() => { fe.style.display='none'; rc.style.display='block'; }, 750);
+  const fe=document.getElementById('falling-egg'); const rc=document.getElementById('reveal-card');
+  fe.style.display='block'; fe.style.animation='none'; void fe.offsetWidth;
+  fe.style.animation='egg-fall 0.72s cubic-bezier(0.25,0.46,0.45,0.94) forwards';
+  rc.style.display='none';
+  document.getElementById('rev-em').textContent=t.emoji;
+  document.getElementById('rev-name').textContent=t.name;
+  setTimeout(()=>{fe.style.display='none';rc.style.display='block';},750);
 }
 
-function confirmTopic() {
+function confirmTopic(){
   document.getElementById('egg-overlay').classList.remove('visible');
-  const d = getData(user);
-  d.savedTopic = topic;
-  setData(user, d);
-  refreshMain();
+  const d=getData(user); d.savedTopic=topic; setData(user,d); refreshMain();
 }
 
-// ─────────────────────────────────────────────
-// STAGE 1 — READING
-// ─────────────────────────────────────────────
-function startLearning() { show('reading'); loadReading(); }
+function startLearning(){show('reading');loadReading();}
 
-async function loadReading() {
-  const card = document.getElementById('reading-card');
-  document.getElementById('done-read-btn').style.display = 'none';
-  card.innerHTML = `<div style="text-align:center;padding:20px;">
+async function loadReading(){
+  const card=document.getElementById('reading-card');
+  document.getElementById('done-read-btn').style.display='none';
+  card.innerHTML=`<div style="text-align:center;padding:20px;">
     <div class="dots"><span></span><span></span><span></span></div>
     <div style="margin-top:12px;color:#7B5800;font-weight:700;">Lemon 正在準備今天的短文...</div></div>`;
-
-  try {
-    const res = await api([{ role:'user', content:
+  try{
+    const res=await api([{role:'user',content:
       `Write a short English reading passage for a 12-year-old Taiwanese student (A2/KET level).
 Topic: "${topic.name}"
 Length: 120-150 words. Use simple, natural vocabulary. Make it fun and relatable.
 Also give exactly 4 key vocabulary words from the passage with Chinese translations.
 Return ONLY valid JSON:
 {"passage":"...","vocabulary":[{"word":"...","zh":"..."},{"word":"...","zh":"..."},{"word":"...","zh":"..."},{"word":"...","zh":"..."}]}`
-    }], 'You are a friendly English teacher. Return only valid JSON, nothing else.');
-
-    const txt  = res.content[0].text;
-    const m    = txt.match(/\{[\s\S]*\}/);
-    const data = JSON.parse(m[0]);
-    passage = data.passage;
-    document.getElementById('shad-passage').textContent = passage;
-
-    let vhtml = '<div class="vocab-grid">';
-    for (const v of data.vocabulary)
-      vhtml += `<div class="vocab-card"><div class="vocab-word">${v.word}</div><div class="vocab-trans">${v.zh}</div></div>`;
-    vhtml += '</div>';
-
-    card.innerHTML = `
-      <div style="font-size:13px;font-weight:900;color:#FF8C00;margin-bottom:12px;">📖 今日短文 · ${topic.emoji} ${topic.name}</div>
+    }],'You are a friendly English teacher. Return only valid JSON, nothing else.');
+    const txt=res.content[0].text; const m=txt.match(/\{[\s\S]*\}/);
+    const data=JSON.parse(m[0]); passage=data.passage;
+    document.getElementById('shad-passage').textContent=passage;
+    let vhtml='<div class="vocab-grid">';
+    for(const v of data.vocabulary)
+      vhtml+=`<div class="vocab-card"><div class="vocab-word">${v.word}</div><div class="vocab-trans">${v.zh}</div></div>`;
+    vhtml+='</div>';
+    card.innerHTML=`
+      <div style="font-family:'Fredoka One',cursive;font-size:15px;color:#FF8C00;margin-bottom:12px;">📖 今日短文 · ${topic.emoji} ${topic.name}</div>
       <div class="passage-text">${data.passage}</div>
       <div style="font-size:13px;font-weight:900;color:#7B5800;margin:14px 0 8px;">🔑 關鍵單字</div>
       ${vhtml}`;
-    document.getElementById('done-read-btn').style.display = 'block';
-
-  } catch(e) {
-    card.innerHTML = `<div style="padding:16px;color:#e74c3c;font-weight:700;">載入失敗，請重試。<br><small>${e.message}</small></div>`;
+    document.getElementById('done-read-btn').style.display='block';
+  }catch(e){
+    card.innerHTML=`<div style="padding:16px;color:#e74c3c;font-weight:700;">載入失敗，請重試。<br><small>${e.message}</small></div>`;
   }
 }
 
-// ─────────────────────────────────────────────
-// STAGE 2 — SHADOWING
-// ─────────────────────────────────────────────
-function goToShadowing() { show('shadowing'); }
-
-function setSpeed(s) {
-  ttsRate = s;
-  document.getElementById('sp075').classList.toggle('active', s===0.75);
-  document.getElementById('sp1').classList.toggle('active', s===1);
+function goToShadowing(){show('shadowing');}
+function setSpeed(s){
+  ttsRate=s;
+  document.getElementById('sp075').classList.toggle('active',s===0.75);
+  document.getElementById('sp1').classList.toggle('active',s===1);
 }
-
-function playPassage() {
-  if (!passage) return;
-  speechSynthesis.cancel();
-  const u = new SpeechSynthesisUtterance(passage);
-  u.lang = 'en-US'; u.rate = ttsRate;
-  const btn = document.getElementById('play-btn');
-  btn.textContent = '⏸'; u.onend = () => { btn.textContent = '▶️'; };
+function playPassage(){
+  if(!passage)return; speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(passage);
+  u.lang='en-US'; u.rate=ttsRate;
+  const btn=document.getElementById('play-btn');
+  btn.textContent='⏸'; u.onend=()=>{btn.textContent='▶️';};
   speechSynthesis.speak(u);
 }
 
-// ─────────────────────────────────────────────
-// STAGE 3 — CHAT
-// ─────────────────────────────────────────────
-function goToChat() {
-  show('chat');
-  chatHist = []; chatCount = 0;
-  document.getElementById('chat-msgs').innerHTML = '';
-  document.getElementById('end-chat').style.display = 'none';
-  document.getElementById('chat-lbl').textContent = `主題：${topic.emoji} ${topic.name}`;
+function goToChat(){
+  show('chat'); chatHist=[]; chatCount=0;
+  document.getElementById('chat-msgs').innerHTML='';
+  document.getElementById('end-chat').style.display='none';
+  document.getElementById('chat-lbl').textContent=`主題：${topic.emoji} ${topic.name}`;
   initChat();
 }
 
-const SYS = (name) =>
+const SYS=(name)=>
   `You are Lemon, a fun and friendly English buddy for ${name}.
 ${name} is a 12-year-old Taiwanese kid who loves 蛋仔派對 (mobile game), K-pop dancing, and TikTok. English level: A2/KET.
 Rules:
@@ -1018,161 +909,124 @@ Rules:
 - NEVER say "wrong", "incorrect", or "mistake"
 - Be warm, enthusiastic, encouraging`;
 
-async function initChat() {
-  const name = user==='elsie'?'Elsie':'Sunny';
-  addLoadMsg();
-  try {
-    const res = await api([{ role:'user', content: topic.q }], SYS(name)+`\nToday's topic: ${topic.name}\nStart with a warm greeting and ask: "${topic.q}"`);
-    rmLoadMsg();
-    const txt = res.content[0].text;
-    chatHist = [{ role:'user',content:topic.q },{ role:'assistant',content:txt }];
-    addMsg('ai', txt); speak(txt);
-  } catch(e) {
-    rmLoadMsg(); addMsg('ai','Hi!! I\'m Lemon! Let\'s chat in English today! 😊');
-  }
+async function initChat(){
+  const name=user==='elsie'?'Elsie':'Sunny'; addLoadMsg();
+  try{
+    const res=await api([{role:'user',content:topic.q}],SYS(name)+`\nToday's topic: ${topic.name}\nStart with a warm greeting and ask: "${topic.q}"`);
+    rmLoadMsg(); const txt=res.content[0].text;
+    chatHist=[{role:'user',content:topic.q},{role:'assistant',content:txt}];
+    addMsg('ai',txt); speak(txt);
+  }catch(e){rmLoadMsg();addMsg('ai','Hi!! I\'m Lemon! Let\'s chat in English today! 😊');}
 }
 
-async function sendMsg() {
-  const inp = document.getElementById('chat-in');
-  const txt = inp.value.trim(); if (!txt) return;
-  inp.value = '';
-  addMsg('user', txt);
-  chatHist.push({ role:'user', content:txt });
-  chatCount++;
-  if (chatCount >= 3) document.getElementById('end-chat').style.display = 'block';
+async function sendMsg(){
+  const inp=document.getElementById('chat-in');
+  const txt=inp.value.trim(); if(!txt)return;
+  inp.value=''; addMsg('user',txt);
+  chatHist.push({role:'user',content:txt}); chatCount++;
+  if(chatCount>=3)document.getElementById('end-chat').style.display='block';
   addLoadMsg();
-  const name = user==='elsie'?'Elsie':'Sunny';
-  try {
-    const res = await api(chatHist, SYS(name)+`\nToday's topic: ${topic.name}`);
-    const reply = res.content[0].text;
-    chatHist.push({ role:'assistant', content:reply });
-    rmLoadMsg(); addMsg('ai', reply); speak(reply);
-  } catch(e) { rmLoadMsg(); addMsg('ai','That\'s awesome! Tell me more! 😄'); }
+  const name=user==='elsie'?'Elsie':'Sunny';
+  try{
+    const res=await api(chatHist,SYS(name)+`\nToday's topic: ${topic.name}`);
+    const reply=res.content[0].text;
+    chatHist.push({role:'assistant',content:reply});
+    rmLoadMsg(); addMsg('ai',reply); speak(reply);
+  }catch(e){rmLoadMsg();addMsg('ai','That\'s awesome! Tell me more! 😄');}
 }
 
-function addMsg(type, text) {
-  const box = document.getElementById('chat-msgs');
-  const d   = document.createElement('div');
-  d.className = `msg ${type}`;
-  d.innerHTML = type==='ai'
-    ? `<div class="ai-label">🍋 Lemon</div>${text}`
-    : text;
-  box.appendChild(d);
-  box.scrollTop = box.scrollHeight;
+function addMsg(type,text){
+  const box=document.getElementById('chat-msgs');
+  const d=document.createElement('div'); d.className=`msg ${type}`;
+  d.innerHTML=type==='ai'?`<div class="ai-label">🍋 Lemon</div>${text}`:text;
+  box.appendChild(d); box.scrollTop=box.scrollHeight;
 }
-function addLoadMsg() {
-  const box = document.getElementById('chat-msgs');
-  const d   = document.createElement('div');
-  d.className='msg ai'; d.id='load-msg';
+function addLoadMsg(){
+  const box=document.getElementById('chat-msgs');
+  const d=document.createElement('div'); d.className='msg ai'; d.id='load-msg';
   d.innerHTML='<div class="ai-label">🍋 Lemon</div><div class="dots"><span></span><span></span><span></span></div>';
   box.appendChild(d); box.scrollTop=box.scrollHeight;
 }
-function rmLoadMsg() { const e=document.getElementById('load-msg'); if(e) e.remove(); }
+function rmLoadMsg(){const e=document.getElementById('load-msg');if(e)e.remove();}
 
-function speak(text) {
+function speak(text){
   speechSynthesis.cancel();
-  const clean = text.replace(/\(.*?\)/g,'').replace(/[^\w\s.,!?'"]/g,'').trim();
-  if (!clean) return;
-  const u = new SpeechSynthesisUtterance(clean);
-  u.lang='en-US'; u.rate=0.92;
+  const clean=text.replace(/\(.*?\)/g,'').replace(/[^\w\s.,!?'"]/g,'').trim();
+  if(!clean)return;
+  const u=new SpeechSynthesisUtterance(clean); u.lang='en-US'; u.rate=0.92;
   speechSynthesis.speak(u);
 }
 
-// ─────────────────────────────────────────────
-// STAGE 4 — CHALLENGE
-// ─────────────────────────────────────────────
-function goToChallenge() {
-  show('challenge');
-  timerSecs = 60;
-  clearInterval(timerRef);
-  document.getElementById('timer-num').textContent = '60';
-  document.getElementById('timer-ring').style.background = 'linear-gradient(135deg,#FF3D8A,#FF8C00)';
-  document.getElementById('chal-text').value = '';
-  document.getElementById('chal-start-btn').style.display = 'block';
-  document.getElementById('chal-done-btn').style.display  = 'none';
-  document.getElementById('chal-prompt').textContent =
-    `用英文聊聊「${topic.name}」！不用完美，說個不停最重要！`;
+function goToChallenge(){
+  show('challenge'); timerSecs=60; clearInterval(timerRef);
+  document.getElementById('timer-num').textContent='60';
+  document.getElementById('timer-ring').style.background='linear-gradient(135deg,#FF3D8A,#FF8C00)';
+  document.getElementById('chal-text').value='';
+  document.getElementById('chal-start-btn').style.display='block';
+  document.getElementById('chal-done-btn').style.display='none';
+  document.getElementById('chal-prompt').textContent=`用英文聊聊「${topic.name}」！不用完美，說個不停最重要！`;
 }
 
-function startChallenge() {
-  document.getElementById('chal-start-btn').style.display = 'none';
+function startChallenge(){
+  document.getElementById('chal-start-btn').style.display='none';
   document.getElementById('chal-text').focus();
-  timerRef = setInterval(() => {
+  timerRef=setInterval(()=>{
     timerSecs--;
-    document.getElementById('timer-num').textContent = timerSecs;
-    const ring = document.getElementById('timer-ring');
-    if      (timerSecs <= 10) ring.style.background='linear-gradient(135deg,#EF4444,#DC2626)';
-    else if (timerSecs <= 30) ring.style.background='linear-gradient(135deg,#FF8C00,#E06600)';
-    if (timerSecs >= 5) document.getElementById('chal-done-btn').style.display = 'block';
-    if (timerSecs <= 0) { clearInterval(timerRef); submitChallenge(); }
-  }, 1000);
+    document.getElementById('timer-num').textContent=timerSecs;
+    const ring=document.getElementById('timer-ring');
+    if(timerSecs<=10)ring.style.background='linear-gradient(135deg,#EF4444,#DC2626)';
+    else if(timerSecs<=30)ring.style.background='linear-gradient(135deg,#FF8C00,#E06600)';
+    if(timerSecs>=5)document.getElementById('chal-done-btn').style.display='block';
+    if(timerSecs<=0){clearInterval(timerRef);submitChallenge();}
+  },1000);
 }
 
-async function submitChallenge() {
+async function submitChallenge(){
   clearInterval(timerRef);
-  const text = document.getElementById('chal-text').value;
-  const d    = getData(user);
-
-  let earned = 5 + 5 + 10; // stages 1-3
-  if (text.trim().length > 10) earned += 20; // challenge bonus
-  if ((d.streak||0) >= 7)  { earned += 50; }
-  else if ((d.streak||0) >= 3) { earned += 15; }
-
-  const prevLv = getLevel(d.coins).lv;
-  d.coins   += earned;
-  d.todayDone = true;
-  setData(user, d);
-  const newLv = getLevel(d.coins).lv;
-
+  const text=document.getElementById('chal-text').value; const d=getData(user);
+  let earned=5+5+10;
+  if(text.trim().length>10)earned+=20;
+  if((d.streak||0)>=7)earned+=50;
+  else if((d.streak||0)>=3)earned+=15;
+  const prevLv=getLevel(d.coins).lv;
+  d.coins+=earned; d.todayDone=true; setData(user,d);
+  const newLv=getLevel(d.coins).lv;
   show('complete');
-  document.getElementById('earned-num').textContent  = `+${earned}`;
-  document.getElementById('total-coins').textContent = d.coins;
-
-  if (newLv > prevLv) {
-    setTimeout(() => {
-      document.getElementById('lvlup-name').textContent = getLevel(d.coins).name;
+  document.getElementById('earned-num').textContent=`+${earned}`;
+  document.getElementById('total-coins').textContent=d.coins;
+  if(newLv>prevLv){
+    setTimeout(()=>{
+      document.getElementById('lvlup-name').textContent=getLevel(d.coins).name;
       document.getElementById('lvlup').classList.add('visible');
-    }, 900);
+    },900);
   }
-
-  // AI feedback
-  const fbEl = document.getElementById('fb-text');
-  if (text.trim().length > 5) {
-    try {
-      const res = await api([{ role:'user', content:
+  const fbEl=document.getElementById('fb-text');
+  if(text.trim().length>5){
+    try{
+      const res=await api([{role:'user',content:
         `Give warm encouragement (2 sentences max) for this 1-minute English writing about "${topic.name}".
-Point out ONE specific good thing. Be enthusiastic and friendly!\nText: "${text.slice(0,300)}"` }],
+Point out ONE specific good thing. Be enthusiastic and friendly!\nText: "${text.slice(0,300)}"`}],
         `You are Lemon, a warm encouraging English buddy for a 12-year-old Taiwanese student.`);
-      fbEl.textContent = res.content[0].text;
-    } catch { fbEl.textContent = "Amazing effort today!! Every single word you write is making you stronger! 🌟"; }
-  } else {
-    fbEl.textContent = "Good job showing up today! Starting is already a win! 💪 Tomorrow try to write a bit more!";
+      fbEl.textContent=res.content[0].text;
+    }catch{fbEl.textContent="Amazing effort today!! Every single word you write is making you stronger! 🌟";}
+  }else{
+    fbEl.textContent="Good job showing up today! Starting is already a win! 💪 Tomorrow try to write a bit more!";
   }
 }
 
-function goToMain() { show('main'); refreshMain(); }
+function goToMain(){show('main');refreshMain();}
 
-// ─────────────────────────────────────────────
-// API
-// ─────────────────────────────────────────────
-async function api(messages, system) {
-  const body = { model:MODEL, max_tokens:500, system, messages };
-  const res  = await fetch(WORKER_URL, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body: JSON.stringify(body)
-  });
-  if (!res.ok) throw new Error(`API ${res.status}: ${await res.text()}`);
-  const data = await res.json();
-  if (data.error) throw new Error(data.error.message || JSON.stringify(data.error));
+async function api(messages,system){
+  const body={model:MODEL,max_tokens:500,system,messages};
+  const res=await fetch(WORKER_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)});
+  if(!res.ok)throw new Error(`API ${res.status}: ${await res.text()}`);
+  const data=await res.json();
+  if(data.error)throw new Error(data.error.message||JSON.stringify(data.error));
   return data;
 }
 
-// ─────────────────────────────────────────────
-// SCREEN
-// ─────────────────────────────────────────────
-function show(name) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+function show(name){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(`${name}-screen`).classList.add('active');
 }
 </script>
