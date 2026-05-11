@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo E – 動森 × 少女</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;overflow-x:hidden;background:#FAFDF8;}
+
+/* ─── BANNER ─── */
+.banner{position:fixed;top:0;left:0;right:0;z-index:999;padding:9px 16px;text-align:center;
+  background:#fff;border-bottom:3px solid #A7D9A0;
+  font-family:'Fredoka One',cursive;font-size:14px;color:#2F8B5F;letter-spacing:.5px;}
+
+/* ─── SECTION ─── */
+.sec{padding:58px 20px 52px;min-height:100vh;display:flex;flex-direction:column;align-items:center;gap:20px;position:relative;}
+.slabel{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(47,139,95,.4);align-self:flex-start;}
+.s1{background:linear-gradient(160deg,#F7FEFA 0%,#FFF9F2 100%);}
+.s2{background:linear-gradient(160deg,#FFF9F2 0%,#F7FEFA 100%);}
+.s3{background:linear-gradient(160deg,#F7FEFA 0%,#F0F6FF 100%);}
+.s4{background:linear-gradient(160deg,#FFF0F6 0%,#F7FEFA 100%);}
+
+/* ─── LOGO ─── */
+.logo{font-family:'Fredoka One',cursive;font-size:46px;line-height:1.1;text-align:center;
+  color:#2F8B5F;letter-spacing:1px;
+  text-shadow:0 4px 0 rgba(167,217,160,.5);}
+.logo span{color:#F59E0B;}
+.logo-sub{font-size:15px;font-weight:800;color:#94A3B8;text-align:center;}
+
+/* ─── LEAF DOTS ─── */
+.leaf-row{display:flex;gap:6px;align-items:center;justify-content:center;}
+.leaf{width:10px;height:10px;border-radius:50%;}
+
+/* ─── USER CARDS ─── */
+.urow{display:flex;gap:20px;width:100%;max-width:420px;}
+.ucard{flex:1;background:#fff;border-radius:36px;padding:20px 10px 24px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;
+  transition:transform .18s,box-shadow .18s;position:relative;overflow:hidden;
+  border:2.5px solid #E8F5E8;}
+.ucard:hover{transform:translateY(-8px);}
+.ucard.ec{border-color:#A7D9A0;box-shadow:0 10px 0 #A7D9A0,0 14px 40px rgba(167,217,160,.25);}
+.ucard.sc{border-color:#FFB3C6;box-shadow:0 10px 0 #FFB3C6,0 14px 40px rgba(255,179,198,.25);}
+.ucard::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;border-radius:36px 36px 0 0;}
+.ucard.ec::before{background:repeating-linear-gradient(90deg,#86EFAC 0 12px,#A7D9A0 12px 24px);}
+.ucard.sc::before{background:repeating-linear-gradient(90deg,#FCA5A5 0 12px,#FFB3C6 12px 24px);}
+.cw{width:110px;height:130px;}
+.cw svg{width:100%;height:100%;filter:drop-shadow(0 6px 14px rgba(0,0,0,0.12));}
+@keyframes cb{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.cw{animation:cb 3s ease-in-out infinite;}
+.ucard:nth-child(2) .cw{animation-delay:.6s;}
+.uname{font-family:'Fredoka One',cursive;font-size:22px;margin-top:4px;}
+.umeta{font-size:12px;color:#94A3B8;font-weight:800;text-align:center;}
+
+/* ─── STATS ─── */
+.stats{display:flex;justify-content:space-around;
+  background:#fff;border:2.5px solid #E8F5E8;border-radius:24px;
+  padding:12px 16px;width:100%;max-width:480px;
+  box-shadow:0 6px 0 #E8F5E8,0 10px 24px rgba(167,217,160,.12);}
+.sv{font-size:18px;font-weight:900;color:#1E293B;text-align:center;}
+.sl{font-size:10px;color:#94A3B8;font-weight:800;text-align:center;margin-top:2px;}
+
+/* ─── CARD ─── */
+.card{background:#fff;border-radius:28px;padding:20px;
+  width:100%;max-width:480px;
+  border:2.5px solid #E8F5E8;
+  box-shadow:0 6px 0 #D1FAE5,0 10px 32px rgba(0,0,0,0.05);
+  position:relative;}
+.card-pink{border-color:#FFE4EC;box-shadow:0 6px 0 #FFD6E4,0 10px 32px rgba(0,0,0,0.05);}
+.card-blue{border-color:#DBEAFE;box-shadow:0 6px 0 #BFDBFE,0 10px 32px rgba(0,0,0,0.05);}
+
+/* ─── TAB-STYLE STAGE MAP ─── */
+.stagemap{display:flex;flex-direction:column;gap:0;width:100%;max-width:480px;}
+.srow{display:flex;align-items:center;gap:0;position:relative;}
+.srow:not(:last-child)::after{content:'';position:absolute;left:32px;bottom:-18px;
+  width:3px;height:18px;background:#E8F5E8;z-index:0;}
+.snode{width:64px;height:64px;border-radius:22px;display:flex;align-items:center;justify-content:center;
+  font-size:26px;flex-shrink:0;border:2.5px solid #fff;
+  box-shadow:0 5px 0 rgba(0,0,0,.08),0 8px 20px rgba(0,0,0,0.08);
+  position:relative;z-index:1;}
+.sn1{background:linear-gradient(160deg,#FEF9C3,#FDE68A);}
+.sn2{background:linear-gradient(160deg,#D1FAE5,#86EFAC);}
+.sn3{background:linear-gradient(160deg,#DBEAFE,#93C5FD);}
+.sn4{background:linear-gradient(160deg,#FCE7F3,#FCA5A5);}
+.snode.active{box-shadow:0 0 0 4px rgba(167,217,160,.4),0 5px 0 rgba(47,139,95,.3),0 8px 20px rgba(47,139,95,.2);
+  animation:np 1.8s ease-in-out infinite;}
+@keyframes np{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+.snode.locked{opacity:.35;filter:grayscale(1);}
+.sinfo{flex:1;background:#fff;border:2px solid #E8F5E8;border-radius:0 20px 20px 0;
+  margin-left:-8px;padding:12px 16px 12px 20px;
+  box-shadow:0 4px 0 #E8F5E8;}
+.sinfo.active-row{border-color:#A7D9A0;box-shadow:0 4px 0 #A7D9A0;}
+.stitle{font-family:'Fredoka One',cursive;font-size:16px;color:#1E293B;}
+.ssub{font-size:12px;color:#94A3B8;font-weight:800;margin-top:2px;}
+.sbadge{display:inline-block;font-size:11px;font-weight:900;color:#fff;background:#34D399;border-radius:20px;padding:2px 9px;margin-top:4px;}
+
+/* ─── TOPIC ─── */
+.topic{width:100%;max-width:480px;background:#fff;border-radius:24px;
+  padding:14px 18px;display:flex;align-items:center;gap:14px;
+  border:2.5px solid #FEF9C3;
+  box-shadow:0 5px 0 #FEF08A,0 8px 20px rgba(253,224,71,.15);}
+.tem{font-size:30px;}
+.tlbl{font-size:11px;font-weight:900;color:#B45309;text-transform:uppercase;letter-spacing:.5px;}
+.tnm{font-family:'Fredoka One',cursive;font-size:20px;color:#1E293B;}
+
+/* ─── BUTTONS ─── */
+.btn{display:inline-flex;align-items:center;justify-content:center;border:none;border-radius:16px;
+  padding:16px 36px;font-size:17px;font-weight:900;font-family:'Nunito',sans-serif;
+  cursor:pointer;width:100%;max-width:320px;gap:8px;
+  transition:transform .12s,box-shadow .12s;}
+.btn:active{transform:translateY(3px);}
+
+.btn-green{background:#4ADE80;color:#fff;
+  box-shadow:0 6px 0 #16A34A,0 8px 24px rgba(74,222,128,.3);border:none;}
+.btn-green:hover{box-shadow:0 8px 0 #16A34A,0 12px 28px rgba(74,222,128,.4);}
+.btn-green:active{box-shadow:0 3px 0 #16A34A;}
+
+.btn-blue{background:#60A5FA;color:#fff;
+  box-shadow:0 6px 0 #2563EB,0 8px 24px rgba(96,165,250,.3);}
+.btn-blue:hover{box-shadow:0 8px 0 #2563EB,0 12px 28px rgba(96,165,250,.4);}
+.btn-blue:active{box-shadow:0 3px 0 #2563EB;}
+
+.btn-pink{background:#F472B6;color:#fff;
+  box-shadow:0 6px 0 #BE185D,0 8px 24px rgba(244,114,182,.3);}
+.btn-pink:hover{box-shadow:0 8px 0 #BE185D,0 12px 28px rgba(244,114,182,.4);}
+.btn-pink:active{box-shadow:0 3px 0 #BE185D;}
+
+.btn-yellow{background:#FBBF24;color:#fff;
+  box-shadow:0 6px 0 #B45309,0 8px 24px rgba(251,191,36,.3);}
+.btn-yellow:hover{box-shadow:0 8px 0 #B45309,0 12px 28px rgba(251,191,36,.4);}
+.btn-yellow:active{box-shadow:0 3px 0 #B45309;}
+
+.btn-ghost{background:#fff;color:#94A3B8;border:2.5px solid #E2E8F0;box-shadow:0 4px 0 #E2E8F0;font-size:15px;}
+
+/* ─── PROGRESS ─── */
+.prog{display:flex;align-items:center;gap:6px;width:100%;max-width:480px;}
+.pstep{height:12px;flex:1;border-radius:8px;background:#E8F5E8;position:relative;overflow:hidden;}
+.pstep.done{background:linear-gradient(90deg,#4ADE80,#86EFAC);}
+.pstep.active{background:linear-gradient(90deg,#4ADE80,#A7D9A0);
+  animation:ppa 1.2s ease-in-out infinite alternate;}
+@keyframes ppa{0%{opacity:.7}100%{opacity:1}}
+.pnum{font-family:'Fredoka One',cursive;font-size:13px;color:#64748B;white-space:nowrap;}
+
+/* ─── READING ─── */
+.stage-hdr{display:flex;align-items:center;gap:12px;width:100%;max-width:480px;}
+.hdr-icon{width:52px;height:52px;border-radius:18px;display:flex;align-items:center;
+  justify-content:center;font-size:24px;flex-shrink:0;
+  box-shadow:0 5px 0 rgba(0,0,0,.1);}
+.hi-y{background:linear-gradient(160deg,#FEF9C3,#FDE68A);border:2px solid #FDE68A;}
+.hi-b{background:linear-gradient(160deg,#DBEAFE,#93C5FD);border:2px solid #93C5FD;}
+.hdr-text .title{font-family:'Fredoka One',cursive;font-size:20px;color:#1E293B;}
+.hdr-text .sub{font-size:12px;color:#94A3B8;font-weight:800;margin-top:2px;}
+
+.passage{font-size:16px;line-height:1.95;color:#334155;font-weight:700;}
+.vgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.vocab{background:#F7FEFA;border-radius:16px;padding:12px;border:2px solid #D1FAE5;}
+.vw{font-size:14px;font-weight:900;color:#065F46;}
+.vz{font-size:12px;color:#047857;font-weight:700;margin-top:2px;}
+
+/* ─── CHAT ─── */
+.chatbox{display:flex;flex-direction:column;gap:10px;width:100%;max-width:480px;}
+.cmsg{max-width:80%;padding:12px 16px;border-radius:20px;font-size:15px;font-weight:700;line-height:1.5;}
+.cai{background:#fff;color:#1E293B;align-self:flex-start;border-bottom-left-radius:4px;
+  box-shadow:0 3px 0 #E8F5E8,0 5px 16px rgba(0,0,0,.06);border:2px solid #E8F5E8;}
+.cuser{background:#4ADE80;color:#fff;align-self:flex-end;border-bottom-right-radius:4px;
+  box-shadow:0 3px 0 #16A34A,0 5px 16px rgba(74,222,128,.3);}
+.ailbl{font-size:11px;font-weight:900;color:#F59E0B;margin-bottom:4px;}
+
+.brow{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%;max-width:480px;}
+.bsm{padding:12px 20px;font-size:15px;max-width:none;width:auto;border-radius:14px;}
+
+/* ─── INPUT ─── */
+.input-row{display:flex;gap:10px;width:100%;max-width:480px;}
+.chat-input{flex:1;background:#fff;border:2.5px solid #E8F5E8;border-radius:16px;
+  padding:13px 16px;font-size:15px;font-family:'Nunito',sans-serif;font-weight:700;
+  color:#1E293B;outline:none;}
+.chat-input:focus{border-color:#86EFAC;}
+.send-btn{width:52px;height:52px;border-radius:16px;background:#4ADE80;border:none;
+  cursor:pointer;font-size:22px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 5px 0 #16A34A;flex-shrink:0;}
+
+.divider{width:100%;max-width:480px;height:2px;border:none;
+  background:repeating-linear-gradient(90deg,#E8F5E8 0 12px,transparent 12px 20px);margin:4px 0;}
+</style>
+</head>
+<body>
+<div class="banner">🌿 Demo E — 動森 × 少女風 ｜ 乾淨清新 · 厚底按鈕 · 任天堂精緻感</div>
+
+<!-- ══ LOGIN ══ -->
+<div class="sec s1">
+  <div class="slabel">▸ 登入頁</div>
+  <div class="logo">🍋 Lemon<br><span>英文星球</span></div>
+  <div class="logo-sub">選一個角色，一起學英文吧！</div>
+  <div class="leaf-row">
+    <div class="leaf" style="background:#86EFAC;"></div>
+    <div class="leaf" style="background:#6EE7B7;"></div>
+    <div class="leaf" style="background:#FDE68A;"></div>
+    <div class="leaf" style="background:#FCA5A5;"></div>
+    <div class="leaf" style="background:#93C5FD;"></div>
+    <div class="leaf" style="background:#C4B5FD;"></div>
+  </div>
+
+  <div class="urow">
+    <!-- ELSIE -->
+    <div class="ucard ec">
+      <div class="cw"><svg viewBox="0 0 120 155" xmlns="http://www.w3.org/2000/svg">
+        <path d="M26 68 Q10 90 18 116 Q26 128 34 114 Q30 94 34 74 Z" fill="#A78BFA"/>
+        <path d="M94 68 Q110 90 102 116 Q94 128 86 114 Q90 94 86 74 Z" fill="#A78BFA"/>
+        <ellipse cx="60" cy="47" rx="40" ry="42" fill="#C4B5FD"/>
+        <path d="M40 98 Q36 122 34 148 Q60 155 86 148 Q84 122 80 98 Z" fill="#BBF7D0"/>
+        <path d="M40 98 Q60 106 80 98 Q76 110 60 112 Q44 110 40 98 Z" fill="#4ADE80"/>
+        <rect x="53" y="88" width="14" height="13" rx="6" fill="#FFD4C2"/>
+        <circle cx="60" cy="52" r="38" fill="#FFD4C2"/>
+        <path d="M22 44 Q28 18 60 14 Q92 18 98 44 Q82 32 60 30 Q38 32 22 44 Z" fill="#DDD6FE"/>
+        <path d="M22 44 Q16 58 22 70 Q28 64 30 56 Q26 50 22 44 Z" fill="#DDD6FE"/>
+        <path d="M98 44 Q104 58 98 70 Q92 64 90 56 Q94 50 98 44 Z" fill="#DDD6FE"/>
+        <ellipse cx="26" cy="68" rx="9" ry="7" fill="#A78BFA"/>
+        <ellipse cx="94" cy="68" rx="9" ry="7" fill="#A78BFA"/>
+        <!-- small flower clip -->
+        <circle cx="30" cy="34" r="7" fill="#FDE68A" stroke="#FBBF24" stroke-width="1.5"/>
+        <circle cx="30" cy="34" r="3.5" fill="#F59E0B"/>
+        <path d="M34 40 Q43 36 50 39" stroke="#6D28D9" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M70 39 Q77 36 86 40" stroke="#6D28D9" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="44" cy="54" rx="12" ry="14" fill="white"/>
+        <ellipse cx="76" cy="54" rx="12" ry="14" fill="white"/>
+        <path d="M32 44 Q44 40 56 44" stroke="#4C1D95" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M64 44 Q76 40 88 44" stroke="#4C1D95" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="44" cy="56" rx="8.5" ry="10" fill="#7C3AED"/>
+        <ellipse cx="76" cy="56" rx="8.5" ry="10" fill="#7C3AED"/>
+        <ellipse cx="44" cy="58" rx="5" ry="6.5" fill="#3B0764"/>
+        <ellipse cx="76" cy="58" rx="5" ry="6.5" fill="#3B0764"/>
+        <ellipse cx="47" cy="51" rx="3.5" ry="4" fill="white"/>
+        <ellipse cx="79" cy="51" rx="3.5" ry="4" fill="white"/>
+        <circle cx="39" cy="61" r="1.8" fill="rgba(255,255,255,.75)"/>
+        <circle cx="71" cy="61" r="1.8" fill="rgba(255,255,255,.75)"/>
+        <ellipse cx="31" cy="65" rx="10" ry="6" fill="rgba(74,222,128,.35)"/>
+        <ellipse cx="89" cy="65" rx="10" ry="6" fill="rgba(74,222,128,.35)"/>
+        <circle cx="60" cy="70" r="1.8" fill="rgba(180,100,80,.35)"/>
+        <path d="M52 78 Q60 86 68 78" stroke="#4ADE80" stroke-width="2.5" fill="rgba(167,243,208,.3)" stroke-linecap="round"/>
+        <ellipse cx="47" cy="149" rx="13" ry="7" fill="#34D399"/>
+        <ellipse cx="73" cy="149" rx="13" ry="7" fill="#34D399"/>
+      </svg></div>
+      <div class="uname" style="color:#059669;">Elsie</div>
+      <div class="umeta">英文小蛋 · 🪙 340</div>
+    </div>
+
+    <!-- SUNNY -->
+    <div class="ucard sc">
+      <div class="cw"><svg viewBox="0 0 120 155" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="60" cy="50" rx="40" ry="44" fill="#FCA5A5"/>
+        <ellipse cx="20" cy="60" rx="12" ry="20" fill="#FCA5A5"/>
+        <ellipse cx="100" cy="60" rx="12" ry="20" fill="#FCA5A5"/>
+        <path d="M40 98 Q36 122 34 148 Q60 155 86 148 Q84 122 80 98 Z" fill="#FCE7F3"/>
+        <path d="M40 98 Q60 106 80 98 Q76 110 60 112 Q44 110 40 98 Z" fill="#F9A8D4"/>
+        <rect x="53" y="88" width="14" height="13" rx="6" fill="#FFD4C2"/>
+        <circle cx="60" cy="52" r="38" fill="#FFD4C2"/>
+        <path d="M22 46 Q26 18 60 14 Q94 18 98 46 Q84 34 60 32 Q36 34 22 46 Z" fill="#FCA5A5"/>
+        <path d="M22 46 Q16 60 20 72 Q28 66 30 58 Q26 52 22 46 Z" fill="#FCA5A5"/>
+        <path d="M98 46 Q104 60 100 72 Q92 66 90 58 Q94 52 98 46 Z" fill="#FCA5A5"/>
+        <ellipse cx="88" cy="30" rx="14" ry="9" fill="#FB7185" transform="rotate(20 88 30)"/>
+        <ellipse cx="88" cy="30" rx="10" ry="6" fill="#FCA5A5" transform="rotate(20 88 30)"/>
+        <ellipse cx="104" cy="22" rx="14" ry="9" fill="#FB7185" transform="rotate(-15 104 22)"/>
+        <ellipse cx="104" cy="22" rx="10" ry="6" fill="#FCA5A5" transform="rotate(-15 104 22)"/>
+        <circle cx="96" cy="26" r="7" fill="#F43F5E"/>
+        <circle cx="96" cy="26" r="4" fill="#FCA5A5"/>
+        <path d="M34 40 Q43 36 50 39" stroke="#9D174D" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M70 39 Q77 36 86 40" stroke="#9D174D" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="44" cy="54" rx="12" ry="14" fill="white"/>
+        <ellipse cx="76" cy="54" rx="12" ry="14" fill="white"/>
+        <path d="M32 44 Q44 40 56 44" stroke="#9D174D" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M64 44 Q76 40 88 44" stroke="#9D174D" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="44" cy="56" rx="8.5" ry="10" fill="#BE185D"/>
+        <ellipse cx="76" cy="56" rx="8.5" ry="10" fill="#BE185D"/>
+        <ellipse cx="44" cy="58" rx="5" ry="6.5" fill="#500724"/>
+        <ellipse cx="76" cy="58" rx="5" ry="6.5" fill="#500724"/>
+        <ellipse cx="47" cy="51" rx="3.5" ry="4" fill="white"/>
+        <ellipse cx="79" cy="51" rx="3.5" ry="4" fill="white"/>
+        <circle cx="39" cy="61" r="1.8" fill="rgba(255,255,255,.75)"/>
+        <circle cx="71" cy="61" r="1.8" fill="rgba(255,255,255,.75)"/>
+        <ellipse cx="31" cy="65" rx="10" ry="6" fill="rgba(251,113,133,.38)"/>
+        <ellipse cx="89" cy="65" rx="10" ry="6" fill="rgba(251,113,133,.38)"/>
+        <circle cx="60" cy="70" r="1.8" fill="rgba(180,80,80,.35)"/>
+        <path d="M52 78 Q60 87 68 78" stroke="#F43F5E" stroke-width="2.5" fill="rgba(255,182,193,.25)" stroke-linecap="round"/>
+        <ellipse cx="47" cy="149" rx="13" ry="7" fill="#F9A8D4"/>
+        <ellipse cx="73" cy="149" rx="13" ry="7" fill="#F9A8D4"/>
+      </svg></div>
+      <div class="uname" style="color:#BE185D;">Sunny</div>
+      <div class="umeta">初學蛋仔 · 🪙 120</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MAIN ══ -->
+<div class="sec s2">
+  <div class="slabel">▸ 主畫面</div>
+  <div class="stats">
+    <div><div class="sv">🪙 340</div><div class="sl">蛋幣</div></div>
+    <div><div class="sv">Lv.3</div><div class="sl">等級</div></div>
+    <div><div class="sv">🔥 5</div><div class="sl">連續天</div></div>
+    <div><div class="sv">🔄</div><div class="sl">換人</div></div>
+  </div>
+  <div style="font-family:'Fredoka One',cursive;font-size:22px;color:#1E293B;text-align:center;">嗨 Elsie！今天的任務等你！🌿</div>
+
+  <div class="topic">
+    <div class="tem">👯</div>
+    <div><div class="tlbl">今天的主題</div><div class="tnm">朋友話題</div></div>
+  </div>
+
+  <div class="stagemap">
+    <div class="srow">
+      <div class="snode sn1 active">📖</div>
+      <div class="sinfo active-row">
+        <div class="stitle">閱讀短文</div>
+        <div class="ssub">讀一讀今天的故事</div>
+        <span class="sbadge">進行中</span>
+      </div>
+    </div>
+    <div class="srow">
+      <div class="snode sn2">🎵</div>
+      <div class="sinfo"><div class="stitle">跟讀練習</div><div class="ssub">模仿語調和節奏</div></div>
+    </div>
+    <div class="srow">
+      <div class="snode sn3 locked">💬</div>
+      <div class="sinfo"><div class="stitle" style="opacity:.4">跟 Lemon 聊天</div><div class="ssub" style="opacity:.4">10 分鐘英文對話</div></div>
+    </div>
+    <div class="srow">
+      <div class="snode sn4 locked">⚡</div>
+      <div class="sinfo"><div class="stitle" style="opacity:.4">1 分鐘挑戰</div><div class="ssub" style="opacity:.4">60 秒不停說！</div></div>
+    </div>
+  </div>
+  <button class="btn btn-green">🌿 開始今日任務！</button>
+</div>
+
+<!-- ══ READING ══ -->
+<div class="sec s3">
+  <div class="slabel">▸ 閱讀頁</div>
+  <div class="stage-hdr">
+    <div class="hdr-icon hi-y">📖</div>
+    <div class="hdr-text">
+      <div class="title">階段 1：今日短文</div>
+      <div class="sub">讀一讀，認識今天的關鍵單字</div>
+    </div>
+  </div>
+  <div class="prog">
+    <div class="pstep done"></div>
+    <div class="pstep active"></div>
+    <div class="pstep"></div>
+    <div class="pstep"></div>
+    <div class="pnum">1 / 4</div>
+  </div>
+  <div class="card">
+    <div style="font-size:13px;font-weight:900;color:#059669;margin-bottom:10px;">📖 今日短文 · 👯 朋友話題</div>
+    <div class="passage">Lucy is my best friend. We are both twelve years old and go to the same school. Every day, we sit together at lunch and talk about our favorite games and songs. Lucy loves playing badminton, so we practice together twice a week at the park near our home. She is very kind and always helps me when I feel sad. On weekends, we sometimes go to the shopping mall to look at clothes and snacks. I love spending time with Lucy because she always makes me laugh.</div>
+    <div style="font-size:13px;font-weight:900;color:#94A3B8;margin:14px 0 8px;">🔑 關鍵單字</div>
+    <div class="vgrid">
+      <div class="vocab"><div class="vw">practice</div><div class="vz">練習</div></div>
+      <div class="vocab"><div class="vw">together</div><div class="vz">一起</div></div>
+      <div class="vocab"><div class="vw">weekend</div><div class="vz">週末</div></div>
+      <div class="vocab"><div class="vw">favorite</div><div class="vz">最喜歡的</div></div>
+    </div>
+  </div>
+  <button class="btn btn-blue">讀完了！去跟讀 →</button>
+</div>
+
+<!-- ══ CHAT ══ -->
+<div class="sec s4">
+  <div class="slabel">▸ 對話頁 + 所有按鈕</div>
+  <div class="stage-hdr">
+    <div class="hdr-icon hi-b">💬</div>
+    <div class="hdr-text">
+      <div class="title">階段 3：跟 Lemon 聊天</div>
+      <div class="sub">主題：👯 朋友話題</div>
+    </div>
+  </div>
+  <div class="prog">
+    <div class="pstep done"></div>
+    <div class="pstep done"></div>
+    <div class="pstep active"></div>
+    <div class="pstep"></div>
+    <div class="pnum">3 / 4</div>
+  </div>
+  <div class="chatbox">
+    <div class="cmsg cai"><div class="ailbl">🍋 Lemon</div>Hey Elsie!! What's your best friend's name? Tell me something fun about her! 🎉</div>
+    <div class="cmsg cuser">My best friend is Lucy! She likes badminton very much!</div>
+    <div class="cmsg cai"><div class="ailbl">🍋 Lemon</div>Ooh that's so cool!! (tip: we say "She really loves badminton!" 🌿) Do you play together?</div>
+  </div>
+  <div class="input-row">
+    <input class="chat-input" placeholder="Type in English…" type="text">
+    <button class="send-btn">→</button>
+  </div>
+  <hr class="divider">
+  <div class="slabel" style="font-size:11px;">按鈕樣式展示</div>
+  <div class="brow">
+    <button class="btn btn-green bsm">🌿 主要</button>
+    <button class="btn btn-blue bsm">💬 對話</button>
+    <button class="btn btn-pink bsm">⚡ 挑戰</button>
+    <button class="btn btn-yellow bsm">⭐ 完成</button>
+    <button class="btn btn-ghost bsm">略過</button>
+  </div>
+</div>
+</body>
+</html>

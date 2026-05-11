@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Demo F – 偶像彩虹</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;overflow-x:hidden;}
+
+/* ─── BANNER ─── */
+.banner{position:fixed;top:0;left:0;right:0;z-index:999;padding:9px 16px;text-align:center;
+  background:linear-gradient(90deg,#FF6B9D,#FF9F68,#FFD166,#06D6A0,#118AB2,#8338EC);
+  font-family:'Fredoka One',cursive;font-size:14px;color:#fff;
+  text-shadow:0 1px 4px rgba(0,0,0,.25);letter-spacing:.5px;}
+
+/* ─── SECTION ─── */
+.sec{padding:60px 20px 52px;min-height:100vh;display:flex;flex-direction:column;align-items:center;gap:18px;position:relative;overflow:hidden;}
+.slabel{font-family:'Fredoka One',cursive;font-size:11px;letter-spacing:3px;text-transform:uppercase;color:rgba(131,56,236,.5);align-self:flex-start;position:relative;z-index:1;}
+.sec>*{position:relative;z-index:1;}
+
+/* section BGs */
+.s1{background:linear-gradient(160deg,#FFF0FA 0%,#F0F0FF 50%,#F0FAFF 100%);}
+.s2{background:linear-gradient(160deg,#F0FAFF 0%,#F0FFF4 50%,#FFFAF0 100%);}
+.s3{background:linear-gradient(160deg,#FFF8F0 0%,#FFF0FA 50%,#F0F0FF 100%);}
+.s4{background:linear-gradient(160deg,#F0FFF4 0%,#F0F0FF 50%,#FFF0FA 100%);}
+
+/* ─── BG BURST ─── */
+.sec::before{content:'';position:fixed;inset:0;z-index:0;
+  background:
+    radial-gradient(ellipse at 15% 20%,rgba(255,107,157,.14) 0%,transparent 45%),
+    radial-gradient(ellipse at 85% 15%,rgba(131,56,236,.14) 0%,transparent 45%),
+    radial-gradient(ellipse at 50% 85%,rgba(6,214,160,.1) 0%,transparent 45%),
+    radial-gradient(ellipse at 80% 60%,rgba(255,209,102,.14) 0%,transparent 40%);
+  pointer-events:none;}
+
+/* ─── FLOATING SHAPES ─── */
+.shape-bg{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.fshape{position:absolute;border-radius:50%;animation:fsh 5s ease-in-out infinite;opacity:.12;}
+@keyframes fsh{0%,100%{transform:scale(1) rotate(0deg)}50%{transform:scale(1.2) rotate(20deg)}}
+
+/* ─── LOGO ─── */
+.logo{font-family:'Fredoka One',cursive;font-size:52px;line-height:1.0;text-align:center;
+  background:linear-gradient(135deg,#FF6B9D 0%,#FF9F68 20%,#FFD166 40%,#06D6A0 60%,#118AB2 80%,#8338EC 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  filter:drop-shadow(0 4px 16px rgba(131,56,236,.3));}
+.logo-sub{font-size:15px;font-weight:800;color:#94A3B8;text-align:center;}
+
+/* ─── RAINBOW DOTS ─── */
+.rdots{display:flex;gap:5px;align-items:center;justify-content:center;}
+.rdot{width:12px;height:12px;border-radius:50%;animation:rdp 2s ease-in-out infinite;}
+@keyframes rdp{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+
+/* ─── USER CARDS ─── */
+.urow{display:flex;gap:18px;width:100%;max-width:440px;}
+.ucard{flex:1;border-radius:32px;padding:18px 10px 22px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;
+  transition:transform .15s,box-shadow .15s;position:relative;overflow:hidden;}
+.ucard:hover{transform:translateY(-8px) scale(1.02);}
+.ucard.ec{
+  background:linear-gradient(160deg,#F5F0FF,#EBF4FF);
+  border:2px solid rgba(131,56,236,.2);
+  box-shadow:0 10px 0 rgba(131,56,236,.2),0 16px 40px rgba(131,56,236,.18);}
+.ucard.sc{
+  background:linear-gradient(160deg,#FFF0F6,#FFF5F0);
+  border:2px solid rgba(255,107,157,.2);
+  box-shadow:0 10px 0 rgba(255,107,157,.2),0 16px 40px rgba(255,107,157,.18);}
+
+/* shimmer top bar */
+.ucard::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;border-radius:32px 32px 0 0;}
+.ucard.ec::before{background:linear-gradient(90deg,#FF6B9D,#8338EC,#118AB2,#06D6A0,#FFD166,#FF9F68);}
+.ucard.sc::before{background:linear-gradient(90deg,#FF9F68,#FFD166,#06D6A0,#118AB2,#8338EC,#FF6B9D);}
+
+.cw{width:112px;height:132px;}
+.cw svg{width:100%;height:100%;filter:drop-shadow(0 8px 20px rgba(0,0,0,0.14));}
+@keyframes cb{0%,100%{transform:translateY(0) rotate(-.5deg)}50%{transform:translateY(-12px) rotate(.5deg)}}
+.cw{animation:cb 2.6s ease-in-out infinite;}
+.ucard:nth-child(2) .cw{animation-delay:.55s;}
+.uname{font-family:'Fredoka One',cursive;font-size:24px;margin-top:4px;}
+.umeta{font-size:12px;color:#94A3B8;font-weight:800;text-align:center;}
+
+/* ─── STATS ─── */
+.stats{display:flex;justify-content:space-around;
+  background:rgba(255,255,255,.85);backdrop-filter:blur(10px);
+  border-radius:24px;padding:12px 16px;width:100%;max-width:480px;
+  border:1.5px solid rgba(255,255,255,.8);
+  box-shadow:0 8px 32px rgba(131,56,236,.12),0 2px 0 rgba(255,255,255,.9) inset;}
+.sv{font-size:18px;font-weight:900;color:#1E293B;text-align:center;}
+.sl{font-size:10px;color:#94A3B8;font-weight:800;text-align:center;margin-top:2px;}
+
+/* ─── RAINBOW CARD ─── */
+.rcard{background:rgba(255,255,255,.88);border-radius:28px;padding:20px;
+  width:100%;max-width:480px;
+  border:2px solid transparent;
+  background-clip:padding-box;
+  position:relative;
+  box-shadow:0 6px 32px rgba(131,56,236,.1),0 2px 8px rgba(0,0,0,.05);}
+.rcard::before{content:'';position:absolute;inset:-2px;border-radius:30px;
+  background:linear-gradient(135deg,#FF6B9D,#FF9F68,#FFD166,#06D6A0,#118AB2,#8338EC);
+  z-index:-1;opacity:.4;}
+
+/* ─── TOPIC ─── */
+.topic{width:100%;max-width:480px;
+  background:linear-gradient(135deg,rgba(255,107,157,.12),rgba(131,56,236,.12));
+  border-radius:24px;padding:14px 18px;display:flex;align-items:center;gap:14px;
+  border:1.5px solid rgba(131,56,236,.18);
+  box-shadow:0 4px 20px rgba(131,56,236,.1);}
+.tem{font-size:30px;}
+.tlbl{font-size:11px;font-weight:900;color:#8338EC;text-transform:uppercase;letter-spacing:.5px;}
+.tnm{font-family:'Fredoka One',cursive;font-size:20px;color:#1E293B;}
+
+/* ─── BUTTONS ─── */
+.btn{display:inline-flex;align-items:center;justify-content:center;border:none;border-radius:50px;
+  padding:17px 36px;font-size:17px;font-weight:900;font-family:'Nunito',sans-serif;
+  cursor:pointer;width:100%;max-width:320px;gap:8px;
+  transition:transform .12s,box-shadow .12s;position:relative;overflow:hidden;}
+.btn:hover{transform:translateY(-4px) scale(1.02);}
+.btn:active{transform:translateY(2px);}
+.btn::after{content:'';position:absolute;inset:0;border-radius:50px;
+  background:linear-gradient(180deg,rgba(255,255,255,.3) 0%,transparent 55%);pointer-events:none;}
+
+/* rainbow gradient button */
+.btn-rainbow{
+  background:linear-gradient(135deg,#FF6B9D,#FF9F68,#FFD166,#06D6A0);
+  color:#fff;
+  box-shadow:0 8px 28px rgba(255,107,157,.45),0 4px 0 rgba(180,50,100,.4);}
+.btn-rainbow:hover{box-shadow:0 12px 36px rgba(255,107,157,.55),0 4px 0 rgba(180,50,100,.4);}
+
+.btn-purple{background:linear-gradient(135deg,#8338EC,#3A0CA3);color:#fff;
+  box-shadow:0 8px 28px rgba(131,56,236,.45),0 4px 0 #2D0A8F;}
+.btn-purple:hover{box-shadow:0 12px 36px rgba(131,56,236,.55),0 4px 0 #2D0A8F;}
+
+.btn-teal{background:linear-gradient(135deg,#06D6A0,#118AB2);color:#fff;
+  box-shadow:0 8px 28px rgba(6,214,160,.4),0 4px 0 #0E6B85;}
+.btn-teal:hover{box-shadow:0 12px 36px rgba(6,214,160,.5),0 4px 0 #0E6B85;}
+
+.btn-orange{background:linear-gradient(135deg,#FF9F68,#FF6B9D);color:#fff;
+  box-shadow:0 8px 28px rgba(255,159,104,.4),0 4px 0 #C44E2A;}
+.btn-orange:hover{box-shadow:0 12px 36px rgba(255,159,104,.5),0 4px 0 #C44E2A;}
+
+.btn-ghost{background:rgba(255,255,255,.8);color:#94A3B8;border:2px solid rgba(148,163,184,.2);
+  box-shadow:0 4px 0 rgba(148,163,184,.15);font-size:15px;}
+
+/* ─── STAGE MAP ─── */
+.stagemap{display:flex;gap:14px;width:100%;max-width:480px;overflow-x:auto;padding-bottom:4px;}
+.scard{flex-shrink:0;width:100px;border-radius:24px;padding:14px 10px 16px;
+  display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;overflow:hidden;}
+.scard.done{background:linear-gradient(160deg,#F0FFF4,#D1FAE5);border:2px solid #86EFAC;}
+.scard.current{border:2px solid transparent;background:rgba(255,255,255,.9);
+  box-shadow:0 6px 24px rgba(131,56,236,.2);}
+.scard.current::before{content:'';position:absolute;inset:-2px;border-radius:26px;
+  background:linear-gradient(135deg,#FF6B9D,#8338EC,#118AB2);z-index:-1;
+  animation:borderSpin 3s linear infinite;}
+@keyframes borderSpin{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+.scard.locked{background:rgba(255,255,255,.5);border:2px solid rgba(0,0,0,.06);opacity:.5;}
+.scard-icon{font-size:28px;width:52px;height:52px;border-radius:18px;
+  display:flex;align-items:center;justify-content:center;}
+.icon-done{background:linear-gradient(135deg,#D1FAE5,#86EFAC);}
+.icon-curr{background:linear-gradient(135deg,#EDE9FE,#C4B5FD);
+  animation:iconPulse 1.8s ease-in-out infinite;}
+@keyframes iconPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.1)}}
+.icon-lock{background:#F1F5F9;filter:grayscale(1);}
+.scard-title{font-family:'Fredoka One',cursive;font-size:13px;color:#1E293B;text-align:center;}
+.scard-status{font-size:10px;font-weight:900;border-radius:20px;padding:2px 8px;margin-top:2px;}
+.ss-done{background:#D1FAE5;color:#059669;}
+.ss-curr{background:linear-gradient(135deg,#EDE9FE,#C4B5FD);color:#6D28D9;}
+.ss-lock{background:#F1F5F9;color:#94A3B8;}
+
+/* ─── PROGRESS RAINBOW ─── */
+.prog{display:flex;align-items:center;gap:0;width:100%;max-width:480px;background:rgba(255,255,255,.6);
+  border-radius:20px;padding:4px;border:2px solid rgba(255,255,255,.8);
+  box-shadow:0 4px 16px rgba(131,56,236,.1);}
+.pstep{height:14px;flex:1;border-radius:12px;background:rgba(0,0,0,.06);transition:background .4s;}
+.pstep:not(:last-child){margin-right:3px;}
+.pstep.done:nth-child(1){background:linear-gradient(90deg,#FF6B9D,#FF9F68);}
+.pstep.done:nth-child(3){background:linear-gradient(90deg,#FF9F68,#FFD166);}
+.pstep.done:nth-child(5){background:linear-gradient(90deg,#FFD166,#06D6A0);}
+.pstep.active:nth-child(7){background:linear-gradient(90deg,#06D6A0,#118AB2);
+  animation:pglow 1.2s ease-in-out infinite alternate;}
+@keyframes pglow{0%{opacity:.7}100%{opacity:1}}
+
+/* ─── STAGE HEADER ─── */
+.shd{display:flex;align-items:center;gap:14px;width:100%;max-width:480px;}
+.sicon{width:56px;height:56px;border-radius:20px;display:flex;align-items:center;justify-content:center;
+  font-size:26px;flex-shrink:0;position:relative;overflow:hidden;}
+.si-r{background:linear-gradient(135deg,#FFD166,#FF9F68);}
+.si-c{background:linear-gradient(135deg,#118AB2,#8338EC);}
+.sicon::after{content:'';position:absolute;inset:0;border-radius:20px;
+  background:linear-gradient(160deg,rgba(255,255,255,.4) 0%,transparent 60%);pointer-events:none;}
+.stitle{font-family:'Fredoka One',cursive;font-size:21px;color:#1E293B;}
+.ssub{font-size:12px;color:#94A3B8;font-weight:800;margin-top:2px;}
+
+/* ─── READING ─── */
+.passage{font-size:16px;line-height:1.9;color:#334155;font-weight:700;}
+.vgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px;}
+.vocab{border-radius:18px;padding:12px;position:relative;overflow:hidden;}
+.v1{background:linear-gradient(135deg,rgba(255,107,157,.1),rgba(255,159,104,.1));border:1.5px solid rgba(255,107,157,.25);}
+.v2{background:linear-gradient(135deg,rgba(131,56,236,.1),rgba(17,138,178,.1));border:1.5px solid rgba(131,56,236,.25);}
+.v3{background:linear-gradient(135deg,rgba(255,209,102,.12),rgba(6,214,160,.1));border:1.5px solid rgba(255,209,102,.3);}
+.v4{background:linear-gradient(135deg,rgba(6,214,160,.1),rgba(17,138,178,.1));border:1.5px solid rgba(6,214,160,.25);}
+.vw{font-size:14px;font-weight:900;color:#1E293B;}
+.vz{font-size:12px;color:#64748B;font-weight:700;margin-top:2px;}
+
+/* ─── CHAT ─── */
+.chatbox{display:flex;flex-direction:column;gap:10px;width:100%;max-width:480px;}
+.cmsg{max-width:80%;padding:13px 17px;border-radius:22px;font-size:15px;font-weight:700;line-height:1.5;}
+.cai{background:rgba(255,255,255,.92);color:#1E293B;align-self:flex-start;
+  border-bottom-left-radius:5px;
+  box-shadow:0 4px 0 rgba(131,56,236,.12),0 6px 18px rgba(131,56,236,.1);
+  border:1.5px solid rgba(131,56,236,.12);}
+.cuser{background:linear-gradient(135deg,#FF6B9D,#8338EC);color:#fff;align-self:flex-end;
+  border-bottom-right-radius:5px;
+  box-shadow:0 4px 0 rgba(131,56,236,.3),0 6px 18px rgba(131,56,236,.25);}
+.ailbl{font-size:11px;font-weight:900;color:#F59E0B;margin-bottom:4px;}
+
+.brow{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;width:100%;max-width:480px;}
+.bsm{padding:12px 20px;font-size:15px;max-width:none;width:auto;}
+
+.divider{width:100%;max-width:480px;height:2px;border:none;
+  background:linear-gradient(90deg,transparent,rgba(131,56,236,.2),rgba(255,107,157,.2),transparent);
+  margin:4px 0;}
+
+/* ─── INPUT ─── */
+.input-row{display:flex;gap:10px;width:100%;max-width:480px;}
+.chat-input{flex:1;background:rgba(255,255,255,.9);border:2px solid rgba(131,56,236,.18);
+  border-radius:50px;padding:13px 20px;
+  font-size:15px;font-family:'Nunito',sans-serif;font-weight:700;color:#1E293B;outline:none;}
+.chat-input:focus{border-color:rgba(131,56,236,.4);}
+.send-btn{width:52px;height:52px;border-radius:50%;
+  background:linear-gradient(135deg,#FF6B9D,#8338EC);border:none;
+  cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 5px 0 rgba(131,56,236,.35);flex-shrink:0;color:#fff;font-weight:900;}
+</style>
+</head>
+<body>
+<div class="banner">🌈 Demo F — 偶像彩虹風 ｜ Love Live 感 · 彩虹漸層 · 動感活潑</div>
+
+<!-- bg shapes -->
+<div class="shape-bg" id="shapebg"></div>
+<script>
+const sb=document.getElementById('shapebg');
+const cols=['rgba(255,107,157,.15)','rgba(131,56,236,.12)','rgba(6,214,160,.12)','rgba(255,209,102,.15)','rgba(17,138,178,.1)'];
+const sizes=[80,120,60,100,90,70,110];
+for(let i=0;i<12;i++){
+  const d=document.createElement('div');d.className='fshape';
+  const c=cols[i%cols.length],s=sizes[i%sizes.length];
+  d.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*100}%;width:${s}px;height:${s}px;background:${c};animation-delay:${Math.random()*5}s;animation-duration:${4+Math.random()*4}s;`;
+  sb.appendChild(d);
+}
+</script>
+
+<!-- ══ LOGIN ══ -->
+<div class="sec s1">
+  <div class="slabel">▸ 登入頁</div>
+  <div class="logo">🍋 Lemon<br>英文星球</div>
+  <div class="logo-sub">選一個角色，開始彩虹冒險！</div>
+  <div class="rdots">
+    <div class="rdot" style="background:#FF6B9D;animation-delay:0s;"></div>
+    <div class="rdot" style="background:#FF9F68;animation-delay:.15s;"></div>
+    <div class="rdot" style="background:#FFD166;animation-delay:.3s;"></div>
+    <div class="rdot" style="background:#06D6A0;animation-delay:.45s;"></div>
+    <div class="rdot" style="background:#118AB2;animation-delay:.6s;"></div>
+    <div class="rdot" style="background:#8338EC;animation-delay:.75s;"></div>
+  </div>
+
+  <div class="urow">
+    <!-- ELSIE – lavender magical girl -->
+    <div class="ucard ec">
+      <div class="cw"><svg viewBox="0 0 120 155" xmlns="http://www.w3.org/2000/svg">
+        <path d="M26 68 Q10 90 18 116 Q26 128 34 114 Q30 94 34 74 Z" fill="#A78BFA"/>
+        <path d="M94 68 Q110 90 102 116 Q94 128 86 114 Q90 94 86 74 Z" fill="#A78BFA"/>
+        <ellipse cx="60" cy="47" rx="40" ry="42" fill="#C4B5FD"/>
+        <path d="M40 98 Q36 122 34 148 Q60 155 86 148 Q84 122 80 98 Z" fill="#DDD6FE"/>
+        <path d="M40 98 Q60 106 80 98 Q76 110 60 112 Q44 110 40 98 Z" fill="#A78BFA"/>
+        <rect x="53" y="88" width="14" height="13" rx="6" fill="#FFD4C2"/>
+        <circle cx="60" cy="52" r="38" fill="#FFD4C2"/>
+        <path d="M22 44 Q28 18 60 14 Q92 18 98 44 Q82 32 60 30 Q38 32 22 44 Z" fill="#DDD6FE"/>
+        <path d="M22 44 Q16 58 22 70 Q28 64 30 56 Q26 50 22 44 Z" fill="#DDD6FE"/>
+        <path d="M98 44 Q104 58 98 70 Q92 64 90 56 Q94 50 98 44 Z" fill="#DDD6FE"/>
+        <ellipse cx="26" cy="68" rx="9" ry="7" fill="#A78BFA"/>
+        <ellipse cx="94" cy="68" rx="9" ry="7" fill="#A78BFA"/>
+        <polygon points="30,34 32,40 38,40 33,44 35,50 30,46 25,50 27,44 22,40 28,40" fill="#FCD34D" stroke="#F59E0B" stroke-width="1"/>
+        <path d="M34 40 Q43 36 50 39" stroke="#6D28D9" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M70 39 Q77 36 86 40" stroke="#6D28D9" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="44" cy="54" rx="12" ry="14" fill="white"/>
+        <ellipse cx="76" cy="54" rx="12" ry="14" fill="white"/>
+        <path d="M32 44 Q44 40 56 44" stroke="#4C1D95" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M64 44 Q76 40 88 44" stroke="#4C1D95" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="44" cy="56" rx="8.5" ry="10" fill="#7C3AED"/>
+        <ellipse cx="76" cy="56" rx="8.5" ry="10" fill="#7C3AED"/>
+        <ellipse cx="44" cy="58" rx="5" ry="6.5" fill="#3B0764"/>
+        <ellipse cx="76" cy="58" rx="5" ry="6.5" fill="#3B0764"/>
+        <ellipse cx="47" cy="51" rx="3.5" ry="4" fill="white"/>
+        <ellipse cx="79" cy="51" rx="3.5" ry="4" fill="white"/>
+        <circle cx="39" cy="61" r="1.8" fill="rgba(255,255,255,.75)"/>
+        <circle cx="71" cy="61" r="1.8" fill="rgba(255,255,255,.75)"/>
+        <ellipse cx="31" cy="65" rx="10" ry="6" fill="rgba(255,150,150,.38)"/>
+        <ellipse cx="89" cy="65" rx="10" ry="6" fill="rgba(255,150,150,.38)"/>
+        <circle cx="60" cy="70" r="1.8" fill="rgba(180,100,80,.35)"/>
+        <path d="M52 78 Q60 86 68 78" stroke="#F472B6" stroke-width="2.5" fill="rgba(255,182,193,.25)" stroke-linecap="round"/>
+        <ellipse cx="47" cy="149" rx="13" ry="7" fill="#7C3AED"/>
+        <ellipse cx="73" cy="149" rx="13" ry="7" fill="#7C3AED"/>
+      </svg></div>
+      <div class="uname" style="background:linear-gradient(135deg,#8338EC,#FF6B9D);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Elsie</div>
+      <div class="umeta">英文小蛋 · 🪙 340</div>
+    </div>
+
+    <!-- SUNNY – pink girly chibi -->
+    <div class="ucard sc">
+      <div class="cw"><svg viewBox="0 0 120 155" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="60" cy="50" rx="40" ry="44" fill="#FCA5A5"/>
+        <ellipse cx="20" cy="60" rx="12" ry="20" fill="#FCA5A5"/>
+        <ellipse cx="100" cy="60" rx="12" ry="20" fill="#FCA5A5"/>
+        <path d="M40 98 Q36 122 34 148 Q60 155 86 148 Q84 122 80 98 Z" fill="#FCE7F3"/>
+        <path d="M40 98 Q60 106 80 98 Q76 110 60 112 Q44 110 40 98 Z" fill="#F9A8D4"/>
+        <rect x="53" y="88" width="14" height="13" rx="6" fill="#FFD4C2"/>
+        <circle cx="60" cy="52" r="38" fill="#FFD4C2"/>
+        <path d="M22 46 Q26 18 60 14 Q94 18 98 46 Q84 34 60 32 Q36 34 22 46 Z" fill="#FCA5A5"/>
+        <path d="M22 46 Q16 60 20 72 Q28 66 30 58 Q26 52 22 46 Z" fill="#FCA5A5"/>
+        <path d="M98 46 Q104 60 100 72 Q92 66 90 58 Q94 52 98 46 Z" fill="#FCA5A5"/>
+        <ellipse cx="88" cy="30" rx="14" ry="9" fill="#FB7185" transform="rotate(20 88 30)"/>
+        <ellipse cx="88" cy="30" rx="10" ry="6" fill="#FCA5A5" transform="rotate(20 88 30)"/>
+        <ellipse cx="104" cy="22" rx="14" ry="9" fill="#FB7185" transform="rotate(-15 104 22)"/>
+        <ellipse cx="104" cy="22" rx="10" ry="6" fill="#FCA5A5" transform="rotate(-15 104 22)"/>
+        <circle cx="96" cy="26" r="7" fill="#F43F5E"/>
+        <circle cx="96" cy="26" r="4" fill="#FCA5A5"/>
+        <path d="M34 40 Q43 36 50 39" stroke="#9D174D" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <path d="M70 39 Q77 36 86 40" stroke="#9D174D" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="44" cy="54" rx="12" ry="14" fill="white"/>
+        <ellipse cx="76" cy="54" rx="12" ry="14" fill="white"/>
+        <path d="M32 44 Q44 40 56 44" stroke="#9D174D" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <path d="M64 44 Q76 40 88 44" stroke="#9D174D" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+        <ellipse cx="44" cy="56" rx="8.5" ry="10" fill="#BE185D"/>
+        <ellipse cx="76" cy="56" rx="8.5" ry="10" fill="#BE185D"/>
+        <ellipse cx="44" cy="58" rx="5" ry="6.5" fill="#500724"/>
+        <ellipse cx="76" cy="58" rx="5" ry="6.5" fill="#500724"/>
+        <ellipse cx="47" cy="51" rx="3.5" ry="4" fill="white"/>
+        <ellipse cx="79" cy="51" rx="3.5" ry="4" fill="white"/>
+        <circle cx="39" cy="61" r="1.8" fill="rgba(255,255,255,.75)"/>
+        <circle cx="71" cy="61" r="1.8" fill="rgba(255,255,255,.75)"/>
+        <ellipse cx="31" cy="65" rx="10" ry="6" fill="rgba(251,113,133,.38)"/>
+        <ellipse cx="89" cy="65" rx="10" ry="6" fill="rgba(251,113,133,.38)"/>
+        <circle cx="60" cy="70" r="1.8" fill="rgba(180,80,80,.35)"/>
+        <path d="M52 78 Q60 87 68 78" stroke="#F43F5E" stroke-width="2.5" fill="rgba(255,182,193,.25)" stroke-linecap="round"/>
+        <ellipse cx="47" cy="149" rx="13" ry="7" fill="#F9A8D4"/>
+        <ellipse cx="73" cy="149" rx="13" ry="7" fill="#F9A8D4"/>
+      </svg></div>
+      <div class="uname" style="background:linear-gradient(135deg,#FF6B9D,#FF9F68);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Sunny</div>
+      <div class="umeta">初學蛋仔 · 🪙 120</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ MAIN ══ -->
+<div class="sec s2">
+  <div class="slabel">▸ 主畫面</div>
+  <div class="stats">
+    <div><div class="sv">🪙 340</div><div class="sl">蛋幣</div></div>
+    <div><div class="sv">Lv.3</div><div class="sl">等級</div></div>
+    <div><div class="sv">🔥 5</div><div class="sl">連續天</div></div>
+    <div><div class="sv">🌈</div><div class="sl">換人</div></div>
+  </div>
+  <div style="font-family:'Fredoka One',cursive;font-size:24px;color:#1E293B;text-align:center;">嗨 Elsie！今天的彩虹任務等你！🌈</div>
+  <div class="topic">
+    <div class="tem">👯</div>
+    <div><div class="tlbl">今天的主題</div><div class="tnm">朋友話題</div></div>
+  </div>
+
+  <!-- 橫向卡片式關卡地圖 -->
+  <div class="stagemap">
+    <div class="scard done">
+      <div class="scard-icon icon-done">📖</div>
+      <div class="scard-title">閱讀</div>
+      <span class="scard-status ss-done">✓ 完成</span>
+    </div>
+    <div class="scard current">
+      <div class="scard-icon icon-curr">🎵</div>
+      <div class="scard-title">跟讀</div>
+      <span class="scard-status ss-curr">▶ 進行中</span>
+    </div>
+    <div class="scard locked">
+      <div class="scard-icon icon-lock">💬</div>
+      <div class="scard-title">聊天</div>
+      <span class="scard-status ss-lock">🔒 鎖定</span>
+    </div>
+    <div class="scard locked">
+      <div class="scard-icon icon-lock">⚡</div>
+      <div class="scard-title">挑戰</div>
+      <span class="scard-status ss-lock">🔒 鎖定</span>
+    </div>
+  </div>
+
+  <button class="btn btn-rainbow">🌈 開始今日任務！</button>
+</div>
+
+<!-- ══ READING ══ -->
+<div class="sec s3">
+  <div class="slabel">▸ 閱讀頁</div>
+  <div class="shd">
+    <div class="sicon si-r">📖</div>
+    <div><div class="stitle">階段 1：今日短文</div><div class="ssub">讀一讀，認識今天的關鍵單字</div></div>
+  </div>
+  <div class="prog">
+    <div class="pstep done"></div>
+    <div class="pstep done"></div>
+    <div class="pstep active"></div>
+    <div class="pstep"></div>
+  </div>
+  <div class="rcard">
+    <div style="font-size:13px;font-weight:900;background:linear-gradient(90deg,#FF6B9D,#8338EC);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:10px;">📖 今日短文 · 👯 朋友話題</div>
+    <div class="passage">Lucy is my best friend. We are both twelve years old and go to the same school. Every day, we sit together at lunch and talk about our favorite games and songs. Lucy loves playing badminton, so we practice together twice a week at the park near our home. She is very kind and always helps me when I feel sad. On weekends, we sometimes go to the shopping mall to look at clothes and snacks. I love spending time with Lucy because she always makes me laugh.</div>
+    <div style="font-size:13px;font-weight:900;color:#94A3B8;margin:14px 0 8px;">🔑 關鍵單字</div>
+    <div class="vgrid">
+      <div class="vocab v1"><div class="vw">practice</div><div class="vz">練習</div></div>
+      <div class="vocab v2"><div class="vw">together</div><div class="vz">一起</div></div>
+      <div class="vocab v3"><div class="vw">weekend</div><div class="vz">週末</div></div>
+      <div class="vocab v4"><div class="vw">favorite</div><div class="vz">最喜歡的</div></div>
+    </div>
+  </div>
+  <button class="btn btn-teal">讀完了！去跟讀 →</button>
+</div>
+
+<!-- ══ CHAT ══ -->
+<div class="sec s4">
+  <div class="slabel">▸ 對話頁 + 所有按鈕</div>
+  <div class="shd">
+    <div class="sicon si-c">💬</div>
+    <div><div class="stitle">階段 3：跟 Lemon 聊天</div><div class="ssub">主題：👯 朋友話題</div></div>
+  </div>
+  <div class="prog">
+    <div class="pstep done"></div>
+    <div class="pstep done"></div>
+    <div class="pstep done"></div>
+    <div class="pstep active"></div>
+  </div>
+  <div class="chatbox">
+    <div class="cmsg cai"><div class="ailbl">🍋 Lemon</div>Hey Elsie!! What's your best friend's name? Tell me something fun about her! 🌈</div>
+    <div class="cmsg cuser">My best friend is Lucy! She likes badminton very much!</div>
+    <div class="cmsg cai"><div class="ailbl">🍋 Lemon</div>Ooh that's SO cool!! (tip: try "She really loves badminton!" ✨) Do you play together?</div>
+  </div>
+  <div class="input-row">
+    <input class="chat-input" placeholder="Type in English…" type="text">
+    <button class="send-btn">→</button>
+  </div>
+  <hr class="divider">
+  <div class="slabel" style="font-size:11px;">按鈕樣式展示</div>
+  <div class="brow">
+    <button class="btn btn-rainbow bsm">🌈 主要</button>
+    <button class="btn btn-purple bsm">💜 魔法</button>
+    <button class="btn btn-teal bsm">🌿 完成</button>
+    <button class="btn btn-orange bsm">⚡ 挑戰</button>
+    <button class="btn btn-ghost bsm">略過</button>
+  </div>
+</div>
+</body>
+</html>
