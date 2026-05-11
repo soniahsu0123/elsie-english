@@ -407,6 +407,63 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
   animation:toastin 0.3s ease
 }
 @keyframes toastin{from{opacity:0;transform:translateX(-50%) translateY(10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+
+/* ── Header button (shared) ── */
+.hdr-btn{
+  border-radius:20px;padding:6px 14px;font-weight:800;font-size:12px;
+  cursor:pointer;transition:all 0.15s;border:2px solid #DDD;color:var(--mid);
+  background:rgba(255,255,255,0.92)
+}
+
+/* ════════════════════
+   KARAOKE MODE
+════════════════════ */
+.kara-sentence{
+  font-size:17px;font-weight:700;line-height:1.8;color:var(--dark);
+  background:#F8F8FF;border-radius:14px;padding:14px 16px;margin-bottom:16px;text-align:left
+}
+.kara-dot{width:10px;height:10px;border-radius:50%;background:#DDD;transition:all 0.3s;flex-shrink:0}
+.kara-dot.done{background:var(--shad)}
+.kara-dot.cur{background:var(--shad);transform:scale(1.3);box-shadow:0 0 0 3px rgba(93,191,127,0.3)}
+.kara-btns{display:flex;gap:10px;margin-top:4px}
+.kara-play-btn{
+  flex-shrink:0;padding:12px 18px;border-radius:30px;
+  background:white;border:2.5px solid var(--shad);
+  font-weight:900;font-size:14px;color:var(--shad-d);cursor:pointer;transition:all 0.15s
+}
+.kara-play-btn.active{background:var(--shad);color:white}
+.kara-rec-btn{
+  flex:1;padding:12px 18px;border-radius:30px;
+  background:var(--shad);border:none;
+  font-weight:900;font-size:14px;color:white;cursor:pointer;
+  box-shadow:0 3px 0 var(--shad-d);transition:all 0.15s;position:relative;top:0
+}
+.kara-rec-btn:active{box-shadow:0 1px 0 var(--shad-d);top:2px}
+.kara-rec-btn.recording{background:#EF4444;box-shadow:0 3px 0 #B91C1C;animation:pulse-rec 1s ease-in-out infinite}
+.kara-rec-btn:disabled{opacity:0.6;cursor:default}
+.kara-fb{
+  margin-top:14px;padding:12px 14px;background:#F0FFF4;
+  border-radius:14px;border-left:3px solid var(--shad);
+  font-size:14px;line-height:1.6;font-weight:600;color:var(--dark);text-align:left;
+  animation:fadeInUp 0.3s ease
+}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── Chat voice button ── */
+.chat-voice-btn{
+  width:46px;height:46px;border-radius:50%;
+  background:white;border:2px solid var(--chat);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;transition:all 0.15s
+}
+.chat-voice-btn.recording{background:#EF4444;border-color:#EF4444;animation:pulse-rec 1s ease-in-out infinite}
+
+/* ── Chat summary box ── */
+.chat-summary{
+  background:linear-gradient(135deg,#F3E8FF,#EDE9FE);
+  border-radius:16px;padding:14px 16px;margin:4px 0;
+  border:1.5px solid rgba(147,51,234,0.25)
+}
 </style>
 </head>
 <body>
@@ -648,7 +705,7 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
   <div class="stage-hd">
     <div style="display:flex;align-items:center;justify-content:space-between">
       <div class="stage-title" style="color:var(--shad-d)">🎵 Shadowing</div>
-      <button onclick="openVoicePicker()" style="background:#F0FFF4;border:2px solid var(--shad);border-radius:20px;padding:6px 14px;font-weight:800;font-size:12px;color:var(--shad-d);cursor:pointer">🔊 Voice</button>
+      <button onclick="openSettings()" class="hdr-btn" style="color:var(--shad-d);border-color:var(--shad)">⚙️ Voice</button>
     </div>
     <div class="prog-bar" style="color:var(--shad)">
       <div class="prog-step on"></div>
@@ -657,62 +714,32 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
       <div class="prog-step"></div>
     </div>
   </div>
-  <!-- Step tabs -->
-  <div class="shad-steps">
-    <div class="shad-step on" id="stab-1" onclick="shadStep(1)">1 Listen</div>
-    <div class="shad-step" id="stab-2" onclick="shadStep(2)">2 Shadow</div>
-    <div class="shad-step" id="stab-3" onclick="shadStep(3)">3 Check</div>
-  </div>
-  <div class="page-body" style="padding-top:0">
+  <div class="page-body">
 
-    <!-- Step 1: Listen -->
-    <div class="shad-panel on" id="shad-s1">
-      <div class="card" style="text-align:center">
-        <div style="font-size:52px;margin:8px 0">👂</div>
-        <div style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--shad-d);margin-bottom:6px">Listen carefully!</div>
-        <div style="font-size:13px;color:var(--mid);font-weight:700;margin-bottom:18px">Don't speak yet — just listen and feel the rhythm</div>
-        <button class="play-big" id="play-listen-btn" onclick="toggleListenPlay()">▶</button>
-        <div style="font-size:12px;color:var(--mid);font-weight:700;margin-top:4px" id="listen-hint">Tap play to start</div>
-      </div>
-      <button class="btn btn-full btn-g" id="listen-next-btn" onclick="shadStep(2)" style="display:none">
-        Got it! Now I'll shadow →
-      </button>
+    <!-- Sentence counter + dots -->
+    <div style="display:flex;align-items:center;gap:10px">
+      <div id="kara-counter" style="font-weight:800;font-size:13px;color:var(--shad-d);white-space:nowrap">1 / 1</div>
+      <div id="kara-dots" style="display:flex;gap:5px;flex:1;flex-wrap:wrap"></div>
+      <button onclick="doneShad()" style="font-size:12px;font-weight:800;color:#BBB;background:none;border:none;cursor:pointer;white-space:nowrap;flex-shrink:0">Finish →</button>
     </div>
 
-    <!-- Step 2: Shadow -->
-    <div class="shad-panel" id="shad-s2">
-      <div class="card">
-        <div style="background:#F0FFF4;border-radius:12px;padding:10px 12px;margin-bottom:14px;font-size:13px;font-weight:700;color:var(--shad-d)">
-          🗣️ <strong>Speak along!</strong> Start about 0.5 sec behind — copy the rhythm, stress & sounds
-        </div>
-        <div class="spd-display" id="spd-disp">0.75x</div>
-        <button class="play-big" id="play-btn" onclick="togglePlay()">▶</button>
-        <div class="spd-tabs">
-          <div class="spd-tab" onclick="setSpd(0.5)">0.5x</div>
-          <div class="spd-tab on" onclick="setSpd(0.75)">0.75x ⭐</div>
-          <div class="spd-tab" onclick="setSpd(1)">1x</div>
-          <div class="spd-tab" onclick="setSpd(1.25)">1.25x</div>
-          <div class="spd-tab" onclick="setSpd(1.5)">1.5x</div>
-        </div>
-        <input type="range" class="spd-slider" id="spd-slider" min="0.5" max="1.5" step="0.25" value="0.75"
-          oninput="setSpd(parseFloat(this.value))">
+    <!-- Main karaoke card -->
+    <div class="card" style="text-align:center">
+      <div style="font-size:13px;font-weight:800;color:var(--shad-d);margin-bottom:10px">🍋 Listen, then copy me!</div>
+      <div id="kara-text" class="kara-sentence"></div>
+      <div class="kara-btns">
+        <button class="kara-play-btn" id="kara-play-btn" onclick="karaokePlay()">▶ Hear</button>
+        <button class="kara-rec-btn" id="kara-rec-btn" onclick="karaokeRecord()">🎙️ My Turn</button>
       </div>
-      <div class="card">
-        <div style="font-size:12px;font-weight:800;color:var(--mid);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Practice sentence by sentence</div>
-        <div id="sent-list"></div>
-      </div>
-      <button class="btn btn-full btn-g" onclick="shadStep(3)">Done! Check my pronunciation →</button>
+      <div id="kara-fb" class="kara-fb" style="display:none"></div>
     </div>
 
-    <!-- Step 3: Check -->
-    <div class="shad-panel" id="shad-s3">
-      <div class="card">
-        <div style="font-family:'Fredoka One',cursive;font-size:18px;color:var(--shad-d);margin-bottom:4px">🎙️ Say it yourself!</div>
-        <div style="font-size:12px;font-weight:700;color:var(--mid);margin-bottom:14px">Tap ▶ to hear, then tap 🎙 to record. Lemon will listen! 🍋</div>
-        <div id="check-sent-list"></div>
-      </div>
-      <button class="btn btn-full btn-lg btn-g" id="shad-done-btn" style="display:none" onclick="doneShad()">I finished shadowing! →</button>
+    <!-- Navigation buttons -->
+    <div style="display:flex;gap:10px">
+      <button class="btn" id="kara-prev-btn" onclick="karaokePrev()" style="flex:0 0 52px;background:#F0F0F0;color:var(--mid);box-shadow:0 3px 0 #C8C8C8;display:none;padding:14px 0">←</button>
+      <button class="btn btn-g" id="kara-next-btn" onclick="karaokeNext()" style="flex:1">Next →</button>
     </div>
+    <button class="btn btn-full btn-lg" id="kara-done-btn" onclick="doneShad()" style="display:none;background:linear-gradient(135deg,#FFD700,#FFA500);color:#5A3000;box-shadow:0 4px 0 #CC8800">🎉 Amazing! All done!</button>
 
   </div>
 </div>
@@ -721,7 +748,10 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
 <div id="screen-chat" class="screen">
   <div class="chat-body">
     <div class="stage-hd">
-      <div class="stage-title" style="color:var(--chat-d)">💬 Chat with Lemon</div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <div class="stage-title" style="color:var(--chat-d)">💬 Chat with Lemon</div>
+        <button onclick="endChatWithSummary()" class="hdr-btn" style="color:var(--chat-d);border-color:var(--chat)">🏁 Finish</button>
+      </div>
       <div class="prog-bar" style="color:var(--chat)">
         <div class="prog-step on"></div>
         <div class="prog-step on"></div>
@@ -731,8 +761,9 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
     </div>
     <div class="chat-msgs" id="chat-msgs"></div>
     <div class="chat-in-area">
-      <textarea class="chat-input" id="chat-input" placeholder="Type here..." rows="1"
+      <textarea class="chat-input" id="chat-input" placeholder="Type or speak..." rows="1"
         oninput="autoResize(this)" onkeydown="chatKey(event)"></textarea>
+      <button id="chat-voice-btn" class="chat-voice-btn" onclick="toggleChatVoice()">🎤</button>
       <button class="send-btn" onclick="sendMsg()">➤</button>
     </div>
   </div>
@@ -795,19 +826,19 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
   <div class="nav-item" id="nav-chat" onclick="navTo('chat')">
     <span class="nav-icon">💬</span><span class="nav-label">Chat</span>
   </div>
-  <div class="nav-item" id="nav-shop" onclick="navTo('shop')">
-    <span class="nav-icon">🛍️</span><span class="nav-label">Shop</span>
+  <div class="nav-item" id="nav-settings" onclick="navTo('settings')">
+    <span class="nav-icon">⚙️</span><span class="nav-label">Settings</span>
   </div>
 </nav>
 
 </div><!-- /#app -->
 
-<!-- Voice Picker Modal -->
-<div id="voice-modal">
-  <div class="voice-sheet">
+<!-- Settings Modal -->
+<div id="voice-modal" onclick="closeSettings()">
+  <div class="voice-sheet" onclick="event.stopPropagation()">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
-      <div class="voice-sheet-title">🔊 Choose a Voice</div>
-      <button onclick="closeVoicePicker()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--mid)">✕</button>
+      <div class="voice-sheet-title">⚙️ Settings</div>
+      <button onclick="closeSettings()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--mid)">✕</button>
     </div>
     <div class="voice-sheet-sub">Tap Preview to hear, then Select to save</div>
     <div id="voice-list">
@@ -854,19 +885,20 @@ const OUTFITS = {
 let CUR  = null;        // 'elsie' | 'sunny'
 let DATA = {};          // user data object
 let readText  = '';     // today's reading passage
-let speechSpd = 1;
-let playing   = false;
 let chatHistory = [];
 let aiThinking  = false;
 let challTimer  = null;
 let challLeft   = 60;
 let challGoing  = false;
 let challDone   = false;
-let mediaRecorder = null;
-let audioChunks   = [];
-let isRecording   = false;
-let recSentIdx    = -1;
-let vocabWord     = '';
+let mediaRecorder    = null;
+let audioChunks      = [];
+let karaokeIdx       = 0;
+let karaokeSentences = [];
+let karaokeIsRec     = false;
+let vocabWord        = '';
+let chatVoiceRec     = null;
+let chatVoicing      = false;
 
 // ═══════════════════════════════════
 // STORAGE
@@ -961,7 +993,7 @@ function navTo(dest) {
     if (!td.reading) { toast('Complete Reading first! 📖'); return; }
     if (!td.shad)    { toast('Complete Shadowing first! 🎵'); return; }
     showScreen('chat'); if (chatHistory.length === 0) initChat();
-  } else if (dest === 'shop') { toast('Shop coming soon! 🛍️'); }
+  } else if (dest === 'settings') { openSettings(); }
 }
 
 function gotoStage(stage) {
@@ -970,8 +1002,7 @@ function gotoStage(stage) {
   else if (stage === 'shad') {
     if (!td.reading) { toast('Finish Reading first! 📖'); return; }
     showScreen('shad');
-    shadStep(1);
-    if (readText) document.getElementById('listen-next-btn').style.display = '';
+    initKaraoke();
   } else if (stage === 'chat') {
     if (!td.shad) { toast('Finish Shadowing first! 🎵'); return; }
     showScreen('chat'); if (chatHistory.length === 0) initChat();
@@ -1174,18 +1205,17 @@ function doneReading() {
 // VOICE PICKER
 // ═══════════════════════════════════
 let selectedVoice = null;
-let listenPlaying = false;
 
 function getEnglishVoices() {
   return speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
 }
 
-function openVoicePicker() {
+function openSettings() {
   document.getElementById('voice-modal').classList.add('open');
   renderVoiceList();
 }
 
-function closeVoicePicker() {
+function closeSettings() {
   document.getElementById('voice-modal').classList.remove('open');
   stopSpeech();
 }
@@ -1250,166 +1280,112 @@ function makeSpeech(text, rate) {
 }
 
 // ═══════════════════════════════════
-// SHADOWING — 3 steps
+// SHADOWING — KARAOKE MODE
 // ═══════════════════════════════════
-let shadCurrentStep = 1;
-
-function shadStep(n) {
-  stopSpeech(); playing = false; listenPlaying = false;
-  shadCurrentStep = n;
-  [1,2,3].forEach(i => {
-    document.getElementById(`shad-s${i}`).classList.toggle('on', i === n);
-    document.getElementById(`stab-${i}`).classList.toggle('on', i === n);
-  });
-  if (n === 2) {
-    buildSentenceList();
-    setSpd(0.75);
-  }
-  if (n === 3) {
-    document.getElementById('shad-done-btn').style.display = '';
-    buildCheckList();
-  }
-  document.getElementById('play-btn').textContent = '▶';
-  document.getElementById('play-listen-btn').textContent = '▶';
-}
-
-function buildSentenceList() {
-  const text = readText;
-  if (!text) return;
-  const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
-  const list = document.getElementById('sent-list');
-  list.innerHTML = sentences.map((s, i) => `
-    <div class="sent-item">
-      <button class="sent-play" onclick="playSentence(${i})">▶</button>
-      <div class="sent-text">${esc(s.trim())}</div>
-    </div>`).join('');
-  list._sentences = sentences;
-}
-
-function playSentence(idx, listId) {
+function initKaraoke() {
+  if (!readText) { toast('Load Reading first! 📖'); return; }
   stopSpeech();
-  const list = document.getElementById(listId || 'sent-list');
-  const sentences = list && list._sentences;
-  if (!sentences) return;
-  const utt = makeSpeech(sentences[idx].trim(), speechSpd);
+  karaokeIdx = 0;
+  karaokeIsRec = false;
+  karaokeSentences = readText.match(/[^.!?]+[.!?]+/g) || [readText];
+  renderKaraokeCard();
+  setTimeout(karaokeAutoPlay, 900);
+}
+
+function renderKaraokeCard() {
+  const total = karaokeSentences.length;
+  const idx   = karaokeIdx;
+
+  document.getElementById('kara-counter').textContent = `${idx + 1} / ${total}`;
+  document.getElementById('kara-text').textContent = karaokeSentences[idx].trim();
+
+  // Dots
+  document.getElementById('kara-dots').innerHTML = karaokeSentences.map((_,i) =>
+    `<div class="kara-dot ${i < idx ? 'done' : i === idx ? 'cur' : ''}"></div>`
+  ).join('');
+
+  // Reset feedback
+  const fb = document.getElementById('kara-fb');
+  fb.style.display = 'none';
+  fb.textContent = '';
+  fb.className = 'kara-fb';
+
+  // Reset buttons
+  const recBtn  = document.getElementById('kara-rec-btn');
+  recBtn.textContent = '🎙️ My Turn';
+  recBtn.classList.remove('recording');
+  recBtn.disabled = false;
+
+  const playBtn = document.getElementById('kara-play-btn');
+  playBtn.textContent = '▶ Hear';
+  playBtn.classList.remove('active');
+
+  // Prev/Next/Done visibility
+  document.getElementById('kara-prev-btn').style.display = idx > 0 ? '' : 'none';
+  if (idx === total - 1) {
+    document.getElementById('kara-next-btn').style.display = 'none';
+    document.getElementById('kara-done-btn').style.display = '';
+  } else {
+    document.getElementById('kara-next-btn').style.display = '';
+    document.getElementById('kara-done-btn').style.display = 'none';
+  }
+}
+
+function karaokeAutoPlay() {
+  if (!karaokeSentences.length) return;
+  stopSpeech();
+  const playBtn = document.getElementById('kara-play-btn');
+  if (playBtn) { playBtn.textContent = '⏸ Stop'; playBtn.classList.add('active'); }
+  const utt = makeSpeech(karaokeSentences[karaokeIdx].trim(), 0.9);
+  utt.onend = () => {
+    if (playBtn) { playBtn.textContent = '▶ Hear'; playBtn.classList.remove('active'); }
+  };
   window.speechSynthesis.speak(utt);
 }
 
-// Step 1 play button
-function toggleListenPlay() {
-  if (!readText) { toast('Load Reading first!'); return; }
-  if (listenPlaying) {
-    stopSpeech(); listenPlaying = false;
-    document.getElementById('play-listen-btn').textContent = '▶';
-    document.getElementById('listen-hint').textContent = 'Tap play to listen again';
-  } else {
+function karaokePlay() {
+  const playBtn = document.getElementById('kara-play-btn');
+  if (window.speechSynthesis.speaking) {
     stopSpeech();
-    const utt = makeSpeech(readText, 1);
-    utt.onend = () => {
-      listenPlaying = false;
-      document.getElementById('play-listen-btn').textContent = '▶';
-      document.getElementById('listen-hint').textContent = "Great! Ready to shadow?";
-      document.getElementById('listen-next-btn').style.display = '';
-    };
-    window.speechSynthesis.speak(utt);
-    listenPlaying = true;
-    document.getElementById('play-listen-btn').textContent = '⏸';
-    document.getElementById('listen-hint').textContent = 'Playing...';
-  }
-}
-
-function setSpd(val) {
-  const speeds = [0.5, 0.75, 1, 1.25, 1.5];
-  val = speeds.reduce((a,b) => Math.abs(b-val) < Math.abs(a-val) ? b : a);
-  speechSpd = val;
-  const disp = document.getElementById('spd-disp');
-  if (disp) disp.textContent = `${val}x`;
-  const slider = document.getElementById('spd-slider');
-  if (slider) {
-    slider.value = val;
-    const pct = ((val-0.5)/1)*100;
-    slider.style.background = `linear-gradient(to right,var(--shad) 0%,var(--shad) ${pct}%,#E0E0E0 ${pct}%,#E0E0E0 100%)`;
-  }
-  document.querySelectorAll('.spd-tab').forEach(t => {
-    t.classList.toggle('on', parseFloat(t.textContent) === val);
-  });
-  if (playing) { stopSpeech(); playing = false; togglePlay(); }
-}
-
-function togglePlay() {
-  if (!readText) { toast('Load Reading first!'); return; }
-  if (playing) {
-    stopSpeech(); playing = false;
-    document.getElementById('play-btn').textContent = '▶';
+    if (playBtn) { playBtn.textContent = '▶ Hear'; playBtn.classList.remove('active'); }
   } else {
-    stopSpeech();
-    const utt = makeSpeech(readText, speechSpd);
-    utt.onend = () => { playing = false; document.getElementById('play-btn').textContent = '▶'; };
-    window.speechSynthesis.speak(utt);
-    playing = true;
-    document.getElementById('play-btn').textContent = '⏸';
+    karaokeAutoPlay();
   }
 }
 
-// ═══════════════════════════════════
-// SHADOWING STEP 3 — GEMINI RECORDING
-// ═══════════════════════════════════
-function buildCheckList() {
-  if (!readText) return;
-  const sentences = readText.match(/[^.!?]+[.!?]+/g) || [readText];
-  const list = document.getElementById('check-sent-list');
-  list._sentences = sentences;
-  list.innerHTML = sentences.map((s, i) => `
-    <div class="check-item" id="check-item-${i}">
-      <div class="check-sent-row">
-        <button class="sent-play" onclick="playSentence(${i},'check-sent-list')">▶</button>
-        <div class="sent-text">${esc(s.trim())}</div>
-        <button class="rec-mini-btn" id="rec-mini-${i}" onclick="recordSentence(${i})">🎙️</button>
-      </div>
-      <div class="check-fb" id="check-fb-${i}" style="display:none"></div>
-    </div>`).join('');
-}
-
-async function recordSentence(idx) {
-  if (isRecording) { stopRecording(); return; }
-  recSentIdx = idx;
-  try {
-    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+function karaokeRecord() {
+  if (karaokeIsRec) { karaokeStopRec(); return; }
+  stopSpeech();
+  navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
     audioChunks = [];
     const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm'
                    : MediaRecorder.isTypeSupported('audio/mp4')  ? 'audio/mp4' : '';
     mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : {});
     mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
-    mediaRecorder.onstop = async () => {
-      stream.getTracks().forEach(t => t.stop());
-      await sendSentenceFeedback(idx);
-    };
+    mediaRecorder.onstop = () => { stream.getTracks().forEach(t => t.stop()); karaokeSendFeedback(); };
     mediaRecorder.start();
-    isRecording = true;
-    const btn = document.getElementById(`rec-mini-${idx}`);
-    if (btn) { btn.classList.add('recording'); btn.textContent = '⏹'; }
-    setTimeout(() => { if (isRecording && recSentIdx === idx) stopRecording(); }, 12000);
-  } catch(e) {
-    toast('Please allow microphone access to use this feature!');
+    karaokeIsRec = true;
+    const btn = document.getElementById('kara-rec-btn');
+    btn.textContent = '⏹ Stop'; btn.classList.add('recording');
+    setTimeout(() => { if (karaokeIsRec) karaokeStopRec(); }, 10000);
+  }).catch(() => toast('Please allow microphone access! 🎤'));
+}
+
+function karaokeStopRec() {
+  if (mediaRecorder && karaokeIsRec) {
+    mediaRecorder.stop(); karaokeIsRec = false;
+    const btn = document.getElementById('kara-rec-btn');
+    btn.textContent = '⏳ Analyzing...'; btn.classList.remove('recording'); btn.disabled = true;
   }
 }
 
-function stopRecording() {
-  if (mediaRecorder && isRecording) {
-    mediaRecorder.stop();
-    isRecording = false;
-    const btn = document.getElementById(`rec-mini-${recSentIdx}`);
-    if (btn) { btn.classList.remove('recording'); btn.textContent = '⏳'; }
-  }
-}
+async function karaokeSendFeedback() {
+  const sentence = (karaokeSentences[karaokeIdx] || '').trim();
+  const fb = document.getElementById('kara-fb');
+  fb.style.display = 'block';
+  fb.className = '';
+  fb.innerHTML = '<div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
 
-async function sendSentenceFeedback(idx) {
-  const list = document.getElementById('check-sent-list');
-  const sentence = (list._sentences || [])[idx] || readText;
-  const fbEl = document.getElementById(`check-fb-${idx}`);
-  if (!fbEl) return;
-  fbEl.style.display = 'block';
-  fbEl.innerHTML = '<div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
   try {
     const mimeType = (audioChunks[0] && audioChunks[0].type) || 'audio/webm';
     const blob = new Blob(audioChunks, { type: mimeType });
@@ -1421,22 +1397,34 @@ async function sendSentenceFeedback(idx) {
     });
     const resp = await fetch(WORKER + '/gemini-audio', {
       method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ audio_base64: base64, original_text: sentence.trim(), mime_type: mimeType })
+      body: JSON.stringify({ audio_base64: base64, original_text: sentence, mime_type: mimeType })
     });
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const data = await resp.json();
     const reply = data.content[0].text;
-    fbEl.textContent = reply;
-    const btn = document.getElementById(`rec-mini-${idx}`);
-    if (btn) { btn.classList.remove('recording'); btn.textContent = '🔄'; }
+    fb.className = 'kara-fb'; fb.textContent = reply;
     speakText(reply);
-    document.getElementById('shad-done-btn').style.display = '';
   } catch(e) {
-    fbEl.textContent = "Great effort! Keep practicing! 🌟";
-    const btn = document.getElementById(`rec-mini-${idx}`);
-    if (btn) { btn.classList.remove('recording'); btn.textContent = '🎙️'; }
-    document.getElementById('shad-done-btn').style.display = '';
+    fb.className = 'kara-fb'; fb.textContent = 'Great try! Keep going! 🌟';
   }
+
+  const btn = document.getElementById('kara-rec-btn');
+  btn.textContent = '🔄 Try Again'; btn.disabled = false;
+}
+
+function karaokeNext() {
+  stopSpeech(); karaokeIsRec = false;
+  karaokeIdx++;
+  if (karaokeIdx >= karaokeSentences.length) { doneShad(); return; }
+  renderKaraokeCard();
+  setTimeout(karaokeAutoPlay, 600);
+}
+
+function karaokePrev() {
+  stopSpeech(); karaokeIsRec = false;
+  if (karaokeIdx > 0) karaokeIdx--;
+  renderKaraokeCard();
+  setTimeout(karaokeAutoPlay, 600);
 }
 
 // ═══════════════════════════════════
@@ -1480,7 +1468,7 @@ function speakVocabWord() {
 }
 
 function doneShad() {
-  stopSpeech(); playing = false; listenPlaying = false;
+  stopSpeech(); karaokeIsRec = false;
   const td = todayData();
   if (!td.shad) {
     td.shad = true; td.earned = (td.earned||0) + COIN_TABLE.shad;
@@ -1500,15 +1488,19 @@ async function initChat() {
   chatHistory = [];
   document.getElementById('chat-msgs').innerHTML = '';
 
-  window._chatSys = `You are Lemon, a fun and friendly English buddy for ${uname}.
-${uname} is a Taiwanese kid, English level A2/KET.
-Talk like a fun friend, NOT a teacher.
-Keep turns short: 2-3 sentences max.
-After responding, gently model correct English if needed:
-e.g. "(tip: we say 'I played' not 'I play yesterday' ✨)"
-Never say "wrong" or "incorrect".
+  const chatOpenings = [
+    `Hey ${uname}! 👋`,`Yay, ${uname} is here! 🎉`,`Oh hi ${uname}! 🌟`,
+    `${uname}! Great to see you! 😄`,`Heyyyy ${uname}! 🍋`
+  ];
+  const chatOpening = chatOpenings[Math.floor(Math.random() * chatOpenings.length)];
+
+  window._chatSys = `You are Lemon 🍋, a fun cheerful English buddy for ${uname} (age 10-12, level A2).
+Your job: have a natural friendly conversation, NOT teach or correct.
+Keep every reply to 2-3 sentences max. Be enthusiastic and encouraging.
+Do NOT correct grammar during the chat. Do NOT give language tips.
+Just talk like a fun friend would.
 Today's topic: ${topic}
-Start with a fun greeting and one question about today's topic.`;
+Open with: "${chatOpening}" then ask one easy fun question about the topic.`;
 
   addThinking();
   try {
@@ -1546,28 +1538,69 @@ async function sendMsg() {
     addBubble('ai', "Hmm, let me think... Try again! 😊");
   }
   aiThinking = false;
-
-  if (chatHistory.filter(m=>m.role==='user').length >= 3) showChatDoneBtn();
 }
 
-function showChatDoneBtn() {
-  if (document.getElementById('chat-done-btn')) return;
-  const msgs = document.getElementById('chat-msgs');
-  const wrap = document.createElement('div');
-  wrap.id = 'chat-done-btn';
-  wrap.style.cssText = 'text-align:center;padding:10px 0';
-  wrap.innerHTML = `<button class="btn btn-b" onclick="doneChat()">Great chat! Done ✓</button>`;
-  msgs.appendChild(wrap);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function doneChat() {
+async function endChatWithSummary() {
   const td = todayData();
-  if (!td.chat) {
-    td.chat = true; td.earned = (td.earned||0) + COIN_TABLE.chat;
-    DATA.coins += COIN_TABLE.chat; save();
+  if (td.chat) { buildHome(); gotoStage('chall'); return; }
+
+  td.chat = true; td.earned = (td.earned||0) + COIN_TABLE.chat;
+  DATA.coins += COIN_TABLE.chat; save();
+
+  const c = document.getElementById('chat-msgs');
+  const summaryEl = document.createElement('div');
+  summaryEl.className = 'chat-summary';
+  summaryEl.innerHTML = `<div style="font-weight:800;color:#9333EA;margin-bottom:8px;font-size:14px">📝 Lemon 的今日總結</div><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  c.appendChild(summaryEl);
+  c.scrollTop = c.scrollHeight;
+
+  try {
+    const userMsgs = chatHistory.filter(m => m.role === 'user').map(m => m.content).join('\n');
+    const prompt = userMsgs
+      ? `學生今天的英文對話：\n${userMsgs}\n\n請用繁體中文給予溫暖鼓勵。若有明顯文法錯誤（例如時態或單字用錯），用「你說：...」→「可以說：...」格式說明，最多1個。若無明顯錯誤，只說鼓勵的話。純文字，不要用任何標點符號以外的格式（不要加粗、不要bullet point）。60字以內。`
+      : '學生今天嘗試了英文對話。用繁體中文給予熱情鼓勵。純文字，50字以內。';
+    const raw = await callAI([{role:'user',content:prompt}],
+      '你是一位溫暖的英語老師，用繁體中文給小學生回饋。語氣鼓勵、純文字、不使用markdown格式。', 200);
+    const summary = raw.replace(/\*\*/g,'').replace(/\*/g,'').replace(/^[-•]\s*/gm,'').replace(/#{1,6}\s*/g,'').trim();
+    summaryEl.innerHTML = `<div style="font-weight:800;color:#9333EA;margin-bottom:8px;font-size:14px">📝 Lemon 的今日總結</div><div style="font-size:14px;line-height:1.7;font-weight:600;color:var(--dark)">${esc(summary)}</div>`;
+  } catch(e) {
+    summaryEl.innerHTML = `<div style="font-weight:800;color:#9333EA;margin-bottom:8px;font-size:14px">📝 Lemon 的今日總結</div><div style="font-size:14px;color:var(--dark)">你今天表現很棒！英文越來越流利了，繼續加油！🌟</div>`;
   }
-  buildHome(); showScreen('chall'); setupChall();
+
+  const wrap = document.createElement('div');
+  wrap.style.cssText = 'text-align:center;padding:12px 0';
+  wrap.innerHTML = `<button class="btn btn-p" onclick="proceedToChall()">Continue to Challenge ⚡</button>`;
+  c.appendChild(wrap);
+  c.scrollTop = c.scrollHeight;
+}
+
+function proceedToChall() { buildHome(); gotoStage('chall'); }
+
+// ── Chat voice input ──
+function toggleChatVoice() {
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRec) { toast('Voice input not supported on this browser 😢'); return; }
+  if (chatVoicing) { if (chatVoiceRec) chatVoiceRec.stop(); return; }
+
+  chatVoiceRec = new SpeechRec();
+  chatVoiceRec.lang = 'en-US'; chatVoiceRec.continuous = false; chatVoiceRec.interimResults = false;
+
+  const btn = document.getElementById('chat-voice-btn');
+  chatVoiceRec.onstart = () => {
+    chatVoicing = true;
+    if (btn) { btn.textContent = '⏹'; btn.classList.add('recording'); }
+  };
+  chatVoiceRec.onresult = e => {
+    const transcript = e.results[0][0].transcript;
+    const inp = document.getElementById('chat-input');
+    inp.value = transcript; autoResize(inp);
+  };
+  chatVoiceRec.onerror = () => toast('Could not hear you. Try again! 🎤');
+  chatVoiceRec.onend = () => {
+    chatVoicing = false;
+    if (btn) { btn.textContent = '🎤'; btn.classList.remove('recording'); }
+  };
+  chatVoiceRec.start();
 }
 
 function addBubble(type, text) {
@@ -1805,14 +1838,15 @@ function toast(msg) {
 // ═══════════════════════════════════
 window.addEventListener('DOMContentLoaded', () => {
   refreshLogin();
-  setSpd(0.75);
-  // Load voices (some browsers delay this)
   if (speechSynthesis.onvoiceschanged !== undefined) {
-    speechSynthesis.onvoiceschanged = () => {
-      getSpeechVoice(); // restore saved voice
-    };
+    speechSynthesis.onvoiceschanged = () => getSpeechVoice();
   }
   setTimeout(() => getSpeechVoice(), 500);
+  // Hide voice input button if not supported (e.g. Chrome iOS)
+  if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
+    const vb = document.getElementById('chat-voice-btn');
+    if (vb) vb.style.display = 'none';
+  }
 });
 </script>
 </body>
