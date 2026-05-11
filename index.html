@@ -797,6 +797,9 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
       <button onclick="closeSettings()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--mid)">✕</button>
     </div>
     <div class="voice-sheet-sub">Tap Preview to hear, then Select to save</div>
+    <div style="font-size:11px;color:#999;background:#F9F9F9;border-radius:10px;padding:8px 10px;margin-bottom:12px;line-height:1.5">
+      💡 Want clearer voices? On your device: <b>Settings → Accessibility → Spoken Content → Voices → English</b> → download an Enhanced voice
+    </div>
     <div id="voice-list">
       <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
     </div>
@@ -826,7 +829,8 @@ const DIFF_CONFIG = {
   'A2':     { sentences:7,  words:'6-8', desc:'A2/KET level, common everyday words' },
   'B1':     { sentences:8,  words:'7-9', desc:'B1/PET level, richer vocabulary and some complex sentences' }
 };
-const PREFERRED_VOICES = ['Nicky','Samantha','Ava','Karen','Kate','Millie','Matilda','Evan','Allison','Zoe','Susan'];
+const PREFERRED_VOICES = ['Ava','Nicky','Samantha','Karen','Kate','Matilda','Millie','Zoe','Moira','Tessa','Fiona','Allison','Susan','Victoria','Salli','Joanna'];
+const MALE_VOICES = ['Alex','Fred','Tom','Daniel','Oliver','Evan','Lee','Aaron','Thomas','Bruce','Junior','Ralph','Rishi'];
 
 const OUTFITS = {
   elsie: [
@@ -853,12 +857,11 @@ let chatHistory      = [];
 let aiThinking       = false;
 let chatExchangeCount = 0;
 let chatSummaryShown  = false;
-let mediaRecorder    = null;
-let audioChunks      = [];
 let karaokeIdx       = 0;
 let karaokeSentences = [];
 let karaokeIsRec     = false;
 let karaokeAttempts  = 0;
+let karaokeRec       = null;
 let karaokeSpeed     = 1.0;
 let vocabWord        = '';
 let chatVoiceRec     = null;
@@ -1212,7 +1215,10 @@ function doneReading() {
 let selectedVoice = null;
 
 function getEnglishVoices() {
-  return speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
+  return speechSynthesis.getVoices().filter(v =>
+    v.lang.startsWith('en') &&
+    !MALE_VOICES.some(n => v.name === n || v.name.startsWith(n + ' ') || v.name.startsWith(n + ' ('))
+  );
 }
 
 function openSettings() {
@@ -1381,79 +1387,80 @@ function karaokePlay() {
 }
 
 function karaokeRecord() {
-  if (karaokeIsRec) { karaokeStopRec(); return; }
+  if (karaokeIsRec) { if (karaokeRec) karaokeRec.stop(); return; }
+  const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRec) { toast('Voice not supported on this browser 😢'); return; }
   stopSpeech();
-  navigator.mediaDevices.getUserMedia({ audio: true }).then(stream => {
-    audioChunks = [];
-    const mimeType = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm'
-                   : MediaRecorder.isTypeSupported('audio/mp4')  ? 'audio/mp4' : '';
-    mediaRecorder = new MediaRecorder(stream, mimeType ? { mimeType } : {});
-    mediaRecorder.ondataavailable = e => { if (e.data.size > 0) audioChunks.push(e.data); };
-    mediaRecorder.onstop = () => { stream.getTracks().forEach(t => t.stop()); karaokeSendFeedback(); };
-    mediaRecorder.start();
+
+  karaokeRec = new SpeechRec();
+  karaokeRec.lang = 'en-US';
+  karaokeRec.continuous = false;
+  karaokeRec.interimResults = false;
+
+  const btn = document.getElementById('kara-rec-btn');
+
+  karaokeRec.onstart = () => {
     karaokeIsRec = true;
-    const btn = document.getElementById('kara-rec-btn');
     btn.textContent = '⏹ Stop'; btn.classList.add('recording');
-    setTimeout(() => { if (karaokeIsRec) karaokeStopRec(); }, 10000);
-  }).catch(() => toast('Please allow microphone access! 🎤'));
+  };
+
+  karaokeRec.onresult = e => {
+    karaokeIsRec = false;
+    const spoken = e.results[0][0].transcript;
+    const confidence = e.results[0][0].confidence || 0;
+    btn.textContent = '⏳ Checking...'; btn.classList.remove('recording'); btn.disabled = true;
+    karaokeEval(spoken, confidence);
+  };
+
+  karaokeRec.onerror = e => {
+    karaokeIsRec = false;
+    btn.textContent = '🎙️ My Turn'; btn.classList.remove('recording'); btn.disabled = false;
+    if (e.error === 'no-speech') toast("Couldn't hear you — try again! 🎤");
+    else toast('Mic error, try again 🎤');
+  };
+
+  karaokeRec.onend = () => {
+    if (karaokeIsRec) {
+      karaokeIsRec = false;
+      btn.textContent = '🎙️ My Turn'; btn.classList.remove('recording'); btn.disabled = false;
+    }
+  };
+
+  karaokeRec.start();
 }
 
-function karaokeStopRec() {
-  if (mediaRecorder && karaokeIsRec) {
-    mediaRecorder.stop(); karaokeIsRec = false;
-    const btn = document.getElementById('kara-rec-btn');
-    btn.textContent = '⏳ Analyzing...'; btn.classList.remove('recording'); btn.disabled = true;
-  }
-}
-
-async function karaokeSendFeedback() {
+function karaokeEval(spoken, confidence) {
   karaokeAttempts++;
   const sentence = (karaokeSentences[karaokeIdx] || '').trim();
   const fb = document.getElementById('kara-fb');
-  fb.style.display = 'block'; fb.className = '';
-  fb.innerHTML = '<div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+  fb.style.display = 'block'; fb.className = 'kara-fb';
 
-  let passed = false;
-  let feedbackText = '';
-
-  try {
-    const mimeType = (audioChunks[0] && audioChunks[0].type) || 'audio/webm';
-    const blob = new Blob(audioChunks, { type: mimeType });
-    const base64 = await new Promise((res, rej) => {
-      const r = new FileReader();
-      r.onload = () => res(r.result.split(',')[1]);
-      r.onerror = rej;
-      r.readAsDataURL(blob);
-    });
-    const resp = await fetch(WORKER + '/gemini-audio', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({ audio_base64: base64, original_text: sentence, mime_type: mimeType })
-    });
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
-    const data = await resp.json();
-    passed = data.pass === true;
-    feedbackText = data.content[0].text;
-  } catch(e) {
-    passed = false; feedbackText = '';
-  }
+  const norm = s => s.toLowerCase().replace(/[^a-z0-9 ']/g, '').trim();
+  const expWords = norm(sentence).split(/\s+/);
+  const spkWords = norm(spoken).split(/\s+/);
+  const matchCount = expWords.filter(w => spkWords.includes(w)).length;
+  const ratio = matchCount / Math.max(expWords.length, 1);
+  const passed = ratio >= 0.65 || (confidence > 0.82 && ratio >= 0.5);
 
   const btn = document.getElementById('kara-rec-btn');
-  fb.className = 'kara-fb';
 
   if (passed) {
-    const msg = feedbackText || '說得很棒！👍';
+    const msg = '太棒了！發音很清楚！⭐';
     fb.textContent = msg;
     btn.disabled = true;
     speakChinese(msg);
-    setTimeout(() => karaokeNext(), 2500);
+    setTimeout(() => karaokeNext(), 2000);
   } else if (karaokeAttempts >= 3) {
-    const msg = '沒關係，我們繼續！加油！💪';
+    const msg = '不錯！我們繼續下一句！💪';
     fb.textContent = msg;
     btn.disabled = true;
     speakChinese(msg);
-    setTimeout(() => karaokeNext(), 2500);
+    setTimeout(() => karaokeNext(), 2000);
   } else {
-    const msg = feedbackText || '跟著 Sonia 再試一次 🎙️';
+    const missing = expWords.filter(w => w.length > 2 && !spkWords.includes(w)).slice(0, 2);
+    const msg = missing.length
+      ? `注意「${missing.join('、')}」的發音，再試一次！💪`
+      : '說清楚一點，再試一次！💪';
     fb.textContent = msg;
     btn.textContent = '🔄 Try again'; btn.disabled = false;
     const zhUtt = speakChinese(msg);
@@ -1466,7 +1473,7 @@ async function karaokeSendFeedback() {
 }
 
 function karaokeNext() {
-  stopSpeech(); karaokeIsRec = false;
+  stopSpeech(); karaokeIsRec = false; karaokeRec = null;
   karaokeIdx++;
   if (karaokeIdx >= karaokeSentences.length) { doneShad(); return; }
   renderKaraokeCard();
@@ -1474,7 +1481,7 @@ function karaokeNext() {
 }
 
 function karaokePrev() {
-  stopSpeech(); karaokeIsRec = false;
+  stopSpeech(); karaokeIsRec = false; karaokeRec = null;
   if (karaokeIdx > 0) karaokeIdx--;
   renderKaraokeCard();
   setTimeout(karaokeAutoPlay, 600);
@@ -1860,12 +1867,22 @@ function toast(msg) {
 // ═══════════════════════════════════
 // INIT
 // ═══════════════════════════════════
+function pickDefaultVoice() {
+  if (localStorage.getItem('planet_voice')) return;
+  const voices = getEnglishVoices();
+  for (const name of PREFERRED_VOICES) {
+    const v = voices.find(v => v.name === name || v.name.startsWith(name + ' '));
+    if (v) { selectedVoice = v; localStorage.setItem('planet_voice', v.name); return; }
+  }
+  if (voices.length) { selectedVoice = voices[0]; localStorage.setItem('planet_voice', voices[0].name); }
+}
+
 window.addEventListener('DOMContentLoaded', () => {
   refreshLogin();
   if (speechSynthesis.onvoiceschanged !== undefined) {
-    speechSynthesis.onvoiceschanged = () => getSpeechVoice();
+    speechSynthesis.onvoiceschanged = () => { getSpeechVoice(); pickDefaultVoice(); };
   }
-  setTimeout(() => getSpeechVoice(), 500);
+  setTimeout(() => { getSpeechVoice(); pickDefaultVoice(); }, 600);
   // Hide voice input button if not supported (e.g. Chrome iOS)
   if (!window.SpeechRecognition && !window.webkitSpeechRecognition) {
     const vb = document.getElementById('chat-voice-btn');
