@@ -1266,7 +1266,7 @@ function shadStep(n) {
     setSpd(0.75);
   }
   if (n === 3) {
-    document.getElementById('shad-done-btn').style.display = 'none';
+    document.getElementById('shad-done-btn').style.display = '';
     buildCheckList();
   }
   document.getElementById('play-btn').textContent = '▶';
@@ -1454,10 +1454,11 @@ async function showVocabDef(word) {
   }
   document.getElementById('vocab-def').innerHTML = '<div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
   try {
-    const reply = await callAI([{
+    const raw = await callAI([{
       role:'user',
-      content:`Define "${word}" for a 10-12 year old in 1-2 simple sentences. Include one short example sentence. Be fun and easy to understand.`
-    }], 'You are a friendly English teacher for children. Give short, clear definitions.', 150);
+      content:`Define "${word}" for a 10-12 year old in 1-2 simple sentences. Include one short example sentence. Be fun and easy to understand. Plain text only, no markdown.`
+    }], 'You are a friendly English teacher for children. Give short, clear definitions. Never use markdown formatting.', 150);
+    const reply = raw.replace(/#{1,6}\s*/g,'').replace(/\*\*/g,'').replace(/\*/g,'').replace(/_/g,'').trim();
     if (!td.vocabDefs) td.vocabDefs = {};
     td.vocabDefs[word] = reply; save();
     document.getElementById('vocab-def').textContent = reply;
