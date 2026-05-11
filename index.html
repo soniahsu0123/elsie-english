@@ -156,6 +156,8 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
   display:flex;align-items:center;gap:5px;font-weight:800;font-size:14px;
   box-shadow:0 3px 0 rgba(0,0,0,0.10),0 5px 14px rgba(0,0,0,0.07)
 }
+.s-chip.tap{cursor:pointer;transition:all 0.15s;user-select:none}
+.s-chip.tap:active{transform:scale(0.95);box-shadow:0 1px 0 rgba(0,0,0,0.10)}
 .s-icon{font-size:15px}
 
 .topic-card{margin:4px 18px}
@@ -209,6 +211,7 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
 .vc-word{font-family:'Fredoka One',cursive;font-size:15px;color:var(--reading-d);margin-bottom:3px}
 .vc-defs{font-size:12px;font-weight:600;color:var(--dark);line-height:1.6}
 .vpos{color:var(--mid);font-style:italic;font-size:11px;margin-right:3px}
+.vc-example{font-size:11px;color:var(--mid);font-style:italic;margin-top:5px;line-height:1.5;border-top:1px solid #EEE;padding-top:4px}
 
 /* ════════════════════
    SHADOWING — 3-step
@@ -340,24 +343,28 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
 .bubble.ai{background:white;border-bottom-left-radius:5px;box-shadow:0 2px 8px rgba(0,0,0,0.07);color:var(--dark)}
 .bubble.user{background:var(--chat);border-bottom-right-radius:5px;color:white}
 .bubble-name{font-size:11px;font-weight:800;color:#9333EA;margin-bottom:3px}
-.chat-mic-area{
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-  padding:14px 18px calc(14px + env(safe-area-inset-bottom,0px));
-  background:rgba(255,255,255,0.97);border-top:2px solid rgba(0,0,0,0.07);flex-shrink:0
+.chat-in-wrap{
+  flex-shrink:0;background:rgba(255,255,255,0.97);
+  border-top:2px solid rgba(0,0,0,0.07)
 }
-.chat-big-mic{
-  width:68px;height:68px;border-radius:50%;background:var(--chat);border:none;
-  font-size:30px;cursor:pointer;box-shadow:0 4px 0 var(--chat-d);
+.chat-rec-status{
+  text-align:center;font-size:12px;font-weight:800;color:#EF4444;
+  padding:6px 0 0;animation:pulse-rec 1s ease-in-out infinite;display:none
+}
+.chat-in-row{
+  display:flex;align-items:flex-end;gap:8px;
+  padding:10px 14px calc(10px + env(safe-area-inset-bottom,0px))
+}
+.chat-mic-btn{
+  width:46px;height:46px;border-radius:50%;
+  background:var(--chat);border:none;font-size:20px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 3px 0 var(--chat-d);flex-shrink:0;
   position:relative;top:0;transition:all 0.15s
 }
-.chat-big-mic:active{top:3px;box-shadow:0 1px 0 var(--chat-d)}
-.chat-big-mic.recording{background:#EF4444;box-shadow:0 4px 0 #B91C1C;animation:pulse-rec 1s ease-in-out infinite}
-.chat-big-mic:disabled{opacity:0.5;cursor:default}
-.chat-said-preview{
-  background:rgba(91,168,212,0.15);border-radius:14px;padding:8px 16px;
-  font-size:13px;font-weight:700;color:var(--chat-d);text-align:center;width:100%;max-width:320px
-}
-.chat-mic-label{font-size:12px;font-weight:800;color:var(--mid)}
+.chat-mic-btn:active{top:2px;box-shadow:0 1px 0 var(--chat-d)}
+.chat-mic-btn.recording{background:#EF4444;box-shadow:0 3px 0 #B91C1C;animation:pulse-rec 1s ease-in-out infinite}
+.chat-mic-btn:disabled{opacity:0.5;cursor:default}
 .chat-input{
   flex:1;padding:11px 15px;border-radius:20px;border:2px solid #DDD;
   font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;outline:none;
@@ -617,12 +624,14 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
     <div class="s-chip"><span class="s-icon">⭐</span>Lv.<span id="s-level">1</span></div>
     <div class="s-chip"><span class="s-icon">🔥</span><span id="s-streak">0</span> day streak</div>
   </div>
-  <div class="card topic-card" style="margin:4px 18px;cursor:pointer" onclick="changeTopic()" title="Tap to change topic">
-    <div class="topic-eyebrow" style="display:flex;justify-content:space-between;align-items:center">
-      <span>Today's Topic</span>
-      <span style="font-size:13px;font-weight:800;color:var(--reading);background:#FFF8E0;border:2px solid var(--reading);border-radius:20px;padding:4px 12px">🔀 換主題</span>
+  <div class="stats-row" style="padding-top:0">
+    <div class="s-chip tap" id="s-diff-chip" onclick="cycleDifficulty()" title="Tap to change level">
+      <span class="s-icon">📚</span><span id="s-diff">A2</span>
     </div>
-    <div class="topic-name" id="home-topic">Loading...</div>
+    <div class="s-chip tap" id="s-topic-chip" onclick="changeTopic()" title="Tap to change topic" style="flex:1;min-width:0;gap:6px">
+      <span class="s-icon" style="flex-shrink:0">🔀</span>
+      <span id="s-topic-short" style="font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Loading...</span>
+    </div>
   </div>
   <div class="card map-card">
     <div class="map-title">Today's Mission</div>
@@ -722,12 +731,22 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
     <div style="display:flex;align-items:center;gap:10px">
       <div id="kara-counter" style="font-weight:800;font-size:13px;color:var(--shad-d);white-space:nowrap">1 / 1</div>
       <div id="kara-dots" style="display:flex;gap:5px;flex:1;flex-wrap:wrap"></div>
-      <button onclick="doneShad()" style="font-size:12px;font-weight:800;color:#BBB;background:none;border:none;cursor:pointer;white-space:nowrap;flex-shrink:0">Finish →</button>
+    </div>
+    <!-- Speed control -->
+    <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+      <span style="font-size:11px;font-weight:800;color:var(--mid)">Speed:</span>
+      <div id="spd-btns" style="display:flex;gap:5px;flex-wrap:wrap">
+        <button class="spd-tab" onclick="setKaraokeSpeed(0.5)">0.5×</button>
+        <button class="spd-tab" onclick="setKaraokeSpeed(0.75)">0.75×</button>
+        <button class="spd-tab on" onclick="setKaraokeSpeed(1.0)">1×</button>
+        <button class="spd-tab" onclick="setKaraokeSpeed(1.25)">1.25×</button>
+        <button class="spd-tab" onclick="setKaraokeSpeed(1.5)">1.5×</button>
+      </div>
     </div>
 
     <!-- Main karaoke card -->
     <div class="card" style="text-align:center">
-      <div style="font-size:13px;font-weight:800;color:var(--shad-d);margin-bottom:10px">🍋 Sonia 說，你跟著唸！</div>
+      <div style="font-size:13px;font-weight:800;color:var(--shad-d);margin-bottom:10px">🍋 Listen and repeat after Sonia!</div>
       <div id="kara-text" class="kara-sentence"></div>
       <div class="kara-btns">
         <button class="kara-play-btn" id="kara-play-btn" onclick="karaokePlay()">▶ Hear</button>
@@ -752,7 +771,6 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
     <div class="stage-hd">
       <div style="display:flex;align-items:center;justify-content:space-between">
         <div class="stage-title" style="color:var(--chat-d)">💬 Chat with Sonia</div>
-        <button onclick="endChatWithSummary()" class="hdr-btn" style="color:var(--chat-d);border-color:var(--chat)">🏁 Finish</button>
       </div>
       <div class="prog-bar" style="color:var(--chat)">
         <div class="prog-step on"></div>
@@ -763,10 +781,13 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
       <div id="chat-round" style="font-size:12px;font-weight:800;color:var(--chat-d);margin-top:5px;text-align:center"></div>
     </div>
     <div class="chat-msgs" id="chat-msgs"></div>
-    <div class="chat-mic-area">
-      <div id="chat-said" class="chat-said-preview" style="display:none"></div>
-      <button class="chat-big-mic" id="chat-big-mic" onclick="toggleChatVoice()">🎤</button>
-      <div class="chat-mic-label" id="chat-mic-label">點我說話</div>
+    <div class="chat-in-wrap">
+      <div class="chat-rec-status" id="chat-rec-status">🎤 Listening... tap again to stop</div>
+      <div class="chat-in-row">
+        <textarea class="chat-input" id="chat-textarea" rows="1" placeholder="Tap 🎤 or type here..." onkeydown="chatKey(event)" oninput="autoResize(this)"></textarea>
+        <button class="chat-mic-btn" id="chat-mic-btn" onclick="toggleChatVoice()">🎤</button>
+        <button class="send-btn" id="chat-send-btn" onclick="sendFromInput()">→</button>
+      </div>
     </div>
   </div>
 </div>
@@ -865,6 +886,13 @@ const TOPICS = [
   '✈️ If I Could Go Anywhere'
 ];
 const COIN_TABLE = { reading:5, shad:5, chat:10, chall:20, streak3:15, streak7:50, streak14:100, streak30:300 };
+const DIFFICULTY_LEVELS = ['Pre-A1', 'A1', 'A2', 'B1'];
+const DIFF_CONFIG = {
+  'Pre-A1': { sentences:5,  words:'4-5', desc:'Pre-A1 level, very simple everyday words, short sentences (8-9 year old level)' },
+  'A1':     { sentences:7,  words:'5-6', desc:'A1/Movers level, simple everyday vocabulary' },
+  'A2':     { sentences:10, words:'6-8', desc:'A2/KET level, common everyday words' },
+  'B1':     { sentences:11, words:'7-9', desc:'B1/PET level, richer vocabulary and some complex sentences' }
+};
 
 const OUTFITS = {
   elsie: [
@@ -901,6 +929,7 @@ let karaokeIdx       = 0;
 let karaokeSentences = [];
 let karaokeIsRec     = false;
 let karaokeAttempts  = 0;
+let karaokeSpeed     = 1.0;
 let vocabWord        = '';
 let chatVoiceRec     = null;
 let chatVoicing      = false;
@@ -912,10 +941,16 @@ function save() {
   if (CUR) localStorage.setItem(`planet_${CUR}`, JSON.stringify(DATA));
 }
 
+function defaultDifficulty(name) { return name === 'sunny' ? 'A1' : 'A2'; }
+
 function load(name) {
   const s = localStorage.getItem(`planet_${name}`);
-  if (s) return JSON.parse(s);
-  return { coins:0, level:1, streak:0, lastDate:null, days:{} };
+  if (s) {
+    const d = JSON.parse(s);
+    if (!d.difficulty) d.difficulty = defaultDifficulty(name);
+    return d;
+  }
+  return { coins:0, level:1, streak:0, lastDate:null, days:{}, difficulty: defaultDifficulty(name) };
 }
 
 function today() {
@@ -1032,6 +1067,18 @@ function changeTopic() {
   toast('New topic! 🔀');
 }
 
+function cycleDifficulty() {
+  const cur = DATA.difficulty || defaultDifficulty(CUR);
+  const idx = DIFFICULTY_LEVELS.indexOf(cur);
+  DATA.difficulty = DIFFICULTY_LEVELS[(idx + 1) % DIFFICULTY_LEVELS.length];
+  const td = todayData();
+  td.passage = null; td.vocab = null; td.reading = false;
+  readText = '';
+  save();
+  buildHome();
+  toast(`Level: ${DATA.difficulty} 📚`);
+}
+
 function buildHome() {
   const td = todayData();
   if (!td.topic) { td.topic = TOPICS[Math.floor(Math.random() * TOPICS.length)]; save(); }
@@ -1039,7 +1086,8 @@ function buildHome() {
   document.getElementById('s-coins').textContent  = DATA.coins;
   document.getElementById('s-level').textContent  = DATA.level;
   document.getElementById('s-streak').textContent = DATA.streak;
-  document.getElementById('home-topic').textContent = td.topic;
+  document.getElementById('s-diff').textContent   = DATA.difficulty || defaultDifficulty(CUR);
+  document.getElementById('s-topic-short').textContent = td.topic || 'Change topic';
 
   const h = new Date().getHours();
   const greets = h < 12 ? ['Good morning','Rise and shine'] : h < 17 ? ['Good afternoon','Hey there'] : ['Good evening','Hi there'];
@@ -1131,24 +1179,15 @@ async function loadReading() {
   if (td.passage) { renderReading(td.passage, td.vocab); return; }
 
   const topic = td.topic ? td.topic.replace(/^[^\s]+ /,'') : 'My Day';
-  const isElsie = CUR === 'elsie';
-  const content = isElsie
-    ? `Write an English passage for a Taiwanese child at A2/KET level about: "${topic}".
+  const diff = DATA.difficulty || defaultDifficulty(CUR);
+  const cfg  = DIFF_CONFIG[diff];
+  const content = `Write an English passage for a Taiwanese child at ${cfg.desc} about: "${topic}".
 Rules:
-- Exactly 10 sentences
-- A2 vocabulary, common everyday words
-- Fun and relatable for a 12-year-old
+- Exactly ${cfg.sentences} sentences
+- Fun and relatable for a child
 - NO title line
-After the passage write: VOCAB_JSON: [{"word":"...","pos":"n./v./adj./adv.","zh":"中文意思"},...]
-Include 6-8 key words. If a word has multiple common uses list each separately (same word, different pos+zh).`
-    : `Write an English passage for a Taiwanese child at Pre-A1 level about: "${topic}".
-Rules:
-- Exactly 5 sentences
-- Very simple vocabulary (Pre-A1, 8-9 year old level)
-- Short sentences, basic words only
-- NO title line
-After the passage write: VOCAB_JSON: [{"word":"...","pos":"n./v./adj./adv.","zh":"中文意思"},...]
-Include 4-5 key words with part of speech and Chinese translation.`;
+After the passage write: VOCAB_JSON: [{"word":"...","pos":"n./v./adj./adv.","zh":"中文意思","ex":"One short English example sentence."},...]
+Include ${cfg.words} key words. If a word has multiple common uses list each separately (same word, different pos+zh). Each entry must have an "ex" field.`;
 
   try {
     const reply = await callAI([{role:'user', content}],
@@ -1184,13 +1223,16 @@ function renderReading(passage, vocab) {
       const grouped = {};
       vocab.forEach(v => {
         if (!grouped[v.word]) grouped[v.word] = [];
-        grouped[v.word].push({pos: v.pos || '', zh: v.zh || ''});
+        grouped[v.word].push({pos: v.pos || '', zh: v.zh || '', ex: v.ex || ''});
       });
-      html = Object.entries(grouped).map(([word, defs]) =>
-        `<div class="vocab-inline-card"><div class="vc-word">${esc(word)}</div><div class="vc-defs">${
-          defs.map(d => `<span class="vpos">${esc(d.pos)}</span>${esc(d.zh)}`).join('<br>')
-        }</div></div>`
-      ).join('');
+      html = Object.entries(grouped).map(([word, defs]) => {
+        const ex = defs.find(d => d.ex)?.ex || '';
+        return `<div class="vocab-inline-card">
+          <div class="vc-word">${esc(word)}</div>
+          <div class="vc-defs">${defs.map(d => `<span class="vpos">${esc(d.pos)}</span>${esc(d.zh)}`).join('<br>')}</div>
+          ${ex ? `<div class="vc-example">${esc(ex)}</div>` : ''}
+        </div>`;
+      }).join('');
     }
     document.getElementById('vocab-grid').innerHTML = html;
     document.getElementById('vocab-sec').style.display = 'block';
@@ -1317,6 +1359,10 @@ function initKaraoke() {
   stopSpeech();
   karaokeIdx = 0;
   karaokeIsRec = false;
+  karaokeSpeed = 1.0;
+  document.querySelectorAll('#spd-btns .spd-tab').forEach(btn => {
+    btn.classList.toggle('on', btn.textContent === '1×');
+  });
   karaokeSentences = readText.match(/[^.!?]+[.!?]+/g) || [readText];
   renderKaraokeCard();
   setTimeout(karaokeAutoPlay, 900);
@@ -1362,12 +1408,20 @@ function renderKaraokeCard() {
   }
 }
 
+function setKaraokeSpeed(s) {
+  karaokeSpeed = s;
+  document.querySelectorAll('#spd-btns .spd-tab').forEach(btn => {
+    btn.classList.toggle('on', parseFloat(btn.textContent) === s);
+  });
+  if (window.speechSynthesis.speaking) karaokeAutoPlay();
+}
+
 function karaokeAutoPlay() {
   if (!karaokeSentences.length) return;
   stopSpeech();
   const playBtn = document.getElementById('kara-play-btn');
   if (playBtn) { playBtn.textContent = '⏸ Stop'; playBtn.classList.add('active'); }
-  const utt = makeSpeech(karaokeSentences[karaokeIdx].trim(), 0.9);
+  const utt = makeSpeech(karaokeSentences[karaokeIdx].trim(), karaokeSpeed);
   utt.onend = () => {
     if (playBtn) { playBtn.textContent = '▶ Hear'; playBtn.classList.remove('active'); }
   };
@@ -1445,17 +1499,27 @@ async function karaokeSendFeedback() {
   fb.className = 'kara-fb';
 
   if (passed) {
-    fb.textContent = feedbackText || '說得很棒！👍';
+    const msg = feedbackText || '說得很棒！👍';
+    fb.textContent = msg;
     btn.disabled = true;
-    setTimeout(() => karaokeNext(), 2200);
+    speakChinese(msg);
+    setTimeout(() => karaokeNext(), 2500);
   } else if (karaokeAttempts >= 3) {
-    fb.textContent = '沒關係，我們繼續！加油！💪';
+    const msg = '沒關係，我們繼續！加油！💪';
+    fb.textContent = msg;
     btn.disabled = true;
-    setTimeout(() => karaokeNext(), 2200);
+    speakChinese(msg);
+    setTimeout(() => karaokeNext(), 2500);
   } else {
-    fb.textContent = feedbackText || '跟著 Sonia 再試一次 🎙️';
-    setTimeout(() => { stopSpeech(); speakText(sentence); }, 400);
-    btn.textContent = '🔄 再試一次'; btn.disabled = false;
+    const msg = feedbackText || '跟著 Sonia 再試一次 🎙️';
+    fb.textContent = msg;
+    btn.textContent = '🔄 Try again'; btn.disabled = false;
+    const zhUtt = speakChinese(msg);
+    if (zhUtt) {
+      zhUtt.onend = () => setTimeout(() => { stopSpeech(); karaokeAutoPlay(); }, 300);
+    } else {
+      setTimeout(() => { stopSpeech(); karaokeAutoPlay(); }, 1200);
+    }
   }
 }
 
@@ -1544,8 +1608,12 @@ async function sendMsgText(text) {
   chatHistory.push({role:'user', content:text});
   aiThinking = true; addThinking();
 
-  const micBtn = document.getElementById('chat-big-mic');
-  if (micBtn) micBtn.disabled = true;
+  const micBtn  = document.getElementById('chat-mic-btn');
+  const sendBtn = document.getElementById('chat-send-btn');
+  const ta      = document.getElementById('chat-textarea');
+  if (micBtn)  micBtn.disabled  = true;
+  if (sendBtn) sendBtn.disabled = true;
+  if (ta)      ta.disabled      = true;
 
   try {
     const reply = await callAI(chatHistory, window._chatSys || '');
@@ -1558,7 +1626,9 @@ async function sendMsgText(text) {
     addBubble('ai', "Hmm, let me think... Try again! 😊");
   }
   aiThinking = false;
-  if (micBtn) micBtn.disabled = false;
+  if (micBtn)  micBtn.disabled  = false;
+  if (sendBtn) sendBtn.disabled = false;
+  if (ta)      ta.disabled      = false;
   chatExchangeCount++;
   updateChatRound();
   if (chatExchangeCount >= 5) {
@@ -1577,22 +1647,26 @@ function updateChatRound() {
 }
 
 async function endChatWithSummary() {
-  if (chatSummaryShown) {
-    const td = todayData();
-    if (td.chat) { buildHome(); gotoStage('chall'); }
-    return;
-  }
+  if (chatSummaryShown) return;
   chatSummaryShown = true;
-  const td = todayData();
-  if (td.chat) { buildHome(); gotoStage('chall'); return; }
 
-  td.chat = true; td.earned = (td.earned||0) + COIN_TABLE.chat;
-  DATA.coins += COIN_TABLE.chat; save();
+  const td = todayData();
+  if (!td.chat) {
+    td.chat = true; td.earned = (td.earned||0) + COIN_TABLE.chat;
+    DATA.coins += COIN_TABLE.chat; save();
+  }
+
+  // Disable input
+  ['chat-mic-btn','chat-send-btn'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.disabled = true;
+  });
+  const ta = document.getElementById('chat-textarea');
+  if (ta) ta.disabled = true;
 
   const c = document.getElementById('chat-msgs');
   const summaryEl = document.createElement('div');
   summaryEl.className = 'chat-summary';
-  summaryEl.innerHTML = `<div style="font-weight:800;color:#9333EA;margin-bottom:8px;font-size:14px">📝 Sonia 的今日總結</div><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  summaryEl.innerHTML = `<div style="font-weight:800;color:#9333EA;margin-bottom:8px;font-size:14px">📝 Sonia's Note</div><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
   c.appendChild(summaryEl);
   c.scrollTop = c.scrollHeight;
 
@@ -1604,24 +1678,32 @@ async function endChatWithSummary() {
     const raw = await callAI([{role:'user',content:prompt}],
       '你是一位溫暖的英語老師，用繁體中文給小學生回饋。語氣鼓勵、純文字、不使用markdown格式。', 200);
     const summary = raw.replace(/\*\*/g,'').replace(/\*/g,'').replace(/^[-•]\s*/gm,'').replace(/#{1,6}\s*/g,'').trim();
-    summaryEl.innerHTML = `<div style="font-weight:800;color:#9333EA;margin-bottom:8px;font-size:14px">📝 Sonia 的今日總結</div><div style="font-size:14px;line-height:1.7;font-weight:600;color:var(--dark)">${esc(summary)}</div>`;
+    summaryEl.innerHTML = `<div style="font-weight:800;color:#9333EA;margin-bottom:8px;font-size:14px">📝 Sonia's Note</div><div style="font-size:14px;line-height:1.7;font-weight:600;color:var(--dark)">${esc(summary)}</div>`;
   } catch(e) {
-    summaryEl.innerHTML = `<div style="font-weight:800;color:#9333EA;margin-bottom:8px;font-size:14px">📝 Sonia 的今日總結</div><div style="font-size:14px;color:var(--dark)">你今天表現很棒！英文越來越流利了，繼續加油！🌟</div>`;
+    summaryEl.innerHTML = `<div style="font-weight:800;color:#9333EA;margin-bottom:8px;font-size:14px">📝 Sonia's Note</div><div style="font-size:14px;color:var(--dark)">你今天表現很棒！英文越來越流利了，繼續加油！🌟</div>`;
   }
 
-  const wrap = document.createElement('div');
-  wrap.style.cssText = 'text-align:center;padding:12px 0';
-  wrap.innerHTML = `<button class="btn btn-p" onclick="proceedToChall()">Continue to Challenge ⚡</button>`;
-  c.appendChild(wrap);
+  const doneEl = document.createElement('div');
+  doneEl.style.cssText = 'text-align:center;padding:20px 0 8px';
+  doneEl.innerHTML = `<div style="font-size:32px;margin-bottom:8px">🌟</div><div style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--reading-d)">Great job! +${COIN_TABLE.chat} coins!</div><div style="margin-top:6px;font-size:13px;color:var(--mid);font-weight:700">Head home to keep going 🏠</div>`;
+  c.appendChild(doneEl);
   c.scrollTop = c.scrollHeight;
+  buildHome();
 }
 
-function proceedToChall() { buildHome(); gotoStage('chall'); }
+function sendFromInput() {
+  const ta = document.getElementById('chat-textarea');
+  if (!ta) return;
+  const text = ta.value.trim();
+  if (!text || aiThinking) return;
+  ta.value = '';
+  autoResize(ta);
+  sendMsgText(text);
+}
 
-// ── Chat voice input (voice-only mode) ──
 function toggleChatVoice() {
   const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRec) { toast('此裝置不支援語音輸入 😢'); return; }
+  if (!SpeechRec) { toast("Voice not supported on this device 😢"); return; }
   if (aiThinking) return;
 
   if (chatVoicing) {
@@ -1634,38 +1716,33 @@ function toggleChatVoice() {
   chatVoiceRec.continuous = false;
   chatVoiceRec.interimResults = false;
 
-  const btn   = document.getElementById('chat-big-mic');
-  const label = document.getElementById('chat-mic-label');
-  const said  = document.getElementById('chat-said');
+  const btn    = document.getElementById('chat-mic-btn');
+  const status = document.getElementById('chat-rec-status');
+  const ta     = document.getElementById('chat-textarea');
 
   chatVoiceRec.onstart = () => {
     chatVoicing = true;
-    if (btn)   { btn.textContent = '⏹'; btn.classList.add('recording'); }
-    if (label) label.textContent = '正在聽... 說完再按一次';
+    if (btn)    btn.classList.add('recording');
+    if (status) status.style.display = 'block';
+    stopSpeech();
   };
 
   chatVoiceRec.onresult = e => {
     const transcript = e.results[0][0].transcript;
-    if (said)  { said.style.display = 'block'; said.textContent = `你說了：${transcript}`; }
-    if (label) label.textContent = '傳送中...';
-    setTimeout(() => {
-      sendMsgText(transcript);
-      if (said) said.style.display = 'none';
-      if (label) label.textContent = '點我說話';
-    }, 1200);
+    if (ta) { ta.value = transcript; autoResize(ta); ta.focus(); }
   };
 
   chatVoiceRec.onerror = () => {
-    toast('聽不清楚，再試一次！🎤');
+    toast("Couldn't hear you, try again! 🎤");
     chatVoicing = false;
-    if (btn)   { btn.textContent = '🎤'; btn.classList.remove('recording'); }
-    if (label) label.textContent = '點我說話';
-    if (said)  said.style.display = 'none';
+    if (btn)    btn.classList.remove('recording');
+    if (status) status.style.display = 'none';
   };
 
   chatVoiceRec.onend = () => {
     chatVoicing = false;
-    if (btn)   { btn.textContent = '🎤'; btn.classList.remove('recording'); }
+    if (btn)    btn.classList.remove('recording');
+    if (status) status.style.display = 'none';
   };
 
   chatVoiceRec.start();
@@ -1697,7 +1774,7 @@ function removeThinking() {
 }
 
 function chatKey(e) {
-  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMsg(); }
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendFromInput(); }
 }
 
 function autoResize(el) {
@@ -1816,7 +1893,7 @@ function showComplete() {
 function goHome() {
   stopConfetti();
   buildHome();
-  gotoStage('home');
+  showScreen('home');
 }
 
 // ═══════════════════════════════════
@@ -1831,6 +1908,16 @@ function speakText(text) {
   stopSpeech();
   const utt = makeSpeech(text, 0.92);
   setTimeout(() => window.speechSynthesis.speak(utt), 100);
+}
+
+function speakChinese(text) {
+  stopSpeech();
+  const utt = new SpeechSynthesisUtterance(text);
+  const zhVoice = speechSynthesis.getVoices().find(v => v.lang.startsWith('zh-TW') || v.lang.startsWith('zh-HK') || v.lang.startsWith('zh'));
+  if (zhVoice) { utt.voice = zhVoice; utt.lang = zhVoice.lang; } else { utt.lang = 'zh-TW'; }
+  utt.rate = 0.85;
+  setTimeout(() => window.speechSynthesis.speak(utt), 100);
+  return utt;
 }
 
 // ═══════════════════════════════════
