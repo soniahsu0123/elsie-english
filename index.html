@@ -207,6 +207,8 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
    READING
 ════════════════════ */
 .vocab-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.vc-speak-btn{background:none;border:none;cursor:pointer;font-size:15px;padding:0;flex-shrink:0;opacity:0.6;line-height:1;transition:opacity 0.15s}
+.vc-speak-btn:active{opacity:1}
 .vocab-inline-card{
   background:#FFF8E0;border:2px solid var(--reading);border-radius:12px;padding:10px 12px
 }
@@ -607,7 +609,7 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
     <div class="s-chip tap" id="s-diff-chip" onclick="cycleDifficulty()" title="Tap to change level">
       <span class="s-icon">📚</span><span id="s-diff">A1</span>
     </div>
-    <div class="s-chip tap" id="s-topic-chip" onclick="changeTopic()" title="Tap to change topic" style="flex-shrink:1;min-width:0;max-width:120px;gap:4px">
+    <div class="s-chip tap" id="s-topic-chip" onclick="changeTopic()" title="Tap to change topic" style="flex:1;min-width:0;gap:4px">
       <span class="s-icon" style="flex-shrink:0">🔀</span>
       <span id="s-topic-short" style="font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
     </div>
@@ -657,7 +659,10 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
 <!-- ══════════════ S3: READING ══════════════ -->
 <div id="screen-reading" class="screen">
   <div class="stage-hd">
-    <div class="stage-title" style="color:var(--reading-d)">📖 Reading</div>
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="stage-title" style="color:var(--reading-d)">📖 Reading</div>
+      <button onclick="openSettings()" class="hdr-btn" style="color:var(--reading-d);border-color:var(--reading)">⚙️ Voice</button>
+    </div>
     <div class="prog-bar" style="color:var(--reading)">
       <div class="prog-step on cur"></div>
       <div class="prog-step"></div>
@@ -780,9 +785,6 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
   <div class="nav-item" id="nav-chat" onclick="navTo('chat')">
     <span class="nav-icon">💬</span><span class="nav-label">Chat</span>
   </div>
-  <div class="nav-item" id="nav-settings" onclick="navTo('settings')">
-    <span class="nav-icon">⚙️</span><span class="nav-label">Settings</span>
-  </div>
 </nav>
 
 </div><!-- /#app -->
@@ -875,10 +877,16 @@ function load(name) {
   const s = localStorage.getItem(`planet_${name}`);
   if (s) {
     const d = JSON.parse(s);
-    if (!d.difficulty) d.difficulty = defaultDifficulty(name);
+    if (!d.v || d.v < 2) {
+      d.difficulty = defaultDifficulty(name);
+      d.v = 2;
+      const t = today();
+      if (d.days && d.days[t]) { d.days[t].passage = null; d.days[t].vocab = null; }
+      localStorage.setItem(`planet_${name}`, JSON.stringify(d));
+    }
     return d;
   }
-  return { coins:0, level:1, streak:0, lastDate:null, days:{}, difficulty: defaultDifficulty(name) };
+  return { coins:0, level:1, streak:0, lastDate:null, days:{}, difficulty: defaultDifficulty(name), v:2 };
 }
 
 function today() {
@@ -1149,7 +1157,10 @@ function renderReading(passage, vocab) {
       html = Object.entries(grouped).map(([word, {ph, defs}]) => {
         const ex = defs.find(d => d.ex)?.ex || '';
         return `<div class="vocab-inline-card">
-          <div class="vc-word">${esc(word)}</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:2px">
+            <div class="vc-word">${esc(word)}</div>
+            <button class="vc-speak-btn" data-word="${esc(word)}" onclick="speakVocabBtn(this)">🔊</button>
+          </div>
           ${ph ? `<div class="vc-ph">${esc(ph)}</div>` : ''}
           <div class="vc-defs">${defs.map(d => `<span class="vpos">${esc(d.pos)}</span>${esc(d.zh)}`).join('<br>')}</div>
           ${ex ? `<div class="vc-example">${esc(ex)}</div>` : ''}
@@ -1767,9 +1778,15 @@ function speakChinese(text) {
   const utt = new SpeechSynthesisUtterance(text);
   const zhVoice = speechSynthesis.getVoices().find(v => v.lang.startsWith('zh-TW') || v.lang.startsWith('zh-HK') || v.lang.startsWith('zh'));
   if (zhVoice) { utt.voice = zhVoice; utt.lang = zhVoice.lang; } else { utt.lang = 'zh-TW'; }
-  utt.rate = 0.85;
+  utt.rate = 1.05;
   setTimeout(() => window.speechSynthesis.speak(utt), 100);
   return utt;
+}
+
+function speakVocabBtn(btn) {
+  stopSpeech();
+  const utt = makeSpeech(btn.dataset.word, 0.72);
+  window.speechSynthesis.speak(utt);
 }
 
 // ═══════════════════════════════════

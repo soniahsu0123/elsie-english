@@ -86,30 +86,7 @@ Be generous with PASS — if it sounds roughly correct, say PASS. Only say FAIL 
 }
 
 async function claudePronunciationFallback(sentence, env) {
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': env.CLAUDE_API_KEY,
-        'anthropic-version': '2023-06-01'
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 120,
-        system: '你是 Sonia，一位溫暖的英語老師，服務台灣 10-12 歲的學生。請用繁體中文回覆，簡短有力，純文字，不使用 markdown。',
-        messages: [{
-          role: 'user',
-          content: `學生在練習這個句子：「${sentence}」。請給一個簡短的發音建議（針對台灣學生常見問題，如 th、v/b、字尾子音、r 音）。直接寫建議內容，結尾加「再試一次！💪」`
-        }]
-      })
-    });
-    const data = await res.json();
-    const text = data.content?.[0]?.text || '再試一次！💪';
-    return cors(JSON.stringify({ content: [{ text }], pass: false }), 200);
-  } catch(e) {
-    return cors(JSON.stringify({ content: [{ text: '再試一次！💪' }], pass: false }), 200);
-  }
+  return cors(JSON.stringify({ content: [{ text: '麥克風沒有收到聲音，再試一次！🎙️' }], pass: false }), 200);
 }
 
 function cors(body, status) {
