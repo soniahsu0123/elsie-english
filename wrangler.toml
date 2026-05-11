@@ -1,0 +1,4 @@
+name = "elsie-english-api"
+main = "worker.js"
+compatibility_date = "2026-05-10"
+preview_urls = false
