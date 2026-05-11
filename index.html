@@ -103,34 +103,46 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
 .float{animation:charfloat 3s ease-in-out infinite}
 @keyframes charfloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
 
+/* ── Gold Coin ── */
+.coin{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:17px;height:17px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#FFE566,#F4C842 55%,#C8900A);
+  border:2px solid #D4A017;font-size:8px;font-weight:900;color:#7A4500;
+  box-shadow:0 1px 4px rgba(0,0,0,0.28),inset 0 1px 1px rgba(255,255,255,0.5);
+  vertical-align:middle;flex-shrink:0;line-height:1
+}
+.coin::after{content:'$'}
+.coin-lg{width:22px;height:22px;font-size:10px;border-width:2.5px}
+
 /* ════════════════════
    LOGIN SCREEN
 ════════════════════ */
-.logo-wrap{text-align:center;margin-bottom:28px}
+.logo-wrap{text-align:center;margin-bottom:36px}
 .logo-text{
-  font-family:'Fredoka One',cursive;font-size:48px;
+  font-family:'Fredoka One',cursive;font-size:52px;
   background:linear-gradient(135deg,#9333EA,#3B82F6,#10B981);
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
   line-height:1.1
 }
-.logo-sub{font-size:14px;font-weight:700;color:var(--mid);margin-top:4px}
+.logo-sub{font-size:15px;font-weight:700;color:var(--mid);margin-top:6px}
 
-.char-cards{display:flex;gap:14px;justify-content:center;width:100%;max-width:500px;padding:0 16px}
+.char-cards{display:flex;gap:20px;justify-content:center;width:100%;max-width:560px;padding:0 20px}
 .char-card{
-  flex:1;background:white;border-radius:24px;padding:0 0 16px;
+  flex:1;background:white;border-radius:28px;padding:0 0 22px;
   display:flex;flex-direction:column;align-items:center;cursor:pointer;
   box-shadow:0 6px 0 rgba(0,0,0,0.12),0 10px 28px rgba(0,0,0,0.09);
   overflow:hidden;position:relative;top:0;transition:all 0.15s
 }
 .char-card:active{top:5px;box-shadow:0 1px 0 rgba(0,0,0,0.12)}
-.char-top{width:100%;height:9px}
+.char-top{width:100%;height:10px}
 .char-card.elsie .char-top{background:linear-gradient(90deg,#9333EA,#C084FC)}
 .char-card.sunny .char-top{background:linear-gradient(90deg,#EC4899,#F472B6)}
-.char-svg-wrap{width:110px;height:130px;margin:14px 0 8px}
-.char-name{font-family:'Fredoka One',cursive;font-size:22px;margin-bottom:3px}
+.char-svg-wrap{width:130px;height:155px;margin:20px 0 12px}
+.char-name{font-family:'Fredoka One',cursive;font-size:26px;margin-bottom:6px}
 .char-card.elsie .char-name{color:#9333EA}
 .char-card.sunny .char-name{color:#EC4899}
-.char-meta{font-size:12px;color:var(--mid);font-weight:700}
+.char-meta{font-size:13px;color:var(--mid);font-weight:700}
 
 /* ════════════════════
    HOME SCREEN
@@ -198,16 +210,25 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
 }
 
 /* ════════════════════
-   SHADOWING PLAYER
+   SHADOWING — 3-step
 ════════════════════ */
-.spd-display{text-align:center;font-weight:900;font-size:20px;color:var(--shad-d);margin-bottom:10px}
+.shad-steps{display:flex;gap:0;margin:0 18px 14px;background:#F0F0F0;border-radius:16px;padding:4px}
+.shad-step{
+  flex:1;text-align:center;padding:9px 4px;border-radius:12px;font-weight:800;font-size:12px;
+  color:var(--mid);cursor:pointer;transition:all 0.2s
+}
+.shad-step.on{background:var(--shad);color:white;box-shadow:0 2px 8px rgba(93,191,127,0.4)}
+.shad-panel{display:none}
+.shad-panel.on{display:flex;flex-direction:column;gap:12px}
+
 .play-big{
-  width:70px;height:70px;border-radius:50%;background:var(--shad);border:none;
-  display:flex;align-items:center;justify-content:center;font-size:26px;color:white;
-  margin:0 auto 18px;cursor:pointer;
+  width:72px;height:72px;border-radius:50%;background:var(--shad);border:none;
+  display:flex;align-items:center;justify-content:center;font-size:28px;color:white;
+  margin:0 auto 16px;cursor:pointer;
   box-shadow:0 4px 0 var(--shad-d);position:relative;top:0;transition:all 0.15s
 }
 .play-big:active{top:3px;box-shadow:0 1px 0 var(--shad-d)}
+.spd-display{text-align:center;font-weight:900;font-size:20px;color:var(--shad-d);margin-bottom:10px}
 .spd-tabs{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
 .spd-tab{
   padding:6px 14px;border-radius:20px;border:2px solid #DDD;background:white;
@@ -223,6 +244,53 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
   background:white;border:3px solid var(--shad);
   box-shadow:0 2px 6px rgba(0,0,0,0.18);cursor:pointer
 }
+
+/* sentence list */
+.sent-item{
+  display:flex;align-items:center;gap:10px;padding:10px 0;
+  border-bottom:1px solid #F0F0F0
+}
+.sent-item:last-child{border-bottom:none}
+.sent-play{
+  width:36px;height:36px;border-radius:50%;background:var(--shad);border:none;
+  color:white;font-size:14px;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 0 var(--shad-d)
+}
+.sent-text{font-size:13px;font-weight:600;color:var(--dark);line-height:1.5}
+
+/* voice modal */
+#voice-modal{
+  position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:500;
+  display:none;align-items:flex-end;justify-content:center
+}
+#voice-modal.open{display:flex}
+.voice-sheet{
+  background:white;border-radius:28px 28px 0 0;width:100%;max-width:600px;
+  padding:20px 20px calc(20px + env(safe-area-inset-bottom,0px));
+  max-height:75vh;overflow-y:auto
+}
+.voice-sheet-title{font-family:'Fredoka One',cursive;font-size:22px;color:var(--dark);margin-bottom:4px}
+.voice-sheet-sub{font-size:13px;color:var(--mid);font-weight:700;margin-bottom:16px}
+.voice-row{
+  display:flex;align-items:center;gap:12px;padding:12px 0;
+  border-bottom:1px solid #F5F5F5
+}
+.voice-row:last-child{border-bottom:none}
+.voice-info{flex:1}
+.voice-name{font-weight:800;font-size:14px;color:var(--dark)}
+.voice-lang{font-size:11px;color:var(--mid);font-weight:700;margin-top:2px}
+.voice-preview-btn{
+  padding:7px 14px;border-radius:20px;border:2px solid var(--shad);
+  background:white;font-weight:800;font-size:12px;cursor:pointer;color:var(--shad);
+  flex-shrink:0
+}
+.voice-select-btn{
+  padding:7px 14px;border-radius:20px;border:none;
+  background:var(--shad);font-weight:800;font-size:12px;cursor:pointer;color:white;
+  flex-shrink:0;box-shadow:0 2px 0 var(--shad-d)
+}
+.voice-row.chosen .voice-select-btn{background:#4CAF50}
 
 /* ════════════════════
    CHAT
@@ -446,7 +514,7 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
     <div class="home-greeting" id="home-greet">Hey there! 🌟</div>
   </div>
   <div class="stats-row">
-    <div class="s-chip"><span class="s-icon">🪙</span><span id="s-coins">0</span></div>
+    <div class="s-chip"><span class="coin coin-lg"></span>&nbsp;<span id="s-coins">0</span></div>
     <div class="s-chip"><span class="s-icon">⭐</span>Lv.<span id="s-level">1</span></div>
     <div class="s-chip"><span class="s-icon">🔥</span><span id="s-streak">0</span> day streak</div>
   </div>
@@ -464,7 +532,7 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
       </div>
       <div class="map-info">
         <div class="map-name">Reading</div>
-        <div class="map-reward">+5 🪙</div>
+        <div class="map-reward">+5 <span class="coin"></span></div>
       </div>
     </div>
     <!-- Shadowing node -->
@@ -475,7 +543,7 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
       </div>
       <div class="map-info">
         <div class="map-name">Shadowing</div>
-        <div class="map-reward">+5 🪙</div>
+        <div class="map-reward">+5 <span class="coin"></span></div>
       </div>
     </div>
     <!-- Chat node -->
@@ -486,7 +554,7 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
       </div>
       <div class="map-info">
         <div class="map-name">Chat with Lemon</div>
-        <div class="map-reward">+10 🪙</div>
+        <div class="map-reward">+10 <span class="coin"></span></div>
       </div>
     </div>
     <!-- Challenge node (no connector at bottom) -->
@@ -496,7 +564,7 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
       </div>
       <div class="map-info">
         <div class="map-name">Challenge</div>
-        <div class="map-reward">+20 🪙</div>
+        <div class="map-reward">+20 <span class="coin"></span></div>
       </div>
     </div>
   </div>
@@ -535,7 +603,10 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
 <!-- ══════════════ S4: SHADOWING ══════════════ -->
 <div id="screen-shad" class="screen">
   <div class="stage-hd">
-    <div class="stage-title" style="color:var(--shad-d)">🎵 Shadowing</div>
+    <div style="display:flex;align-items:center;justify-content:space-between">
+      <div class="stage-title" style="color:var(--shad-d)">🎵 Shadowing</div>
+      <button onclick="openVoicePicker()" style="background:#F0FFF4;border:2px solid var(--shad);border-radius:20px;padding:6px 14px;font-weight:800;font-size:12px;color:var(--shad-d);cursor:pointer">🔊 Voice</button>
+    </div>
     <div class="prog-bar" style="color:var(--shad)">
       <div class="prog-step on"></div>
       <div class="prog-step on cur"></div>
@@ -543,25 +614,72 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
       <div class="prog-step"></div>
     </div>
   </div>
-  <div class="page-body">
-    <div class="card">
-      <div class="spd-display" id="spd-disp">1x</div>
-      <button class="play-big" id="play-btn" onclick="togglePlay()">▶</button>
-      <div class="spd-tabs">
-        <div class="spd-tab" onclick="setSpd(0.5)">0.5x</div>
-        <div class="spd-tab" onclick="setSpd(0.75)">0.75x</div>
-        <div class="spd-tab on" onclick="setSpd(1)">1x</div>
-        <div class="spd-tab" onclick="setSpd(1.25)">1.25x</div>
-        <div class="spd-tab" onclick="setSpd(1.5)">1.5x</div>
+  <!-- Step tabs -->
+  <div class="shad-steps">
+    <div class="shad-step on" id="stab-1" onclick="shadStep(1)">1 Listen</div>
+    <div class="shad-step" id="stab-2" onclick="shadStep(2)">2 Shadow</div>
+    <div class="shad-step" id="stab-3" onclick="shadStep(3)">3 Check</div>
+  </div>
+  <div class="page-body" style="padding-top:0">
+
+    <!-- Step 1: Listen -->
+    <div class="shad-panel on" id="shad-s1">
+      <div class="card" style="text-align:center">
+        <div style="font-size:52px;margin:8px 0">👂</div>
+        <div style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--shad-d);margin-bottom:6px">Listen carefully!</div>
+        <div style="font-size:13px;color:var(--mid);font-weight:700;margin-bottom:18px">Don't speak yet — just listen and feel the rhythm</div>
+        <button class="play-big" id="play-listen-btn" onclick="toggleListenPlay()">▶</button>
+        <div style="font-size:12px;color:var(--mid);font-weight:700;margin-top:4px" id="listen-hint">Tap play to start</div>
       </div>
-      <input type="range" class="spd-slider" id="spd-slider" min="0.5" max="1.5" step="0.25" value="1"
-        oninput="setSpd(parseFloat(this.value))">
+      <button class="btn btn-full btn-g" id="listen-next-btn" onclick="shadStep(2)" style="display:none">
+        Got it! Now I'll shadow →
+      </button>
     </div>
-    <div class="card" style="text-align:center;font-weight:700;color:var(--mid);font-size:14px">
-      🎧 Listen and repeat along!<br>
-      <span style="font-size:12px;opacity:0.7">Match the rhythm and sounds</span>
+
+    <!-- Step 2: Shadow -->
+    <div class="shad-panel" id="shad-s2">
+      <div class="card">
+        <div style="background:#F0FFF4;border-radius:12px;padding:10px 12px;margin-bottom:14px;font-size:13px;font-weight:700;color:var(--shad-d)">
+          🗣️ <strong>Speak along!</strong> Start about 0.5 sec behind — copy the rhythm, stress & sounds
+        </div>
+        <div class="spd-display" id="spd-disp">0.75x</div>
+        <button class="play-big" id="play-btn" onclick="togglePlay()">▶</button>
+        <div class="spd-tabs">
+          <div class="spd-tab" onclick="setSpd(0.5)">0.5x</div>
+          <div class="spd-tab on" onclick="setSpd(0.75)">0.75x ⭐</div>
+          <div class="spd-tab" onclick="setSpd(1)">1x</div>
+          <div class="spd-tab" onclick="setSpd(1.25)">1.25x</div>
+          <div class="spd-tab" onclick="setSpd(1.5)">1.5x</div>
+        </div>
+        <input type="range" class="spd-slider" id="spd-slider" min="0.5" max="1.5" step="0.25" value="0.75"
+          oninput="setSpd(parseFloat(this.value))">
+      </div>
+      <div class="card">
+        <div style="font-size:12px;font-weight:800;color:var(--mid);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px">Practice sentence by sentence</div>
+        <div id="sent-list"></div>
+      </div>
+      <button class="btn btn-full btn-g" onclick="shadStep(3)">Done! Check my pronunciation →</button>
     </div>
-    <button class="btn btn-full btn-lg btn-g" onclick="doneShad()">I finished shadowing! →</button>
+
+    <!-- Step 3: Check -->
+    <div class="shad-panel" id="shad-s3">
+      <div class="card">
+        <div style="font-family:'Fredoka One',cursive;font-size:18px;color:var(--shad-d);margin-bottom:8px">🎙️ Read it yourself!</div>
+        <div id="shad-passage-ref" style="font-size:13px;line-height:1.85;color:var(--mid);background:#F8FFF8;padding:12px;border-radius:12px;margin-bottom:14px;font-weight:600"></div>
+        <div style="font-size:13px;font-weight:700;color:var(--dark);margin-bottom:8px">
+          Tap the <strong>🎙 mic button</strong> in your keyboard and read the passage above:<br>
+          <span style="font-size:11px;color:var(--mid)">(iPhone/iPad: tap keyboard then mic icon at bottom)</span>
+        </div>
+        <textarea id="shad-dictation" class="chal-textarea" placeholder="Your words will appear here as you speak..." style="min-height:90px"></textarea>
+        <button class="btn btn-full btn-g" style="margin-top:12px" onclick="checkPronun()">✨ Check my pronunciation!</button>
+      </div>
+      <div class="card" id="shad-fb" style="display:none;background:linear-gradient(135deg,#F0FFF4,#E0FFE8)">
+        <div style="font-weight:800;color:var(--shad-d);margin-bottom:6px;font-size:14px">🍋 Lemon's tips:</div>
+        <div id="shad-fb-text" style="font-size:14px;line-height:1.6;font-weight:600;color:var(--dark)"></div>
+      </div>
+      <button class="btn btn-full btn-lg btn-g" id="shad-done-btn" onclick="doneShad()">I finished shadowing! →</button>
+    </div>
+
   </div>
 </div>
 
@@ -626,7 +744,7 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
   <div class="complete-title">Mission Complete!</div>
   <div class="card coins-earned">
     Today's Coins Earned<br>
-    <span id="earned-num" style="color:var(--reading-d)">+40 🪙</span>
+    <span id="earned-num" style="color:var(--reading-d)">+40</span> <span class="coin coin-lg"></span>
   </div>
   <div class="streak-badge" id="streak-badge">🔥 1 Day Streak!</div>
   <button class="btn btn-full btn-lg btn-y" onclick="goHome()">🏠 Back to Home</button>
@@ -649,6 +767,20 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
 </nav>
 
 </div><!-- /#app -->
+
+<!-- Voice Picker Modal -->
+<div id="voice-modal">
+  <div class="voice-sheet">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+      <div class="voice-sheet-title">🔊 Choose a Voice</div>
+      <button onclick="closeVoicePicker()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--mid)">✕</button>
+    </div>
+    <div class="voice-sheet-sub">Tap Preview to hear, then Select to save</div>
+    <div id="voice-list">
+      <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+    </div>
+  </div>
+</div>
 
 <script>
 // ═══════════════════════════════════
@@ -774,6 +906,8 @@ function gotoStage(stage) {
   else if (stage === 'shad') {
     if (!td.reading) { toast('Finish Reading first! 📖'); return; }
     showScreen('shad');
+    shadStep(1);
+    if (readText) document.getElementById('listen-next-btn').style.display = '';
   } else if (stage === 'chat') {
     if (!td.shad) { toast('Finish Shadowing first! 🎵'); return; }
     showScreen('chat'); if (chatHistory.length === 0) initChat();
@@ -960,21 +1094,170 @@ function doneReading() {
 }
 
 // ═══════════════════════════════════
-// SHADOWING
+// VOICE PICKER
 // ═══════════════════════════════════
+let selectedVoice = null;
+let listenPlaying = false;
+
+function getEnglishVoices() {
+  return speechSynthesis.getVoices().filter(v => v.lang.startsWith('en'));
+}
+
+function openVoicePicker() {
+  document.getElementById('voice-modal').classList.add('open');
+  renderVoiceList();
+}
+
+function closeVoicePicker() {
+  document.getElementById('voice-modal').classList.remove('open');
+  stopSpeech();
+}
+
+function renderVoiceList() {
+  const voices = getEnglishVoices();
+  const list = document.getElementById('voice-list');
+  const saved = localStorage.getItem('planet_voice');
+
+  if (!voices.length) {
+    list.innerHTML = '<div style="text-align:center;color:#999;padding:20px">No English voices found.<br>Please check your device settings.</div>';
+    return;
+  }
+
+  list.innerHTML = voices.map((v, i) => {
+    const isChosen = saved === v.name;
+    return `<div class="voice-row ${isChosen ? 'chosen' : ''}">
+      <div class="voice-info">
+        <div class="voice-name">${v.name}</div>
+        <div class="voice-lang">${v.lang}${v.localService ? '' : ' · Online'}</div>
+      </div>
+      <button class="voice-preview-btn" onclick="previewVoice(${i})">▶ Preview</button>
+      <button class="voice-select-btn" onclick="selectVoice(${i})">${isChosen ? '✓ Selected' : 'Select'}</button>
+    </div>`;
+  }).join('');
+}
+
+function previewVoice(idx) {
+  stopSpeech();
+  const voices = getEnglishVoices();
+  const v = voices[idx];
+  if (!v) return;
+  const utt = new SpeechSynthesisUtterance("Hi! I'm your English buddy. Let's learn together!");
+  utt.voice = v; utt.lang = v.lang; utt.rate = 0.9;
+  window.speechSynthesis.speak(utt);
+}
+
+function selectVoice(idx) {
+  const voices = getEnglishVoices();
+  selectedVoice = voices[idx] || null;
+  if (selectedVoice) localStorage.setItem('planet_voice', selectedVoice.name);
+  renderVoiceList();
+  toast(`Voice set to ${selectedVoice ? selectedVoice.name : 'default'} ✓`);
+}
+
+function getSpeechVoice() {
+  if (selectedVoice) return selectedVoice;
+  const saved = localStorage.getItem('planet_voice');
+  if (saved) {
+    const match = speechSynthesis.getVoices().find(v => v.name === saved);
+    if (match) { selectedVoice = match; return match; }
+  }
+  return null;
+}
+
+function makeSpeech(text, rate) {
+  const utt = new SpeechSynthesisUtterance(text);
+  const v = getSpeechVoice();
+  if (v) { utt.voice = v; utt.lang = v.lang; } else { utt.lang = 'en-US'; }
+  utt.rate = rate || 0.9;
+  return utt;
+}
+
+// ═══════════════════════════════════
+// SHADOWING — 3 steps
+// ═══════════════════════════════════
+let shadCurrentStep = 1;
+
+function shadStep(n) {
+  stopSpeech(); playing = false; listenPlaying = false;
+  shadCurrentStep = n;
+  [1,2,3].forEach(i => {
+    document.getElementById(`shad-s${i}`).classList.toggle('on', i === n);
+    document.getElementById(`stab-${i}`).classList.toggle('on', i === n);
+  });
+  if (n === 2) {
+    buildSentenceList();
+    setSpd(0.75);
+  }
+  if (n === 3) {
+    const passage = document.getElementById('reading-text').textContent || readText;
+    document.getElementById('shad-passage-ref').textContent = passage;
+    document.getElementById('shad-fb').style.display = 'none';
+    document.getElementById('shad-dictation').value = '';
+  }
+  document.getElementById('play-btn').textContent = '▶';
+  document.getElementById('play-listen-btn').textContent = '▶';
+}
+
+function buildSentenceList() {
+  const text = readText;
+  if (!text) return;
+  const sentences = text.match(/[^.!?]+[.!?]+/g) || [text];
+  const list = document.getElementById('sent-list');
+  list.innerHTML = sentences.map((s, i) => `
+    <div class="sent-item">
+      <button class="sent-play" onclick="playSentence(${i})">▶</button>
+      <div class="sent-text">${esc(s.trim())}</div>
+    </div>`).join('');
+  list._sentences = sentences;
+}
+
+function playSentence(idx) {
+  stopSpeech();
+  const list = document.getElementById('sent-list');
+  const sentences = list._sentences;
+  if (!sentences) return;
+  const utt = makeSpeech(sentences[idx].trim(), speechSpd);
+  window.speechSynthesis.speak(utt);
+}
+
+// Step 1 play button
+function toggleListenPlay() {
+  if (!readText) { toast('Load Reading first!'); return; }
+  if (listenPlaying) {
+    stopSpeech(); listenPlaying = false;
+    document.getElementById('play-listen-btn').textContent = '▶';
+    document.getElementById('listen-hint').textContent = 'Tap play to listen again';
+  } else {
+    stopSpeech();
+    const utt = makeSpeech(readText, 1);
+    utt.onend = () => {
+      listenPlaying = false;
+      document.getElementById('play-listen-btn').textContent = '▶';
+      document.getElementById('listen-hint').textContent = "Great! Ready to shadow?";
+      document.getElementById('listen-next-btn').style.display = '';
+    };
+    window.speechSynthesis.speak(utt);
+    listenPlaying = true;
+    document.getElementById('play-listen-btn').textContent = '⏸';
+    document.getElementById('listen-hint').textContent = 'Playing...';
+  }
+}
+
 function setSpd(val) {
   const speeds = [0.5, 0.75, 1, 1.25, 1.5];
   val = speeds.reduce((a,b) => Math.abs(b-val) < Math.abs(a-val) ? b : a);
   speechSpd = val;
-  document.getElementById('spd-disp').textContent = `${val}x`;
-  document.getElementById('spd-slider').value = val;
-  const pct = ((val-0.5)/1)*100;
-  document.getElementById('spd-slider').style.background =
-    `linear-gradient(to right,var(--shad) 0%,var(--shad) ${pct}%,#E0E0E0 ${pct}%,#E0E0E0 100%)`;
+  const disp = document.getElementById('spd-disp');
+  if (disp) disp.textContent = `${val}x`;
+  const slider = document.getElementById('spd-slider');
+  if (slider) {
+    slider.value = val;
+    const pct = ((val-0.5)/1)*100;
+    slider.style.background = `linear-gradient(to right,var(--shad) 0%,var(--shad) ${pct}%,#E0E0E0 ${pct}%,#E0E0E0 100%)`;
+  }
   document.querySelectorAll('.spd-tab').forEach(t => {
     t.classList.toggle('on', parseFloat(t.textContent) === val);
   });
-  // If currently playing, restart at new speed
   if (playing) { stopSpeech(); playing = false; togglePlay(); }
 }
 
@@ -985,8 +1268,7 @@ function togglePlay() {
     document.getElementById('play-btn').textContent = '▶';
   } else {
     stopSpeech();
-    const utt = new SpeechSynthesisUtterance(readText);
-    utt.lang = 'en-US'; utt.rate = speechSpd;
+    const utt = makeSpeech(readText, speechSpd);
     utt.onend = () => { playing = false; document.getElementById('play-btn').textContent = '▶'; };
     window.speechSynthesis.speak(utt);
     playing = true;
@@ -994,9 +1276,31 @@ function togglePlay() {
   }
 }
 
+async function checkPronun() {
+  const typed = document.getElementById('shad-dictation').value.trim();
+  const original = readText;
+  if (!typed) { toast('Please dictate or type what you said first!'); return; }
+
+  const fb = document.getElementById('shad-fb');
+  fb.style.display = 'block';
+  document.getElementById('shad-fb-text').innerHTML = '<div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+
+  try {
+    const reply = await callAI([{
+      role:'user',
+      content:`Original passage: "${original}"\nStudent said: "${typed}"\n\nCompare and give 2-3 short pronunciation tips. Start with encouragement. Point out words they got right. Suggest 1-2 words to practice more. Keep it fun and positive for a child. Max 4 sentences.`
+    }], 'You are Lemon, a fun encouraging English pronunciation coach for kids. Be very positive. Use simple language.');
+    document.getElementById('shad-fb-text').textContent = reply;
+    speakText(reply);
+    document.getElementById('shad-done-btn').style.display = '';
+  } catch(e) {
+    document.getElementById('shad-fb-text').textContent = "You're doing amazing! Keep practicing — every time you shadow, your pronunciation gets better! 🌟";
+    document.getElementById('shad-done-btn').style.display = '';
+  }
+}
+
 function doneShad() {
-  stopSpeech(); playing = false;
-  document.getElementById('play-btn').textContent = '▶';
+  stopSpeech(); playing = false; listenPlaying = false;
   const td = todayData();
   if (!td.shad) {
     td.shad = true; td.earned = (td.earned||0) + COIN_TABLE.shad;
@@ -1239,8 +1543,7 @@ function stopSpeech() {
 
 function speakText(text) {
   stopSpeech();
-  const utt = new SpeechSynthesisUtterance(text);
-  utt.lang = 'en-US'; utt.rate = 0.92;
+  const utt = makeSpeech(text, 0.92);
   setTimeout(() => window.speechSynthesis.speak(utt), 100);
 }
 
@@ -1317,7 +1620,14 @@ function toast(msg) {
 // ═══════════════════════════════════
 window.addEventListener('DOMContentLoaded', () => {
   refreshLogin();
-  setSpd(1);
+  setSpd(0.75);
+  // Load voices (some browsers delay this)
+  if (speechSynthesis.onvoiceschanged !== undefined) {
+    speechSynthesis.onvoiceschanged = () => {
+      getSpeechVoice(); // restore saved voice
+    };
+  }
+  setTimeout(() => getSpeechVoice(), 500);
 });
 </script>
 </body>
