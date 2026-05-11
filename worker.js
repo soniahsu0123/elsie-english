@@ -31,8 +31,11 @@ async function handleClaude(request, env) {
 }
 
 async function handleGeminiAudio(request, env) {
+  let original_text = '';
   try {
-    const { audio_base64, original_text, mime_type } = await request.json();
+    const body = await request.json();
+    const { audio_base64, mime_type } = body;
+    original_text = body.original_text || '';
 
     const prompt = `You are Lemon, a warm and encouraging English teacher for children aged 10-12.
 The child was trying to say this sentence: "${original_text}"
@@ -52,7 +55,7 @@ If there are pronunciation issues:
 Keep it short (3-4 sentences max), warm, and fun. Speak directly to the child.`;
 
     const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${env.GEMINI_API_KEY}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${env.GEMINI_API_KEY}`,
       {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -73,7 +76,38 @@ Keep it short (3-4 sentences max), warm, and fun. Speak directly to the child.`;
     const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "Great effort! Keep going! ⭐";
     return cors(JSON.stringify({ content: [{ text }] }), 200);
   } catch (e) {
-    return cors(JSON.stringify({ content: [{ text: "Awesome try! Every practice makes you better! 🌟" }] }), 200);
+    // Gemini unavailable — fallback to Claude text-based pronunciation tips
+    if (original_text) {
+      return claudePronunciationFallback(original_text, env);
+    }
+    return cors(JSON.stringify({ content: [{ text: "Great practice! Keep it up! 🌟" }] }), 200);
+  }
+}
+
+async function claudePronunciationFallback(sentence, env) {
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': env.CLAUDE_API_KEY,
+        'anthropic-version': '2023-06-01'
+      },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 120,
+        system: 'You are Lemon, a warm encouraging English teacher for Taiwanese kids aged 10-12. Plain text only, no markdown, no bullet points, no bold. Be enthusiastic and friendly.',
+        messages: [{
+          role: 'user',
+          content: `Give a 2-3 sentence pronunciation tip for a Taiwanese student practicing this sentence: "${sentence}". Focus on 1 specific sound tricky for Taiwanese speakers (e.g. th, v/b, final consonants, r). Plain text only, no markdown. Be encouraging. End with "Keep going! 💪"`
+        }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content?.[0]?.text || "Great practice! Keep it up! 🌟";
+    return cors(JSON.stringify({ content: [{ text }] }), 200);
+  } catch(e) {
+    return cors(JSON.stringify({ content: [{ text: "Great practice! Keep it up! 🌟" }] }), 200);
   }
 }
 

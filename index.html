@@ -758,6 +758,7 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
         <div class="prog-step on cur"></div>
         <div class="prog-step"></div>
       </div>
+      <div id="chat-round" style="font-size:12px;font-weight:800;color:var(--chat-d);margin-top:5px;text-align:center"></div>
     </div>
     <div class="chat-msgs" id="chat-msgs"></div>
     <div class="chat-in-area">
@@ -885,8 +886,10 @@ const OUTFITS = {
 let CUR  = null;        // 'elsie' | 'sunny'
 let DATA = {};          // user data object
 let readText  = '';     // today's reading passage
-let chatHistory = [];
-let aiThinking  = false;
+let chatHistory      = [];
+let aiThinking       = false;
+let chatExchangeCount = 0;
+let chatSummaryShown  = false;
 let challTimer  = null;
 let challLeft   = 60;
 let challGoing  = false;
@@ -1486,7 +1489,10 @@ async function initChat() {
   const uname = CUR === 'elsie' ? 'Elsie' : 'Sunny';
 
   chatHistory = [];
+  chatExchangeCount = 0;
+  chatSummaryShown = false;
   document.getElementById('chat-msgs').innerHTML = '';
+  updateChatRound();
 
   const chatOpenings = [
     `Hey ${uname}! 👋`,`Yay, ${uname} is here! 🎉`,`Oh hi ${uname}! 🌟`,
@@ -1495,12 +1501,14 @@ async function initChat() {
   const chatOpening = chatOpenings[Math.floor(Math.random() * chatOpenings.length)];
 
   window._chatSys = `You are Lemon 🍋, a fun cheerful English buddy for ${uname} (age 10-12, level A2).
-Your job: have a natural friendly conversation, NOT teach or correct.
-Keep every reply to 2-3 sentences max. Be enthusiastic and encouraging.
-Do NOT correct grammar during the chat. Do NOT give language tips.
-Just talk like a fun friend would.
-Today's topic: ${topic}
-Open with: "${chatOpening}" then ask one easy fun question about the topic.`;
+This is a short 5-exchange chat about: ${topic}
+Rules for EVERY reply:
+- 1-2 sentences responding to what they said
+- Then EXACTLY ONE question (never more than one)
+- Do NOT correct grammar at all — just respond naturally like a friend
+- Be enthusiastic, warm, and fun
+- Make each question build naturally on their previous answer
+Open with: "${chatOpening}" and ask one easy fun first question about ${topic}.`;
 
   addThinking();
   try {
@@ -1538,9 +1546,30 @@ async function sendMsg() {
     addBubble('ai', "Hmm, let me think... Try again! 😊");
   }
   aiThinking = false;
+  chatExchangeCount++;
+  updateChatRound();
+  if (chatExchangeCount >= 5) {
+    setTimeout(endChatWithSummary, 1600);
+  }
+}
+
+function updateChatRound() {
+  const el = document.getElementById('chat-round');
+  if (!el) return;
+  if (chatExchangeCount >= 5) {
+    el.textContent = '✨ Getting your summary...';
+  } else {
+    el.textContent = `Round ${chatExchangeCount + 1} of 5`;
+  }
 }
 
 async function endChatWithSummary() {
+  if (chatSummaryShown) {
+    const td = todayData();
+    if (td.chat) { buildHome(); gotoStage('chall'); }
+    return;
+  }
+  chatSummaryShown = true;
   const td = todayData();
   if (td.chat) { buildHome(); gotoStage('chall'); return; }
 
