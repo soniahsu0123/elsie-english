@@ -37,22 +37,21 @@ async function handleGeminiAudio(request, env) {
     const { audio_base64, mime_type } = body;
     original_text = body.original_text || '';
 
-    const prompt = `You are Lemon, a warm and encouraging English teacher for children aged 10-12.
-The child was trying to say this sentence: "${original_text}"
-Listen to their recording carefully.
+    const prompt = `You are Sonia, a warm English teacher for Taiwanese children aged 10-12.
+The child was trying to say: "${original_text}"
+Listen to their recording.
 
-If their pronunciation is clear and accurate:
-- Celebrate enthusiastically with 3-4 sentences of genuine praise
-- Mention something specific they did well
-- Do NOT say "try again" or suggest they practice more
-- End with something like "Amazing job! You nailed it! ⭐"
+Respond in Traditional Chinese (繁體中文). Keep it very short (1-2 sentences only).
 
-If there are pronunciation issues:
-- Start with 1-2 sentences of genuine encouragement (find something positive)
-- Give exactly 1 simple, specific tip (e.g. "Try saying 'the' as 'thuh'")
-- End with: "Give it another try — you can do it! 💪"
+If pronunciation is clear enough to understand (be generous — accept reasonable pronunciation even with an accent):
+Start with PASS: then give short warm praise in Chinese.
+Example: "PASS: 說得很棒！發音很清楚，繼續加油！⭐"
 
-Keep it short (3-4 sentences max), warm, and fun. Speak directly to the child.`;
+If pronunciation clearly needs improvement:
+Start with FAIL: then give ONE specific simple tip about the tricky sound in Chinese.
+Example: "FAIL: 試試把 'th' 的舌頭放在牙齒之間輕輕吹氣。再試一次！💪"
+
+Be generous with PASS — if it sounds roughly correct, say PASS. Only say FAIL for clear pronunciation problems.`;
 
     const res = await fetch(
       `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${env.GEMINI_API_KEY}`,
@@ -73,8 +72,10 @@ Keep it short (3-4 sentences max), warm, and fun. Speak directly to the child.`;
 
     const data = await res.json();
     if (!res.ok) throw new Error(data.error?.message || 'Gemini error');
-    const text = data.candidates?.[0]?.content?.parts?.[0]?.text || "Great effort! Keep going! ⭐";
-    return cors(JSON.stringify({ content: [{ text }] }), 200);
+    const raw = data.candidates?.[0]?.content?.parts?.[0]?.text || 'PASS: 很好！繼續加油！⭐';
+    const pass = raw.startsWith('PASS:');
+    const text = raw.replace(/^(PASS:|FAIL:)\s*/, '').trim();
+    return cors(JSON.stringify({ content: [{ text }], pass }), 200);
   } catch (e) {
     // Gemini unavailable — fallback to Claude text-based pronunciation tips
     if (original_text) {
@@ -96,18 +97,18 @@ async function claudePronunciationFallback(sentence, env) {
       body: JSON.stringify({
         model: 'claude-haiku-4-5-20251001',
         max_tokens: 120,
-        system: 'You are Lemon, a warm encouraging English teacher for Taiwanese kids aged 10-12. Plain text only, no markdown, no bullet points, no bold. Be enthusiastic and friendly.',
+        system: '你是 Sonia，一位溫暖的英語老師，服務台灣 10-12 歲的學生。請用繁體中文回覆，簡短有力，純文字，不使用 markdown。',
         messages: [{
           role: 'user',
-          content: `Give a 2-3 sentence pronunciation tip for a Taiwanese student practicing this sentence: "${sentence}". Focus on 1 specific sound tricky for Taiwanese speakers (e.g. th, v/b, final consonants, r). Plain text only, no markdown. Be encouraging. End with "Keep going! 💪"`
+          content: `學生在練習這個句子：「${sentence}」。請給一個簡短的發音建議（針對台灣學生常見問題，如 th、v/b、字尾子音、r 音）。直接寫建議內容，結尾加「再試一次！💪」`
         }]
       })
     });
     const data = await res.json();
-    const text = data.content?.[0]?.text || "Great practice! Keep it up! 🌟";
-    return cors(JSON.stringify({ content: [{ text }] }), 200);
+    const text = data.content?.[0]?.text || '再試一次！💪';
+    return cors(JSON.stringify({ content: [{ text }], pass: false }), 200);
   } catch(e) {
-    return cors(JSON.stringify({ content: [{ text: "Great practice! Keep it up! 🌟" }] }), 200);
+    return cors(JSON.stringify({ content: [{ text: '再試一次！💪' }], pass: false }), 200);
   }
 }
 

@@ -202,12 +202,13 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
 /* ════════════════════
    READING
 ════════════════════ */
-.vocab-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
-.vocab-chip{
-  background:#FFF8E0;border:2px solid var(--reading);border-radius:12px;
-  padding:8px 12px;font-weight:700;font-size:13px;color:var(--dark);
-  display:flex;align-items:center;gap:6px
+.vocab-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.vocab-inline-card{
+  background:#FFF8E0;border:2px solid var(--reading);border-radius:12px;padding:10px 12px
 }
+.vc-word{font-family:'Fredoka One',cursive;font-size:15px;color:var(--reading-d);margin-bottom:3px}
+.vc-defs{font-size:12px;font-weight:600;color:var(--dark);line-height:1.6}
+.vpos{color:var(--mid);font-style:italic;font-size:11px;margin-right:3px}
 
 /* ════════════════════
    SHADOWING — 3-step
@@ -339,11 +340,24 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
 .bubble.ai{background:white;border-bottom-left-radius:5px;box-shadow:0 2px 8px rgba(0,0,0,0.07);color:var(--dark)}
 .bubble.user{background:var(--chat);border-bottom-right-radius:5px;color:white}
 .bubble-name{font-size:11px;font-weight:800;color:#9333EA;margin-bottom:3px}
-.chat-in-area{
-  display:flex;gap:10px;align-items:flex-end;padding:10px 14px;
-  background:rgba(255,255,255,0.92);border-top:1px solid rgba(0,0,0,0.06);flex-shrink:0;
-  padding-bottom:calc(10px + env(safe-area-inset-bottom, 0px))
+.chat-mic-area{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:14px 18px calc(14px + env(safe-area-inset-bottom,0px));
+  background:rgba(255,255,255,0.97);border-top:2px solid rgba(0,0,0,0.07);flex-shrink:0
 }
+.chat-big-mic{
+  width:68px;height:68px;border-radius:50%;background:var(--chat);border:none;
+  font-size:30px;cursor:pointer;box-shadow:0 4px 0 var(--chat-d);
+  position:relative;top:0;transition:all 0.15s
+}
+.chat-big-mic:active{top:3px;box-shadow:0 1px 0 var(--chat-d)}
+.chat-big-mic.recording{background:#EF4444;box-shadow:0 4px 0 #B91C1C;animation:pulse-rec 1s ease-in-out infinite}
+.chat-big-mic:disabled{opacity:0.5;cursor:default}
+.chat-said-preview{
+  background:rgba(91,168,212,0.15);border-radius:14px;padding:8px 16px;
+  font-size:13px;font-weight:700;color:var(--chat-d);text-align:center;width:100%;max-width:320px
+}
+.chat-mic-label{font-size:12px;font-weight:800;color:var(--mid)}
 .chat-input{
   flex:1;padding:11px 15px;border-radius:20px;border:2px solid #DDD;
   font-family:'Nunito',sans-serif;font-size:14px;font-weight:600;outline:none;
@@ -532,7 +546,6 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
         </svg>
       </div>
       <div class="char-name">Elsie</div>
-      <div class="char-meta" id="elsie-meta">🪙 0 · Lv.1</div>
     </div>
     <!-- Sunny -->
     <div class="char-card sunny" onclick="selectChar('sunny')">
@@ -589,7 +602,6 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
         </svg>
       </div>
       <div class="char-name">Sunny</div>
-      <div class="char-meta" id="sunny-meta">🪙 0 · Lv.1</div>
     </div>
   </div>
 </div>
@@ -606,9 +618,9 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
     <div class="s-chip"><span class="s-icon">🔥</span><span id="s-streak">0</span> day streak</div>
   </div>
   <div class="card topic-card" style="margin:4px 18px;cursor:pointer" onclick="changeTopic()" title="Tap to change topic">
-    <div class="topic-eyebrow" style="display:flex;justify-content:space-between">
+    <div class="topic-eyebrow" style="display:flex;justify-content:space-between;align-items:center">
       <span>Today's Topic</span>
-      <span style="font-size:11px;color:var(--mid);font-weight:700">🔀 Tap to change</span>
+      <span style="font-size:13px;font-weight:800;color:var(--reading);background:#FFF8E0;border:2px solid var(--reading);border-radius:20px;padding:4px 12px">🔀 換主題</span>
     </div>
     <div class="topic-name" id="home-topic">Loading...</div>
   </div>
@@ -643,7 +655,7 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
         <div class="map-connector"></div>
       </div>
       <div class="map-info">
-        <div class="map-name">Chat with Lemon</div>
+        <div class="map-name">Chat with Sonia</div>
         <div class="map-reward">+10 <span class="coin"></span></div>
       </div>
     </div>
@@ -681,21 +693,11 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
       <div class="dots" id="reading-load"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
       <div id="reading-text" style="font-size:15px;line-height:1.85;font-weight:600;display:none;white-space:pre-line"></div>
     </div>
+    <button class="btn btn-full btn-y" id="read-aloud-btn" onclick="readAloud()" style="display:none">🔊 Read Aloud</button>
     <div id="vocab-sec" style="display:none">
-      <div style="font-size:11px;font-weight:800;color:var(--mid);letter-spacing:1px;text-transform:uppercase;margin-bottom:7px">Key Words · Tap to learn!</div>
+      <div style="font-size:11px;font-weight:800;color:var(--mid);letter-spacing:1px;text-transform:uppercase;margin-bottom:7px">📚 Key Words</div>
       <div class="vocab-grid" id="vocab-grid"></div>
     </div>
-    <!-- vocab popup -->
-    <div class="vocab-overlay" id="vocab-overlay" onclick="closeVocabPopup()"></div>
-    <div class="vocab-card" id="vocab-card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
-        <div id="vocab-word" style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--reading-d)"></div>
-        <button onclick="closeVocabPopup()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--mid);line-height:1">×</button>
-      </div>
-      <div id="vocab-def" style="font-size:14px;line-height:1.65;font-weight:600;color:var(--dark)"></div>
-      <button onclick="speakVocabWord()" style="margin-top:12px;font-size:12px;font-weight:800;color:var(--reading-d);background:#FFF8E0;border:2px solid var(--reading);border-radius:20px;padding:7px 16px;cursor:pointer">🔊 Hear it</button>
-    </div>
-    <button class="btn btn-full btn-y" id="read-aloud-btn" onclick="readAloud()" style="display:none">🔊 Read Aloud</button>
     <button class="btn btn-full btn-lg btn-y" id="reading-done-btn" onclick="doneReading()" style="display:none">I'm done reading! →</button>
   </div>
 </div>
@@ -725,7 +727,7 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
 
     <!-- Main karaoke card -->
     <div class="card" style="text-align:center">
-      <div style="font-size:13px;font-weight:800;color:var(--shad-d);margin-bottom:10px">🍋 Listen, then copy me!</div>
+      <div style="font-size:13px;font-weight:800;color:var(--shad-d);margin-bottom:10px">🍋 Sonia 說，你跟著唸！</div>
       <div id="kara-text" class="kara-sentence"></div>
       <div class="kara-btns">
         <button class="kara-play-btn" id="kara-play-btn" onclick="karaokePlay()">▶ Hear</button>
@@ -749,7 +751,7 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
   <div class="chat-body">
     <div class="stage-hd">
       <div style="display:flex;align-items:center;justify-content:space-between">
-        <div class="stage-title" style="color:var(--chat-d)">💬 Chat with Lemon</div>
+        <div class="stage-title" style="color:var(--chat-d)">💬 Chat with Sonia</div>
         <button onclick="endChatWithSummary()" class="hdr-btn" style="color:var(--chat-d);border-color:var(--chat)">🏁 Finish</button>
       </div>
       <div class="prog-bar" style="color:var(--chat)">
@@ -761,11 +763,10 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
       <div id="chat-round" style="font-size:12px;font-weight:800;color:var(--chat-d);margin-top:5px;text-align:center"></div>
     </div>
     <div class="chat-msgs" id="chat-msgs"></div>
-    <div class="chat-in-area">
-      <textarea class="chat-input" id="chat-input" placeholder="Type or speak..." rows="1"
-        oninput="autoResize(this)" onkeydown="chatKey(event)"></textarea>
-      <button id="chat-voice-btn" class="chat-voice-btn" onclick="toggleChatVoice()">🎤</button>
-      <button class="send-btn" onclick="sendMsg()">➤</button>
+    <div class="chat-mic-area">
+      <div id="chat-said" class="chat-said-preview" style="display:none"></div>
+      <button class="chat-big-mic" id="chat-big-mic" onclick="toggleChatVoice()">🎤</button>
+      <div class="chat-mic-label" id="chat-mic-label">點我說話</div>
     </div>
   </div>
 </div>
@@ -797,7 +798,7 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
     </div>
     <textarea class="chal-textarea" id="chall-area" placeholder="Start writing here..."></textarea>
     <div class="card" id="chall-fb" style="display:none;background:linear-gradient(135deg,#FFF0F5,#FFE4F0)">
-      <div style="font-weight:800;color:var(--chall-d);margin-bottom:6px;font-size:14px">🍋 Lemon says:</div>
+      <div style="font-weight:800;color:var(--chall-d);margin-bottom:6px;font-size:14px">🍋 Sonia says:</div>
       <div id="chall-fb-text" style="font-size:14px;line-height:1.6;font-weight:600;color:var(--dark)"></div>
     </div>
     <button class="btn btn-full btn-lg btn-p" id="chall-btn" onclick="handleChall()">Start Challenge! ⚡</button>
@@ -899,6 +900,7 @@ let audioChunks      = [];
 let karaokeIdx       = 0;
 let karaokeSentences = [];
 let karaokeIsRec     = false;
+let karaokeAttempts  = 0;
 let vocabWord        = '';
 let chatVoiceRec     = null;
 let chatVoicing      = false;
@@ -955,7 +957,6 @@ function checkStreak() {
 function refreshLogin() {
   ['elsie','sunny'].forEach(n => {
     const d = load(n);
-    document.getElementById(`${n}-meta`).textContent = `🪙 ${d.coins} · Lv.${d.level}`;
     applyOutfit(n, d.coins);
   });
 }
@@ -1130,26 +1131,37 @@ async function loadReading() {
   if (td.passage) { renderReading(td.passage, td.vocab); return; }
 
   const topic = td.topic ? td.topic.replace(/^[^\s]+ /,'') : 'My Day';
-  try {
-    const reply = await callAI([{
-      role:'user',
-      content:`Write a short English passage for a Taiwanese kid (A2/KET level) about: "${topic}".
+  const isElsie = CUR === 'elsie';
+  const content = isElsie
+    ? `Write an English passage for a Taiwanese child at A2/KET level about: "${topic}".
 Rules:
-- 75-95 words
-- Simple words and short sentences
-- Fun and relatable for a 10-year-old
+- Exactly 10 sentences
+- A2 vocabulary, common everyday words
+- Fun and relatable for a 12-year-old
 - NO title line
-After the passage, write exactly: VOCAB: word1, word2, word3, word4, word5, word6`
-    }], 'You are a friendly English teacher writing for young learners.', 600);
+After the passage write: VOCAB_JSON: [{"word":"...","pos":"n./v./adj./adv.","zh":"中文意思"},...]
+Include 6-8 key words. If a word has multiple common uses list each separately (same word, different pos+zh).`
+    : `Write an English passage for a Taiwanese child at Pre-A1 level about: "${topic}".
+Rules:
+- Exactly 5 sentences
+- Very simple vocabulary (Pre-A1, 8-9 year old level)
+- Short sentences, basic words only
+- NO title line
+After the passage write: VOCAB_JSON: [{"word":"...","pos":"n./v./adj./adv.","zh":"中文意思"},...]
+Include 4-5 key words with part of speech and Chinese translation.`;
 
-    const [passagePart, vocabPart] = reply.split('VOCAB:');
-    // Strip any markdown heading lines (e.g. "# Title") the AI might generate
+  try {
+    const reply = await callAI([{role:'user', content}],
+      'You are a friendly English teacher writing for young learners. Always end with the VOCAB_JSON line.', 700);
+
+    const [passagePart, vocabPart] = reply.split('VOCAB_JSON:');
     const passage = passagePart.trim()
       .split('\n')
       .filter(line => !line.trim().match(/^#{1,6}\s/))
       .join('\n')
       .trim();
-    const vocab = (vocabPart || '').split(',').map(w=>w.trim()).filter(Boolean).slice(0,6);
+    let vocab = [];
+    try { vocab = JSON.parse((vocabPart || '').trim()); if (!Array.isArray(vocab)) vocab = []; } catch(e) { vocab = []; }
     td.passage = passage; td.vocab = vocab; save();
     renderReading(passage, vocab);
   } catch(e) {
@@ -1165,7 +1177,22 @@ function renderReading(passage, vocab) {
   el.textContent = passage; el.style.display = 'block';
 
   if (vocab && vocab.length) {
-    document.getElementById('vocab-grid').innerHTML = vocab.map(w=>`<div class="vocab-chip" onclick="showVocabDef('${esc(w)}')">📌 ${esc(w)}</div>`).join('');
+    let html = '';
+    if (typeof vocab[0] === 'string') {
+      html = vocab.map(w => `<div class="vocab-inline-card"><div class="vc-word">${esc(w)}</div></div>`).join('');
+    } else {
+      const grouped = {};
+      vocab.forEach(v => {
+        if (!grouped[v.word]) grouped[v.word] = [];
+        grouped[v.word].push({pos: v.pos || '', zh: v.zh || ''});
+      });
+      html = Object.entries(grouped).map(([word, defs]) =>
+        `<div class="vocab-inline-card"><div class="vc-word">${esc(word)}</div><div class="vc-defs">${
+          defs.map(d => `<span class="vpos">${esc(d.pos)}</span>${esc(d.zh)}`).join('<br>')
+        }</div></div>`
+      ).join('');
+    }
+    document.getElementById('vocab-grid').innerHTML = html;
     document.getElementById('vocab-sec').style.display = 'block';
   }
   document.getElementById('read-aloud-btn').style.display = 'flex';
@@ -1296,6 +1323,7 @@ function initKaraoke() {
 }
 
 function renderKaraokeCard() {
+  karaokeAttempts = 0;
   const total = karaokeSentences.length;
   const idx   = karaokeIdx;
 
@@ -1383,11 +1411,14 @@ function karaokeStopRec() {
 }
 
 async function karaokeSendFeedback() {
+  karaokeAttempts++;
   const sentence = (karaokeSentences[karaokeIdx] || '').trim();
   const fb = document.getElementById('kara-fb');
-  fb.style.display = 'block';
-  fb.className = '';
+  fb.style.display = 'block'; fb.className = '';
   fb.innerHTML = '<div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+
+  let passed = false;
+  let feedbackText = '';
 
   try {
     const mimeType = (audioChunks[0] && audioChunks[0].type) || 'audio/webm';
@@ -1404,15 +1435,28 @@ async function karaokeSendFeedback() {
     });
     if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
     const data = await resp.json();
-    const reply = data.content[0].text;
-    fb.className = 'kara-fb'; fb.textContent = reply;
-    speakText(reply);
+    passed = data.pass === true;
+    feedbackText = data.content[0].text;
   } catch(e) {
-    fb.className = 'kara-fb'; fb.textContent = 'Great try! Keep going! 🌟';
+    passed = false; feedbackText = '';
   }
 
   const btn = document.getElementById('kara-rec-btn');
-  btn.textContent = '🔄 Try Again'; btn.disabled = false;
+  fb.className = 'kara-fb';
+
+  if (passed) {
+    fb.textContent = feedbackText || '說得很棒！👍';
+    btn.disabled = true;
+    setTimeout(() => karaokeNext(), 2200);
+  } else if (karaokeAttempts >= 3) {
+    fb.textContent = '沒關係，我們繼續！加油！💪';
+    btn.disabled = true;
+    setTimeout(() => karaokeNext(), 2200);
+  } else {
+    fb.textContent = feedbackText || '跟著 Sonia 再試一次 🎙️';
+    setTimeout(() => { stopSpeech(); speakText(sentence); }, 400);
+    btn.textContent = '🔄 再試一次'; btn.disabled = false;
+  }
 }
 
 function karaokeNext() {
@@ -1428,39 +1472,6 @@ function karaokePrev() {
   if (karaokeIdx > 0) karaokeIdx--;
   renderKaraokeCard();
   setTimeout(karaokeAutoPlay, 600);
-}
-
-// ═══════════════════════════════════
-// VOCAB POPUP
-// ═══════════════════════════════════
-async function showVocabDef(word) {
-  vocabWord = word;
-  document.getElementById('vocab-word').textContent = word;
-  document.getElementById('vocab-overlay').classList.add('open');
-  document.getElementById('vocab-card').classList.add('open');
-  const td = todayData();
-  if (td.vocabDefs && td.vocabDefs[word]) {
-    document.getElementById('vocab-def').textContent = td.vocabDefs[word];
-    return;
-  }
-  document.getElementById('vocab-def').innerHTML = '<div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
-  try {
-    const raw = await callAI([{
-      role:'user',
-      content:`Define "${word}" for a 10-12 year old in 1-2 simple sentences. Include one short example sentence. Be fun and easy to understand. Plain text only, no markdown.`
-    }], 'You are a friendly English teacher for children. Give short, clear definitions. Never use markdown formatting.', 150);
-    const reply = raw.replace(/#{1,6}\s*/g,'').replace(/\*\*/g,'').replace(/\*/g,'').replace(/_/g,'').trim();
-    if (!td.vocabDefs) td.vocabDefs = {};
-    td.vocabDefs[word] = reply; save();
-    document.getElementById('vocab-def').textContent = reply;
-  } catch(e) {
-    document.getElementById('vocab-def').textContent = 'Look this word up in a dictionary!';
-  }
-}
-
-function closeVocabPopup() {
-  document.getElementById('vocab-overlay').classList.remove('open');
-  document.getElementById('vocab-card').classList.remove('open');
 }
 
 function speakVocabWord() {
@@ -1500,7 +1511,7 @@ async function initChat() {
   ];
   const chatOpening = chatOpenings[Math.floor(Math.random() * chatOpenings.length)];
 
-  window._chatSys = `You are Lemon 🍋, a fun cheerful English buddy for ${uname} (age 10-12, level A2).
+  window._chatSys = `You are Sonia 🍋, a fun cheerful English buddy for ${uname} (age 10-12, level A2).
 This is a short 5-exchange chat about: ${topic}
 Rules for EVERY reply:
 - 1-2 sentences responding to what they said
@@ -1520,25 +1531,26 @@ Open with: "${chatOpening}" and ask one easy fun first question about ${topic}.`
     speakText(reply);
   } catch(e) {
     removeThinking();
-    const fb = "Hey! I'm Lemon 🍋 Ready to chat about today's topic!";
+    const fb = "Hey! I'm Sonia 🍋 Ready to chat about today's topic!";
     addBubble('ai', fb);
   }
 }
 
-async function sendMsg() {
-  const input = document.getElementById('chat-input');
-  const text = input.value.trim();
-  if (!text || aiThinking) return;
-  input.value = ''; input.style.height = 'auto';
+function sendMsg() {}
 
+async function sendMsgText(text) {
+  if (!text.trim() || aiThinking) return;
   addBubble('user', text);
-  chatHistory.push({role:'user',content:text});
+  chatHistory.push({role:'user', content:text});
   aiThinking = true; addThinking();
+
+  const micBtn = document.getElementById('chat-big-mic');
+  if (micBtn) micBtn.disabled = true;
 
   try {
     const reply = await callAI(chatHistory, window._chatSys || '');
     removeThinking();
-    chatHistory.push({role:'assistant',content:reply});
+    chatHistory.push({role:'assistant', content:reply});
     addBubble('ai', reply);
     speakText(reply);
   } catch(e) {
@@ -1546,6 +1558,7 @@ async function sendMsg() {
     addBubble('ai', "Hmm, let me think... Try again! 😊");
   }
   aiThinking = false;
+  if (micBtn) micBtn.disabled = false;
   chatExchangeCount++;
   updateChatRound();
   if (chatExchangeCount >= 5) {
@@ -1579,7 +1592,7 @@ async function endChatWithSummary() {
   const c = document.getElementById('chat-msgs');
   const summaryEl = document.createElement('div');
   summaryEl.className = 'chat-summary';
-  summaryEl.innerHTML = `<div style="font-weight:800;color:#9333EA;margin-bottom:8px;font-size:14px">📝 Lemon 的今日總結</div><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
+  summaryEl.innerHTML = `<div style="font-weight:800;color:#9333EA;margin-bottom:8px;font-size:14px">📝 Sonia 的今日總結</div><div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>`;
   c.appendChild(summaryEl);
   c.scrollTop = c.scrollHeight;
 
@@ -1591,9 +1604,9 @@ async function endChatWithSummary() {
     const raw = await callAI([{role:'user',content:prompt}],
       '你是一位溫暖的英語老師，用繁體中文給小學生回饋。語氣鼓勵、純文字、不使用markdown格式。', 200);
     const summary = raw.replace(/\*\*/g,'').replace(/\*/g,'').replace(/^[-•]\s*/gm,'').replace(/#{1,6}\s*/g,'').trim();
-    summaryEl.innerHTML = `<div style="font-weight:800;color:#9333EA;margin-bottom:8px;font-size:14px">📝 Lemon 的今日總結</div><div style="font-size:14px;line-height:1.7;font-weight:600;color:var(--dark)">${esc(summary)}</div>`;
+    summaryEl.innerHTML = `<div style="font-weight:800;color:#9333EA;margin-bottom:8px;font-size:14px">📝 Sonia 的今日總結</div><div style="font-size:14px;line-height:1.7;font-weight:600;color:var(--dark)">${esc(summary)}</div>`;
   } catch(e) {
-    summaryEl.innerHTML = `<div style="font-weight:800;color:#9333EA;margin-bottom:8px;font-size:14px">📝 Lemon 的今日總結</div><div style="font-size:14px;color:var(--dark)">你今天表現很棒！英文越來越流利了，繼續加油！🌟</div>`;
+    summaryEl.innerHTML = `<div style="font-weight:800;color:#9333EA;margin-bottom:8px;font-size:14px">📝 Sonia 的今日總結</div><div style="font-size:14px;color:var(--dark)">你今天表現很棒！英文越來越流利了，繼續加油！🌟</div>`;
   }
 
   const wrap = document.createElement('div');
@@ -1605,30 +1618,56 @@ async function endChatWithSummary() {
 
 function proceedToChall() { buildHome(); gotoStage('chall'); }
 
-// ── Chat voice input ──
+// ── Chat voice input (voice-only mode) ──
 function toggleChatVoice() {
   const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
-  if (!SpeechRec) { toast('Voice input not supported on this browser 😢'); return; }
-  if (chatVoicing) { if (chatVoiceRec) chatVoiceRec.stop(); return; }
+  if (!SpeechRec) { toast('此裝置不支援語音輸入 😢'); return; }
+  if (aiThinking) return;
+
+  if (chatVoicing) {
+    if (chatVoiceRec) chatVoiceRec.stop();
+    return;
+  }
 
   chatVoiceRec = new SpeechRec();
-  chatVoiceRec.lang = 'en-US'; chatVoiceRec.continuous = false; chatVoiceRec.interimResults = false;
+  chatVoiceRec.lang = 'en-US';
+  chatVoiceRec.continuous = false;
+  chatVoiceRec.interimResults = false;
 
-  const btn = document.getElementById('chat-voice-btn');
+  const btn   = document.getElementById('chat-big-mic');
+  const label = document.getElementById('chat-mic-label');
+  const said  = document.getElementById('chat-said');
+
   chatVoiceRec.onstart = () => {
     chatVoicing = true;
-    if (btn) { btn.textContent = '⏹'; btn.classList.add('recording'); }
+    if (btn)   { btn.textContent = '⏹'; btn.classList.add('recording'); }
+    if (label) label.textContent = '正在聽... 說完再按一次';
   };
+
   chatVoiceRec.onresult = e => {
     const transcript = e.results[0][0].transcript;
-    const inp = document.getElementById('chat-input');
-    inp.value = transcript; autoResize(inp);
+    if (said)  { said.style.display = 'block'; said.textContent = `你說了：${transcript}`; }
+    if (label) label.textContent = '傳送中...';
+    setTimeout(() => {
+      sendMsgText(transcript);
+      if (said) said.style.display = 'none';
+      if (label) label.textContent = '點我說話';
+    }, 1200);
   };
-  chatVoiceRec.onerror = () => toast('Could not hear you. Try again! 🎤');
+
+  chatVoiceRec.onerror = () => {
+    toast('聽不清楚，再試一次！🎤');
+    chatVoicing = false;
+    if (btn)   { btn.textContent = '🎤'; btn.classList.remove('recording'); }
+    if (label) label.textContent = '點我說話';
+    if (said)  said.style.display = 'none';
+  };
+
   chatVoiceRec.onend = () => {
     chatVoicing = false;
-    if (btn) { btn.textContent = '🎤'; btn.classList.remove('recording'); }
+    if (btn)   { btn.textContent = '🎤'; btn.classList.remove('recording'); }
   };
+
   chatVoiceRec.start();
 }
 
@@ -1637,7 +1676,7 @@ function addBubble(type, text) {
   const d = document.createElement('div');
   d.className = `bubble-row ${type}`;
   if (type === 'ai') {
-    d.innerHTML = `<div class="chat-av">🍋</div><div><div class="bubble-name">🍋 Lemon</div><div class="bubble ai">${esc(text)}</div></div>`;
+    d.innerHTML = `<div class="chat-av">🍋</div><div><div class="bubble-name">🍋 Sonia</div><div class="bubble ai">${esc(text)}</div></div>`;
   } else {
     d.innerHTML = `<div class="bubble user">${esc(text)}</div>`;
   }
@@ -1726,7 +1765,7 @@ async function submitChall() {
       ? `Student wrote about "${topic}": "${text.slice(0,300)}". Give 1 warm encouraging sentence, then 1 sentence pointing out a specific strength. End with a fun emoji. Max 2 sentences total.`
       : `Student tried the 1-minute challenge about "${topic}" but wrote very little. Give them super warm encouragement. Max 2 sentences, fun emoji at end.`;
     const reply = await callAI([{role:'user',content:prompt}],
-      'You are Lemon, a fun encouraging English teacher for kids. Be very positive and specific. Use simple English.');
+      'You are Sonia, a fun encouraging English teacher for kids. Be very positive and specific. Use simple English.');
     document.getElementById('chall-fb-text').textContent = reply;
     speakText(reply);
   } catch(e) {
