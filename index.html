@@ -150,11 +150,13 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
 .home-header{padding:16px 18px 4px}
 .home-greeting{font-family:'Fredoka One',cursive;font-size:25px;color:var(--dark)}
 
-.stats-row{display:flex;gap:8px;padding:8px 18px}
+.stats-row{display:flex;gap:6px;padding:8px 18px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.stats-row::-webkit-scrollbar{display:none}
 .s-chip{
-  background:white;border-radius:14px;padding:8px 12px;
-  display:flex;align-items:center;gap:5px;font-weight:800;font-size:14px;
-  box-shadow:0 3px 0 rgba(0,0,0,0.10),0 5px 14px rgba(0,0,0,0.07)
+  background:white;border-radius:12px;padding:6px 10px;
+  display:flex;align-items:center;gap:4px;font-weight:800;font-size:13px;
+  box-shadow:0 3px 0 rgba(0,0,0,0.10),0 5px 14px rgba(0,0,0,0.07);
+  flex-shrink:0
 }
 .s-chip.tap{cursor:pointer;transition:all 0.15s;user-select:none}
 .s-chip.tap:active{transform:scale(0.95);box-shadow:0 1px 0 rgba(0,0,0,0.10)}
@@ -208,10 +210,11 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
 .vocab-inline-card{
   background:#FFF8E0;border:2px solid var(--reading);border-radius:12px;padding:10px 12px
 }
-.vc-word{font-family:'Fredoka One',cursive;font-size:15px;color:var(--reading-d);margin-bottom:3px}
+.vc-word{font-family:'Fredoka One',cursive;font-size:15px;color:var(--reading-d);margin-bottom:2px}
+.vc-ph{font-size:11px;color:#999;font-family:'Courier New',monospace;letter-spacing:0.5px;margin-bottom:3px}
 .vc-defs{font-size:12px;font-weight:600;color:var(--dark);line-height:1.6}
 .vpos{color:var(--mid);font-style:italic;font-size:11px;margin-right:3px}
-.vc-example{font-size:11px;color:var(--mid);font-style:italic;margin-top:5px;line-height:1.5;border-top:1px solid #EEE;padding-top:4px}
+.vc-example{font-size:13px;color:var(--mid);font-style:italic;margin-top:5px;line-height:1.5;border-top:1px solid #EEE;padding-top:4px}
 
 /* ════════════════════
    SHADOWING — 3-step
@@ -377,28 +380,6 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
   box-shadow:0 3px 0 var(--chat-d);flex-shrink:0;position:relative;top:0;transition:all 0.15s
 }
 .send-btn:active{top:2px;box-shadow:0 1px 0 var(--chat-d)}
-
-/* ════════════════════
-   CHALLENGE
-════════════════════ */
-.timer-wrap{display:flex;justify-content:center;margin:8px 0}
-.timer-circle{position:relative;width:140px;height:140px}
-.timer-svg{transform:rotate(-90deg);width:140px;height:140px}
-.t-track{fill:none;stroke:#E8E8E8;stroke-width:10}
-.t-arc{
-  fill:none;stroke:var(--chall);stroke-width:10;stroke-linecap:round;
-  stroke-dasharray:408;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear
-}
-.timer-num{
-  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
-  font-family:'Fredoka One',cursive;font-size:42px;color:var(--chall-d);line-height:1
-}
-.chal-textarea{
-  width:100%;min-height:140px;padding:14px;border-radius:16px;border:2px solid #DDD;
-  font-family:'Nunito',sans-serif;font-size:15px;font-weight:600;outline:none;
-  resize:none;transition:border-color 0.2s;color:var(--dark);background:white
-}
-.chal-textarea:focus{border-color:var(--chall)}
 
 /* ════════════════════
    COMPLETE
@@ -622,15 +603,13 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
   <div class="stats-row">
     <div class="s-chip"><span class="coin coin-lg"></span>&nbsp;<span id="s-coins">0</span></div>
     <div class="s-chip"><span class="s-icon">⭐</span>Lv.<span id="s-level">1</span></div>
-    <div class="s-chip"><span class="s-icon">🔥</span><span id="s-streak">0</span> day streak</div>
-  </div>
-  <div class="stats-row" style="padding-top:0">
+    <div class="s-chip"><span class="s-icon">🔥</span><span id="s-streak">0</span></div>
     <div class="s-chip tap" id="s-diff-chip" onclick="cycleDifficulty()" title="Tap to change level">
-      <span class="s-icon">📚</span><span id="s-diff">A2</span>
+      <span class="s-icon">📚</span><span id="s-diff">A1</span>
     </div>
-    <div class="s-chip tap" id="s-topic-chip" onclick="changeTopic()" title="Tap to change topic" style="flex:1;min-width:0;gap:6px">
+    <div class="s-chip tap" id="s-topic-chip" onclick="changeTopic()" title="Tap to change topic" style="flex-shrink:1;min-width:0;max-width:120px;gap:4px">
       <span class="s-icon" style="flex-shrink:0">🔀</span>
-      <span id="s-topic-short" style="font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">Loading...</span>
+      <span id="s-topic-short" style="font-size:12px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"></span>
     </div>
   </div>
   <div class="card map-card">
@@ -661,21 +640,10 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
     <div class="map-row" id="map-chat">
       <div class="map-left">
         <div class="map-circle" id="mc-chat">💬</div>
-        <div class="map-connector"></div>
       </div>
       <div class="map-info">
         <div class="map-name">Chat with Sonia</div>
         <div class="map-reward">+10 <span class="coin"></span></div>
-      </div>
-    </div>
-    <!-- Challenge node (no connector at bottom) -->
-    <div class="map-row" id="map-chall">
-      <div class="map-left">
-        <div class="map-circle" id="mc-chall">⚡</div>
-      </div>
-      <div class="map-info">
-        <div class="map-name">Challenge</div>
-        <div class="map-reward">+20 <span class="coin"></span></div>
       </div>
     </div>
   </div>
@@ -692,7 +660,6 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
     <div class="stage-title" style="color:var(--reading-d)">📖 Reading</div>
     <div class="prog-bar" style="color:var(--reading)">
       <div class="prog-step on cur"></div>
-      <div class="prog-step"></div>
       <div class="prog-step"></div>
       <div class="prog-step"></div>
     </div>
@@ -721,7 +688,6 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
     <div class="prog-bar" style="color:var(--shad)">
       <div class="prog-step on"></div>
       <div class="prog-step on cur"></div>
-      <div class="prog-step"></div>
       <div class="prog-step"></div>
     </div>
   </div>
@@ -776,7 +742,6 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
         <div class="prog-step on"></div>
         <div class="prog-step on"></div>
         <div class="prog-step on cur"></div>
-        <div class="prog-step"></div>
       </div>
       <div id="chat-round" style="font-size:12px;font-weight:800;color:var(--chat-d);margin-top:5px;text-align:center"></div>
     </div>
@@ -792,41 +757,7 @@ body{background:linear-gradient(180deg,var(--sky) 0%,#C8EEFF 25%,#E8F8D8 70%,var
   </div>
 </div>
 
-<!-- ══════════════ S6: CHALLENGE ══════════════ -->
-<div id="screen-chall" class="screen">
-  <div class="stage-hd">
-    <div class="stage-title" style="color:var(--chall-d)">⚡ 1-Minute Challenge</div>
-    <div class="prog-bar" style="color:var(--chall)">
-      <div class="prog-step on"></div>
-      <div class="prog-step on"></div>
-      <div class="prog-step on"></div>
-      <div class="prog-step cur"></div>
-    </div>
-  </div>
-  <div class="page-body">
-    <div class="timer-wrap">
-      <div class="timer-circle">
-        <svg class="timer-svg" viewBox="0 0 140 140">
-          <circle class="t-track" cx="70" cy="70" r="65"/>
-          <circle class="t-arc" id="t-arc" cx="70" cy="70" r="65"/>
-        </svg>
-        <div class="timer-num" id="t-num">60</div>
-      </div>
-    </div>
-    <div class="card" style="text-align:center;font-weight:700;color:var(--mid);font-size:14px">
-      Talk or write about today's topic — don't stop!<br>
-      <span style="font-size:13px;color:var(--chall-d);font-weight:800" id="chall-topic"></span>
-    </div>
-    <textarea class="chal-textarea" id="chall-area" placeholder="Start writing here..."></textarea>
-    <div class="card" id="chall-fb" style="display:none;background:linear-gradient(135deg,#FFF0F5,#FFE4F0)">
-      <div style="font-weight:800;color:var(--chall-d);margin-bottom:6px;font-size:14px">🍋 Sonia says:</div>
-      <div id="chall-fb-text" style="font-size:14px;line-height:1.6;font-weight:600;color:var(--dark)"></div>
-    </div>
-    <button class="btn btn-full btn-lg btn-p" id="chall-btn" onclick="handleChall()">Start Challenge! ⚡</button>
-  </div>
-</div>
-
-<!-- ══════════════ S7: COMPLETE ══════════════ -->
+<!-- ══════════════ S6: COMPLETE ══════════════ -->
 <div id="screen-complete" class="screen">
   <div class="complete-star">🌟</div>
   <div class="complete-title">Mission Complete!</div>
@@ -885,14 +816,15 @@ const TOPICS = [
   '🍜 What I Ate Today',
   '✈️ If I Could Go Anywhere'
 ];
-const COIN_TABLE = { reading:5, shad:5, chat:10, chall:20, streak3:15, streak7:50, streak14:100, streak30:300 };
+const COIN_TABLE = { reading:5, shad:5, chat:10, streak3:15, streak7:50, streak14:100, streak30:300 };
 const DIFFICULTY_LEVELS = ['Pre-A1', 'A1', 'A2', 'B1'];
 const DIFF_CONFIG = {
-  'Pre-A1': { sentences:5,  words:'4-5', desc:'Pre-A1 level, very simple everyday words, short sentences (8-9 year old level)' },
-  'A1':     { sentences:7,  words:'5-6', desc:'A1/Movers level, simple everyday vocabulary' },
-  'A2':     { sentences:10, words:'6-8', desc:'A2/KET level, common everyday words' },
-  'B1':     { sentences:11, words:'7-9', desc:'B1/PET level, richer vocabulary and some complex sentences' }
+  'Pre-A1': { sentences:4,  words:'3-4', desc:'Pre-A1 level, very simple everyday words, very short sentences (7-8 year old level)' },
+  'A1':     { sentences:5,  words:'5-6', desc:'A1/Movers level, simple everyday vocabulary, short sentences' },
+  'A2':     { sentences:7,  words:'6-8', desc:'A2/KET level, common everyday words' },
+  'B1':     { sentences:8,  words:'7-9', desc:'B1/PET level, richer vocabulary and some complex sentences' }
 };
+const PREFERRED_VOICES = ['Nicky','Samantha','Ava','Karen','Kate','Millie','Matilda','Evan','Allison','Zoe','Susan'];
 
 const OUTFITS = {
   elsie: [
@@ -919,10 +851,6 @@ let chatHistory      = [];
 let aiThinking       = false;
 let chatExchangeCount = 0;
 let chatSummaryShown  = false;
-let challTimer  = null;
-let challLeft   = 60;
-let challGoing  = false;
-let challDone   = false;
 let mediaRecorder    = null;
 let audioChunks      = [];
 let karaokeIdx       = 0;
@@ -941,7 +869,7 @@ function save() {
   if (CUR) localStorage.setItem(`planet_${CUR}`, JSON.stringify(DATA));
 }
 
-function defaultDifficulty(name) { return name === 'sunny' ? 'A1' : 'A2'; }
+function defaultDifficulty(name) { return 'A1'; }
 
 function load(name) {
   const s = localStorage.getItem(`planet_${name}`);
@@ -962,7 +890,7 @@ function todayData() {
   const t = today();
   if (!DATA.days[t]) {
     DATA.days[t] = {
-      topic:null, reading:false, shad:false, chat:false, chall:false,
+      topic:null, reading:false, shad:false, chat:false,
       earned:0, passage:null, vocab:null
     };
   }
@@ -1045,9 +973,6 @@ function gotoStage(stage) {
   } else if (stage === 'chat') {
     if (!td.shad) { toast('Finish Shadowing first! 🎵'); return; }
     showScreen('chat'); if (chatHistory.length === 0) initChat();
-  } else if (stage === 'chall') {
-    if (!td.chat) { toast('Finish Chat first! 💬'); return; }
-    showScreen('chall'); setupChall();
   }
 }
 
@@ -1087,7 +1012,8 @@ function buildHome() {
   document.getElementById('s-level').textContent  = DATA.level;
   document.getElementById('s-streak').textContent = DATA.streak;
   document.getElementById('s-diff').textContent   = DATA.difficulty || defaultDifficulty(CUR);
-  document.getElementById('s-topic-short').textContent = td.topic || 'Change topic';
+  const topicDisplay = td.topic ? td.topic.replace(/^[^\s]+\s/, '') : 'Tap to change';
+  document.getElementById('s-topic-short').textContent = topicDisplay;
 
   const h = new Date().getHours();
   const greets = h < 12 ? ['Good morning','Rise and shine'] : h < 17 ? ['Good afternoon','Hey there'] : ['Good evening','Hi there'];
@@ -1102,10 +1028,9 @@ function updateMap(td) {
   const stages = [
     { id:'reading', done:td.reading, dep:null       },
     { id:'shad',    done:td.shad,    dep:'reading'   },
-    { id:'chat',    done:td.chat,    dep:'shad'      },
-    { id:'chall',   done:td.chall,   dep:'chat'      }
+    { id:'chat',    done:td.chat,    dep:'shad'      }
   ];
-  const classes = { reading:'r', shad:'s', chat:'c', chall:'ch' };
+  const classes = { reading:'r', shad:'s', chat:'c' };
 
   stages.forEach(s => {
     const row = document.getElementById(`map-${s.id}`);
@@ -1132,14 +1057,10 @@ function updateMap(td) {
 
 function updateStartBtn(td) {
   const btn = document.getElementById('start-btn');
-  if (td.reading && td.shad && td.chat && td.chall) {
+  if (td.reading && td.shad && td.chat) {
     btn.textContent = '✅ All Done Today!';
     btn.className = 'btn btn-full btn-lg btn-g';
     btn.onclick = null;
-  } else if (td.reading && td.shad && td.chat) {
-    btn.textContent = 'Start Challenge! ⚡';
-    btn.className = 'btn btn-full btn-lg btn-p';
-    btn.onclick = () => gotoStage('chall');
   } else if (td.reading && td.shad) {
     btn.textContent = 'Start Chat! 💬';
     btn.className = 'btn btn-full btn-lg btn-b';
@@ -1186,8 +1107,8 @@ Rules:
 - Exactly ${cfg.sentences} sentences
 - Fun and relatable for a child
 - NO title line
-After the passage write: VOCAB_JSON: [{"word":"...","pos":"n./v./adj./adv.","zh":"中文意思","ex":"One short English example sentence."},...]
-Include ${cfg.words} key words. If a word has multiple common uses list each separately (same word, different pos+zh). Each entry must have an "ex" field.`;
+After the passage write: VOCAB_JSON: [{"word":"...","ph":"/IPA/","pos":"n./v./adj./adv.","zh":"中文意思","ex":"One short English example sentence."},...]
+Include ${cfg.words} key words. Include IPA phonetic notation in the "ph" field. If a word has multiple common uses list each separately (same word, different pos+zh+ex but same ph). Each entry must have "ph" and "ex" fields.`;
 
   try {
     const reply = await callAI([{role:'user', content}],
@@ -1222,13 +1143,14 @@ function renderReading(passage, vocab) {
     } else {
       const grouped = {};
       vocab.forEach(v => {
-        if (!grouped[v.word]) grouped[v.word] = [];
-        grouped[v.word].push({pos: v.pos || '', zh: v.zh || '', ex: v.ex || ''});
+        if (!grouped[v.word]) grouped[v.word] = { ph: v.ph || '', defs: [] };
+        grouped[v.word].defs.push({pos: v.pos || '', zh: v.zh || '', ex: v.ex || ''});
       });
-      html = Object.entries(grouped).map(([word, defs]) => {
+      html = Object.entries(grouped).map(([word, {ph, defs}]) => {
         const ex = defs.find(d => d.ex)?.ex || '';
         return `<div class="vocab-inline-card">
           <div class="vc-word">${esc(word)}</div>
+          ${ph ? `<div class="vc-ph">${esc(ph)}</div>` : ''}
           <div class="vc-defs">${defs.map(d => `<span class="vpos">${esc(d.pos)}</span>${esc(d.zh)}`).join('<br>')}</div>
           ${ex ? `<div class="vc-example">${esc(ex)}</div>` : ''}
         </div>`;
@@ -1293,44 +1215,53 @@ function closeSettings() {
 }
 
 function renderVoiceList() {
-  const voices = getEnglishVoices();
+  const allVoices = getEnglishVoices();
   const list = document.getElementById('voice-list');
   const saved = localStorage.getItem('planet_voice');
 
-  if (!voices.length) {
+  if (!allVoices.length) {
     list.innerHTML = '<div style="text-align:center;color:#999;padding:20px">No English voices found.<br>Please check your device settings.</div>';
     return;
   }
 
-  list.innerHTML = voices.map((v, i) => {
+  const voices = [...allVoices].sort((a, b) => {
+    const ai = PREFERRED_VOICES.findIndex(n => a.name === n || a.name.startsWith(n + ' '));
+    const bi = PREFERRED_VOICES.findIndex(n => b.name === n || b.name.startsWith(n + ' '));
+    if (ai !== -1 && bi !== -1) return ai - bi;
+    if (ai !== -1) return -1;
+    if (bi !== -1) return 1;
+    return a.name.localeCompare(b.name);
+  });
+
+  list.innerHTML = voices.map(v => {
     const isChosen = saved === v.name;
+    const isRec = PREFERRED_VOICES.some(n => v.name === n || v.name.startsWith(n + ' '));
+    const nameEsc = v.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     return `<div class="voice-row ${isChosen ? 'chosen' : ''}">
       <div class="voice-info">
-        <div class="voice-name">${v.name}</div>
+        <div class="voice-name">${v.name}${isRec ? ' <span style="color:#10B981;font-size:11px;font-weight:700">⭐</span>' : ''}</div>
         <div class="voice-lang">${v.lang}${v.localService ? '' : ' · Online'}</div>
       </div>
-      <button class="voice-preview-btn" onclick="previewVoice(${i})">▶ Preview</button>
-      <button class="voice-select-btn" onclick="selectVoice(${i})">${isChosen ? '✓ Selected' : 'Select'}</button>
+      <button class="voice-preview-btn" onclick="previewVoice('${nameEsc}')">▶ Preview</button>
+      <button class="voice-select-btn" onclick="selectVoice('${nameEsc}')">${isChosen ? '✓ Selected' : 'Select'}</button>
     </div>`;
   }).join('');
 }
 
-function previewVoice(idx) {
+function previewVoice(name) {
   stopSpeech();
-  const voices = getEnglishVoices();
-  const v = voices[idx];
+  const v = getEnglishVoices().find(v => v.name === name);
   if (!v) return;
   const utt = new SpeechSynthesisUtterance("Hi! I'm your English buddy. Let's learn together!");
   utt.voice = v; utt.lang = v.lang; utt.rate = 0.9;
   window.speechSynthesis.speak(utt);
 }
 
-function selectVoice(idx) {
-  const voices = getEnglishVoices();
-  selectedVoice = voices[idx] || null;
+function selectVoice(name) {
+  selectedVoice = getEnglishVoices().find(v => v.name === name) || null;
   if (selectedVoice) localStorage.setItem('planet_voice', selectedVoice.name);
   renderVoiceList();
-  toast(`Voice set to ${selectedVoice ? selectedVoice.name : 'default'} ✓`);
+  toast(`Voice: ${selectedVoice ? selectedVoice.name : 'default'} ✓`);
 }
 
 function getSpeechVoice() {
@@ -1653,7 +1584,22 @@ async function endChatWithSummary() {
   const td = todayData();
   if (!td.chat) {
     td.chat = true; td.earned = (td.earned||0) + COIN_TABLE.chat;
-    DATA.coins += COIN_TABLE.chat; save();
+    DATA.coins += COIN_TABLE.chat;
+    const t = today();
+    const last = DATA.lastDate;
+    let newStreak = 1;
+    if (last) {
+      const diff = Math.floor((new Date(t) - new Date(last)) / 86400000);
+      if (diff === 1) newStreak = (DATA.streak||0) + 1;
+      else if (diff === 0) newStreak = DATA.streak || 1;
+    }
+    DATA.streak = newStreak; DATA.lastDate = t;
+    if (newStreak === 3)  { td.earned += COIN_TABLE.streak3;  DATA.coins += COIN_TABLE.streak3; }
+    if (newStreak === 7)  { td.earned += COIN_TABLE.streak7;  DATA.coins += COIN_TABLE.streak7; }
+    if (newStreak === 14) { td.earned += COIN_TABLE.streak14; DATA.coins += COIN_TABLE.streak14; }
+    if (newStreak === 30) { td.earned += COIN_TABLE.streak30; DATA.coins += COIN_TABLE.streak30; }
+    DATA.level = Math.floor(DATA.coins / 100) + 1;
+    save();
   }
 
   // Disable input
@@ -1685,7 +1631,7 @@ async function endChatWithSummary() {
 
   const doneEl = document.createElement('div');
   doneEl.style.cssText = 'text-align:center;padding:20px 0 8px';
-  doneEl.innerHTML = `<div style="font-size:32px;margin-bottom:8px">🌟</div><div style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--reading-d)">Great job! +${COIN_TABLE.chat} coins!</div><div style="margin-top:6px;font-size:13px;color:var(--mid);font-weight:700">Head home to keep going 🏠</div>`;
+  doneEl.innerHTML = `<div style="font-size:32px;margin-bottom:8px">🌟</div><div style="font-family:'Fredoka One',cursive;font-size:20px;color:var(--reading-d)">Great job! +${COIN_TABLE.chat} coins!</div><button class="btn btn-y" onclick="showComplete()" style="margin-top:12px;padding:12px 28px">See Results! 🏆</button>`;
   c.appendChild(doneEl);
   c.scrollTop = c.scrollHeight;
   buildHome();
@@ -1780,100 +1726,6 @@ function chatKey(e) {
 function autoResize(el) {
   el.style.height = 'auto';
   el.style.height = Math.min(el.scrollHeight, 88) + 'px';
-}
-
-// ═══════════════════════════════════
-// CHALLENGE
-// ═══════════════════════════════════
-function setupChall() {
-  const td = todayData();
-  document.getElementById('chall-topic').textContent = td.topic || '';
-  challLeft = 60; challGoing = false; challDone = false;
-  updateTimerNum(60);
-  document.getElementById('t-arc').style.strokeDashoffset = '0';
-  document.getElementById('chall-area').value = '';
-  document.getElementById('chall-fb').style.display = 'none';
-  const btn = document.getElementById('chall-btn');
-  btn.textContent = 'Start Challenge! ⚡';
-  btn.className = 'btn btn-full btn-lg btn-p';
-  btn.style.display = '';
-  btn.onclick = handleChall;
-}
-
-function handleChall() {
-  if (!challGoing && !challDone) startChall();
-  else if (challGoing) submitChall();
-}
-
-function startChall() {
-  challGoing = true;
-  document.getElementById('chall-btn').textContent = 'Submit Early →';
-  document.getElementById('chall-area').focus();
-  const arc = document.getElementById('t-arc');
-  const C = 2 * Math.PI * 65; // ≈ 408.4
-  challTimer = setInterval(() => {
-    challLeft--;
-    updateTimerNum(challLeft);
-    arc.style.strokeDashoffset = String((C * (60 - challLeft)) / 60);
-    if (challLeft <= 0) { clearInterval(challTimer); submitChall(); }
-  }, 1000);
-}
-
-function updateTimerNum(n) {
-  document.getElementById('t-num').textContent = n;
-}
-
-async function submitChall() {
-  if (challDone) return;
-  challDone = true; challGoing = false;
-  if (challTimer) clearInterval(challTimer);
-  document.getElementById('chall-btn').style.display = 'none';
-
-  const text = document.getElementById('chall-area').value.trim();
-  const td = todayData();
-  const topic = td.topic ? td.topic.replace(/^[^\s]+ /,'') : 'today\'s topic';
-
-  const fb = document.getElementById('chall-fb');
-  fb.style.display = 'block';
-  document.getElementById('chall-fb-text').innerHTML = '<div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
-
-  try {
-    const prompt = text
-      ? `Student wrote about "${topic}": "${text.slice(0,300)}". Give 1 warm encouraging sentence, then 1 sentence pointing out a specific strength. End with a fun emoji. Max 2 sentences total.`
-      : `Student tried the 1-minute challenge about "${topic}" but wrote very little. Give them super warm encouragement. Max 2 sentences, fun emoji at end.`;
-    const reply = await callAI([{role:'user',content:prompt}],
-      'You are Sonia, a fun encouraging English teacher for kids. Be very positive and specific. Use simple English.');
-    document.getElementById('chall-fb-text').textContent = reply;
-    speakText(reply);
-  } catch(e) {
-    document.getElementById('chall-fb-text').textContent = "Amazing effort today! You're getting better every single day! 🌟";
-  }
-
-  // Save progress
-  if (!td.chall) {
-    td.chall = true; td.earned = (td.earned||0) + COIN_TABLE.chall;
-    DATA.coins += COIN_TABLE.chall;
-
-    // Streak
-    const t = today();
-    const last = DATA.lastDate;
-    let newStreak = 1;
-    if (last) {
-      const diff = Math.floor((new Date(t) - new Date(last)) / 86400000);
-      if (diff === 1) newStreak = (DATA.streak||0) + 1;
-      else if (diff === 0) newStreak = DATA.streak || 1;
-    }
-    DATA.streak = newStreak;
-    DATA.lastDate = t;
-    if (newStreak === 3)  { td.earned += COIN_TABLE.streak3;  DATA.coins += COIN_TABLE.streak3; }
-    if (newStreak === 7)  { td.earned += COIN_TABLE.streak7;  DATA.coins += COIN_TABLE.streak7; }
-    if (newStreak === 14) { td.earned += COIN_TABLE.streak14; DATA.coins += COIN_TABLE.streak14; }
-    if (newStreak === 30) { td.earned += COIN_TABLE.streak30; DATA.coins += COIN_TABLE.streak30; }
-    DATA.level = Math.floor(DATA.coins / 100) + 1;
-    save();
-  }
-
-  setTimeout(showComplete, 3200);
 }
 
 // ═══════════════════════════════════
